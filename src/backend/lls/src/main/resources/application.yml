@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: lls
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  config:
+    import: optional:file:.env[.properties]
+  #  sql:
+  #    init:
+  #      schema-locations: database.sql
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: true
+  devtools:
+    livereload:
+      enabled: true
+  #      port: 35730
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+server:
+  port: 8088
+  error:
+    include-message: always
+
+api:
+  v1: api/v1
+
+jwt:
+  expiration: 2592000 # 30 days
+  secretKey: qo/+EpB+p1CdYauZMmLbO06Ls1A6GoU0j0LYJFnLQbc=
+
+logging:
+  level:
+    root: info
+    org:
+      hibernate:
+        stat: debug
+        type:
+          descriptor:
+            sql: trace
