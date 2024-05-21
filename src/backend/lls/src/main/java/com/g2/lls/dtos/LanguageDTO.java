@@ -11,6 +11,6 @@ import lombok.*;
 @Builder
 @ToString
 public class LanguageDTO {
-    @NotBlank(message = "Language's name is required")
+    @NotBlank(message = "Language's name is mandatory")
     private String name;
 }

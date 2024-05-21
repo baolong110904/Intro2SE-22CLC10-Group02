@@ -1,6 +1,8 @@
 spring:
   application:
     name: lls
+  profiles:
+    active: dev # @spring.profiles.active@
   datasource:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
@@ -34,13 +36,6 @@ server:
   error:
     include-message: always
 
-api:
-  v1: api/v1
-
-jwt:
-  expiration: 2592000 # 30 days
-  secretKey: qo/+EpB+p1CdYauZMmLbO06Ls1A6GoU0j0LYJFnLQbc=
-
 logging:
   level:
     root: info
@@ -50,3 +45,11 @@ logging:
         type:
           descriptor:
             sql: trace
+
+jwt:
+  expiration: 2592000 # 30 days
+  secretKey: qo/+EpB+p1CdYauZMmLbO06Ls1A6GoU0j0LYJFnLQbc=
+
+api:
+  v1: api/v1
+  v2: api/v2

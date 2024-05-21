@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.NonNull;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LanguageRepository extends JpaRepository<Language, Long> {
     Boolean existsByName(String name);
@@ -12,4 +13,6 @@ public interface LanguageRepository extends JpaRepository<Language, Long> {
     boolean existsById(@NonNull Long id);
     @NonNull
     List<Language> findAll();
+
+    Optional<Language> findByName(String languageName);
 }

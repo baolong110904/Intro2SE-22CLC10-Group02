@@ -6,13 +6,15 @@ import com.g2.lls.models.Language;
 import com.g2.lls.models.Level;
 import com.g2.lls.repositories.LanguageRepository;
 import com.g2.lls.repositories.LevelRepository;
+import com.g2.lls.responses.LevelResponse;
 import com.g2.lls.services.LevelService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @AllArgsConstructor
@@ -42,18 +44,65 @@ public class LevelServiceImpl implements LevelService {
     }
 
     @Override
-    public Map<String, String> getLevelAndLanguageById(Long levelId) throws Exception {
+    public LevelResponse getLevelAndLanguageById(Long levelId) throws Exception {
         Level existingLevel = levelRepository.findById(levelId)
                 .orElseThrow(() -> new DataNotFoundException("Cannot find level with id: " + levelId));
-        return Map.of("level", existingLevel.getName(), "language", existingLevel.getLanguage().getName());
+        return LevelResponse
+                .builder()
+                .level(existingLevel.getName())
+                .language(existingLevel.getLanguage().getName())
+                .build();
     }
 
     @Override
-    public List<Map<String, String>> getAllLevelsAndLanguages() {
+    public List<LevelResponse> getAllLevelsAndLanguages() {
         List<Level> levels = levelRepository.findAll();
         return levels.stream()
-                .map(level -> Map.of("level", level.getName(), "language", level.getLanguage().getName()))
+                .map(level -> LevelResponse
+                        .builder()
+                        .level(level.getName())
+                        .language(level.getLanguage().getName())
+                        .build())
                 .toList();
+    }
+
+    @Override
+    public List<LevelResponse> getAllLevelsByLanguageId(Long languageId) throws Exception {
+        Language existingLanguage = languageRepository.findById(languageId)
+                .orElseThrow(() -> new DataNotFoundException("Cannot find language with id: " + languageId));
+        List<Level> levels = levelRepository.findAllByLanguage(existingLanguage);
+        return levels.stream()
+                .map(level -> LevelResponse
+                        .builder()
+                        .level(level.getName())
+                        .language(level.getLanguage().getName())
+                        .build())
+                .toList();
+    }
+
+    @Override
+    public List<LevelResponse> getAllLevelsByLanguageName(String languageName) throws Exception {
+        Language existingLanguage = languageRepository.findByName(languageName)
+                .orElseThrow(() -> new DataNotFoundException("Language not found"));
+        List<Level> levels = levelRepository.findAllByLanguage(existingLanguage);
+        return levels.stream()
+                .map(level -> LevelResponse
+                        .builder()
+                        .level(level.getName())
+                        .language(level.getLanguage().getName())
+                        .build())
+                .toList();
+    }
+
+    @Override
+    public Page<LevelResponse> getAllLevelsAndLanguages(PageRequest pageRequest) {
+        return levelRepository
+                .findAll(pageRequest)
+                .map(level -> LevelResponse
+                        .builder()
+                        .level(level.getName())
+                        .language(level.getLanguage().getName())
+                        .build());
     }
 
     @Override

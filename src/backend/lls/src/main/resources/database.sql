@@ -18,7 +18,7 @@ CREATE TABLE levels
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     language_id INT          NOT NULL COMMENT 'Language ID',
-    name        NVARCHAR(50) NOT NULL COMMENT 'Level name',
+    name        NVARCHAR(50) NOT NULL CHECK ( name IN ('Beginner', 'Intermediate', 'Advanced') ) COMMENT 'Level name',
     is_active   TINYINT(1)   NOT NULL DEFAULT TRUE COMMENT '0: inactive, 1: active',
     created_at  DATETIME              DEFAULT CURRENT_TIMESTAMP COMMENT 'Created date',
     updated_at  DATETIME              DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date',
@@ -26,43 +26,59 @@ CREATE TABLE levels
     FOREIGN KEY (language_id) REFERENCES languages (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-# 4 roles: admin, teacher, teacher assistant, student
+# 4 roles: admin, teacher, student
 CREATE TABLE roles
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
-    name       VARCHAR(50) NOT NULL UNIQUE COMMENT 'Role name',
+    name       VARCHAR(50) NOT NULL UNIQUE CHECK ( name IN ('ADMIN', 'TEACHER', 'STUDENT') ) COMMENT 'Role name',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT 'Created date',
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date'
+);
+
+CREATE TABLE addresses
+(
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    country    NVARCHAR(50)  NOT NULL COMMENT 'Country',
+    city       NVARCHAR(50)  NOT NULL COMMENT 'City',
+    district   NVARCHAR(50) COMMENT 'District',
+    ward       NVARCHAR(50) COMMENT 'Ward',
+    address    NVARCHAR(255) NOT NULL COMMENT 'Address',
+    is_active  TINYINT(1)    NOT NULL DEFAULT TRUE COMMENT '0: inactive, 1: active',
+    created_at DATETIME               DEFAULT CURRENT_TIMESTAMP COMMENT 'Created date',
+    updated_at DATETIME               DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date'
 );
 
 CREATE TABLE users
 (
     id            INT AUTO_INCREMENT PRIMARY KEY,
-#     role_id       INT          NOT NULL COMMENT 'Role ID',
+    role_id       INT          NOT NULL COMMENT 'Role ID',
     username      VARCHAR(50)  NOT NULL UNIQUE COMMENT 'Username',
     phone_number  VARCHAR(20)  NOT NULL UNIQUE COMMENT 'Phone number',
     password      VARCHAR(255) NOT NULL COMMENT 'Encrypted password',
-    date_of_birth DATE                  DEFAULT NULL COMMENT 'Date of birth',
-    address       NVARCHAR(255)         DEFAULT NULL COMMENT 'Address',
+    address_id    INT          NOT NULL COMMENT 'Address ID',
     first_name    NVARCHAR(50) NOT NULL COMMENT 'First name',
     last_name     NVARCHAR(50) NOT NULL COMMENT 'Last name',
+    gender        NVARCHAR(10) NOT NULL CHECK ( gender IN ('Male', 'Female', 'Other') ) COMMENT 'Gender',
+    date_of_birth DATE                  DEFAULT NULL COMMENT 'Date of birth',
     avatar        VARCHAR(255) NOT NULL COMMENT 'Avatar URL',
     description   TEXT                  DEFAULT NULL COMMENT 'Description',
+    ip_address    VARCHAR(50)           DEFAULT NULL COMMENT 'IP address',
     is_active     TINYINT(1)   NOT NULL DEFAULT TRUE COMMENT '0: inactive, 1: active',
     created_at    DATETIME              DEFAULT CURRENT_TIMESTAMP COMMENT 'Created date',
-    updated_at    DATETIME              DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date'
-#     FOREIGN KEY (role_id) REFERENCES roles (id)
+    updated_at    DATETIME              DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date',
+    FOREIGN KEY (address_id) REFERENCES addresses (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE users_roles
-(
-    id      INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL COMMENT 'User ID',
-    role_id INT NOT NULL COMMENT 'Role ID',
-    UNIQUE (user_id, role_id),
-    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-    FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
-);
+# CREATE TABLE users_roles
+# (
+#     id      INT AUTO_INCREMENT PRIMARY KEY,
+#     user_id INT NOT NULL COMMENT 'User ID',
+#     role_id INT NOT NULL COMMENT 'Role ID',
+#     UNIQUE (user_id, role_id),
+#     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+#     FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
+# );
 
 # CREATE TABLE teachers
 # (
@@ -102,7 +118,6 @@ CREATE TABLE courses
     id          INT AUTO_INCREMENT PRIMARY KEY,
     level_id    INT          NOT NULL COMMENT 'Level ID',
     teacher_id  INT          NOT NULL COMMENT 'Teacher ID',
-    ta_id       INT                   DEFAULT NULL COMMENT 'Teacher assistant ID',
     title       NVARCHAR(50) NOT NULL COMMENT 'Course title',
     description TEXT                  DEFAULT NULL COMMENT 'Course description',
     is_private  TINYINT(1)   NOT NULL DEFAULT FALSE COMMENT '0: public, 1: private',
@@ -115,8 +130,7 @@ CREATE TABLE courses
     updated_at  DATETIME              DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date',
     start_date  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Course start date',
     FOREIGN KEY (level_id) REFERENCES levels (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (teacher_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (ta_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (teacher_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE registrations
@@ -144,7 +158,7 @@ CREATE TABLE resources
     FOREIGN KEY (lesson_id) REFERENCES courses (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-# # 1 teacher, 0->1 teacher assistant, multiple students
+# # 1 teacher, multiple students
 # CREATE TABLE lessons_users
 # (
 #     id        INT AUTO_INCREMENT PRIMARY KEY,
@@ -164,8 +178,8 @@ CREATE TABLE feedbacks
     is_active  TINYINT(1) NOT NULL DEFAULT TRUE COMMENT '0: inactive, 1: active',
     created_at DATETIME            DEFAULT CURRENT_TIMESTAMP COMMENT 'Created date',
     updated_at DATETIME            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date',
-    FOREIGN KEY (lesson_id) REFERENCES courses (id),
-    FOREIGN KEY (user_id) REFERENCES users (id)
+    FOREIGN KEY (lesson_id) REFERENCES courses (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE certificates
@@ -178,13 +192,52 @@ CREATE TABLE certificates
     is_active   TINYINT(1)   NOT NULL DEFAULT TRUE COMMENT '0: inactive, 1: active',
     created_at  DATETIME              DEFAULT CURRENT_TIMESTAMP COMMENT 'Created date',
     updated_at  DATETIME              DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date',
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (level_id) REFERENCES levels (id)
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (level_id) REFERENCES levels (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE forums
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    language_id INT        NOT NULL COMMENT 'Language ID',
+    is_active   TINYINT(1) NOT NULL DEFAULT TRUE COMMENT '0: inactive, 1: active',
+    created_at  DATETIME            DEFAULT CURRENT_TIMESTAMP COMMENT 'Created date',
+    updated_at  DATETIME            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date',
+    FOREIGN KEY (language_id) REFERENCES languages (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE articles
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    forum_id    INT          NOT NULL COMMENT 'Forum ID',
+    author_id   INT          NOT NULL COMMENT 'Author ID',
+    title       NVARCHAR(50) NOT NULL COMMENT 'Article title',
+    description TEXT         NOT NULL COMMENT 'Article description',
+    content     TEXT         NOT NULL COMMENT 'Article content',
+    is_active   TINYINT(1)   NOT NULL DEFAULT TRUE COMMENT '0: inactive, 1: active',
+    created_at  DATETIME              DEFAULT CURRENT_TIMESTAMP COMMENT 'Created date',
+    updated_at  DATETIME              DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date',
+    FOREIGN KEY (forum_id) REFERENCES forums (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (author_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE comments
+(
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    article_id INT        NOT NULL COMMENT 'Article ID',
+    user_id    INT        NOT NULL COMMENT 'User ID',
+    content    TEXT       NOT NULL COMMENT 'Comment content',
+    is_active  TINYINT(1) NOT NULL DEFAULT TRUE COMMENT '0: inactive, 1: active',
+    created_at DATETIME            DEFAULT CURRENT_TIMESTAMP COMMENT 'Created date',
+    updated_at DATETIME            DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Updated date',
+    FOREIGN KEY (article_id) REFERENCES articles (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO languages (name)
 VALUES ('English'),
-       ('Japanese');
+       ('Japanese'),
+       ('French');
 
 INSERT INTO levels (language_id, name)
 VALUES (1, 'Beginner'),
@@ -198,8 +251,11 @@ VALUES (2, 'Beginner'),
 INSERT INTO roles (name)
 VALUES ('ADMIN'),
        ('TEACHER'),
-       ('TA'),
        ('STUDENT');
+
+INSERT INTO forums (language_id)
+VALUES (1),
+       (2);
 
 SELECT *
 FROM languages;

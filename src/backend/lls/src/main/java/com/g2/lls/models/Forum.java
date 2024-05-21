@@ -3,6 +3,8 @@ package com.g2.lls.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -10,14 +12,14 @@ import lombok.*;
 @Builder
 @ToString
 @Entity
-@Table(name = "levels", schema = "language_learning_system")
-public class Level extends BaseEntity {
-    @ManyToOne
+@Table(name = "forums", schema = "language_learning_system")
+public class Forum extends BaseEntity {
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "language_id")
     private Language language;
 
-    @Column(name = "name", nullable = false, length = 50)
-    private String name;
+    @OneToMany(mappedBy = "forum", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Article> articles;
 
     @Column(name = "is_active", nullable = false)
     private Boolean active;

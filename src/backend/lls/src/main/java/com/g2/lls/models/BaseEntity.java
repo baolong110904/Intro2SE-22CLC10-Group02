@@ -1,9 +1,6 @@
 package com.g2.lls.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,6 +12,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @MappedSuperclass
 public class BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 

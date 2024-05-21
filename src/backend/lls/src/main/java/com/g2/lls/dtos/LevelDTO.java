@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 @ToString
 public class LevelDTO {
-    @NotBlank(message = "Level's name is required")
+    @NotBlank(message = "Level's name is mandatory")
     private String name;
 
     @Min(value = 1, message = "Language's ID must be greater than 0")
