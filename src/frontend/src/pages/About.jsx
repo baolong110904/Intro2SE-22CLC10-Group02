@@ -38,7 +38,7 @@ const About = () => {
       }, []);
       
   return (
-    <div className='md:px-14 p-4 max-w-s mx-auto' ref={aboutRef} id="about">
+    <div className='md:px-14 p-4 max-w-s mx-auto dark:bg-darkBg' ref={aboutRef} id="about">
       <div className="flex flex-col md:flex-row justify-between items-center gap-8">
       {shown && (
         <>
@@ -49,8 +49,8 @@ const About = () => {
         <div>
           <section className="grid gap-12 md:grid-cols-3 md:gap-16">
             {/* Block #1 */}
-            <article>
-              <div className="w-14 h-14 rounded shadow-md bg-white flex justify-center items-center rotate-3 mb-6">
+            <article className="dark:bg-darkCard dark:text-darkText p-4 rounded shadow-md">
+              <div className="w-14 h-14 rounded shadow-md bg-white dark:bg-darkCard flex justify-center items-center rotate-3 mb-6">
                 <svg xmlns="http://www.w3.org/2000/svg" width="31" height="20">
                   <defs>
                     <linearGradient id="icon1-a" x1="50%" x2="50%" y1="0%" y2="100%">
@@ -69,17 +69,17 @@ const About = () => {
                    </svg>
                  </div>
                  <h2>
-                    <span className="flex tabular-nums text-blue-950 text-5xl font-extrabold mb-2 animate-[counter40_3s_ease-out_forwards] [counter-set:_num_var(--num)] before:content-[counter(num)]">
+                    <span className="flex tabular-nums text-blue-950 dark:text-darkText text-5xl font-extrabold mb-2 animate-[counter40_3s_ease-out_forwards] [counter-set:_num_var(--num)] before:content-[counter(num)]">
                         <span className="sr-only">20</span>+
                     </span>
                     <span className="text-xl inline-flex font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-blue-400 mb-2">Languages</span>
                 </h2>
 
-                 <p className="text-slate-500">There are over 20 languages with a variety of courses for learners to use.</p>
+                 <p className="text-slate-500 dark:text-darkText">There are over 20 languages with a variety of courses for learners to use.</p>
                </article>
                {/* Block #2 */}
-               <article>
-                 <div className="w-14 h-14 rounded shadow-md bg-white flex justify-center items-center -rotate-3 mb-6">
+               <article className="dark:bg-darkCard dark:text-darkText p-4 rounded shadow-md">
+                 <div className="w-14 h-14 rounded shadow-md bg-white dark:bg-darkCard flex justify-center items-center -rotate-3 mb-6">
                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="19">
                      <defs>
                        <linearGradient id="icon2-a" x1="50%" x2="50%" y1="0%" y2="100%">
@@ -98,17 +98,17 @@ const About = () => {
                    </svg>
                  </div>
                  <h2>
-                    <span className="flex tabular-nums text-blue-950 text-5xl font-extrabold mb-2 animate-[counter70_3s_ease-out_forwards] [counter-set:_num_var(--num)] before:content-[counter(num)]">
+                    <span className="flex tabular-nums text-blue-950 dark:text-darkText text-5xl font-extrabold mb-2 animate-[counter70_3s_ease-out_forwards] [counter-set:_num_var(--num)] before:content-[counter(num)]">
                         <span className="sr-only">250</span>+
                     </span>
                     <span className="text-xl inline-flex font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-blue-400 mb-2">Courses</span>
                 </h2>
 
-                 <p className="text-slate-500">A broad selection of courses provided in this website</p>
+                 <p className="text-slate-500 dark:text-darkText">A broad selection of courses provided in this website</p>
                </article>
                {/* Block #3 */}
-               <article>
-                 <div className="w-14 h-14 rounded shadow-md bg-white flex justify-center items-center rotate-3 mb-6">
+               <article className="dark:bg-darkCard dark:text-darkText p-4 rounded shadow-md">
+                 <div className="w-14 h-14 rounded shadow-md bg-white dark:bg-darkCard flex justify-center items-center rotate-3 mb-6">
                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26">
                      <defs>
                        <radialGradient id="icon3-a" cx="68.15%" cy="27.232%" r="67.641%" fx="68.15%" fy="27.232%">
@@ -124,13 +124,13 @@ const About = () => {
                    </svg>
                  </div>
                  <h2>
-                    <span className="flex tabular-nums text-blue-950 text-5xl font-extrabold mb-2 animate-[counter179_3s_ease-out_forwards] [counter-set:_num_var(--num)] before:content-[counter(num)]">
+                    <span className="flex tabular-nums text-blue-950 dark:text-darkText text-5xl font-extrabold mb-2 animate-[counter179_3s_ease-out_forwards] [counter-set:_num_var(--num)] before:content-[counter(num)]">
                         <span className="sr-only">1000</span>+
                     </span>
                     <span className="text-xl inline-flex font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-blue-400 mb-2">Online Videos</span>
                 </h2>
 
-                 <p className="text-slate-500">Choose from over 210,000 online video courses with new additions published every month.</p>
+                 <p className="text-slate-500 dark:text-darkText">Choose from over 210,000 online video courses with new additions published every month.</p>
                </article>
              </section>
            </div>

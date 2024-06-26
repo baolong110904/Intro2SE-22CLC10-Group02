@@ -6,44 +6,16 @@ import{
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Home from './pages/Home.jsx';
-import Blogs from './pages/Blogs.jsx';
-import About from './pages/About.jsx';
-import Pricing from './pages/Pricing.jsx';
-import Services from './pages/Services.jsx';
 
+import { BrowserRouter as Router } from 'react-router-dom';
+import ThemeProvider from './utils/ThemeContext';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-    {
-      path: "/",
-      element: <Home/>
-    },
-    {
-      path: "/blogs",
-      element: <Blogs/>
-    },
-    {
-      path: "/about",
-      element: <About/>
-    },
-    {
-      path: "/pricing",
-      element: <Pricing/>
-    },
-    {
-      path: "/services",
-      element: <Services/>
-    },
-    
-  ]
-  },
-]);
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>,
-)
+    <Router>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </Router>
+  </React.StrictMode>
+);
