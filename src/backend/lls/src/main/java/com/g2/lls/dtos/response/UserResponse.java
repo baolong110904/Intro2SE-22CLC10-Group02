@@ -1,19 +1,17 @@
-package com.g2.lls.dtos;
+package com.g2.lls.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.g2.lls.enums.GenderType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDTO {
+public class UserResponse {
     private String email;
 
     private String username;
@@ -31,6 +29,18 @@ public class UserDTO {
 
     private String description;
 
+    private String avatar;
+
     @JsonProperty("is_mfa_enabled")
     private Boolean isMfaEnabled;
+
+    private String secret;
+
+    @JsonProperty("created_at")
+    private Instant createdAt;
+
+    @JsonProperty("updated_at")
+    private Instant updatedAt;
+
+    private Boolean isEnabled;
 }

@@ -32,23 +32,24 @@ public class OpenApiConfig {
                         .version(version)
                         .description(description)
                         .termsOfService("https://swagger.io/docs/specification/api-general-info/")
-//                        .contact(new Contact()
-//                                .email("namisme16052004@gmail.com")
-//                                .name("Nguyen Thanh Nam")
-//                                .url("https://www.facebook.com/nam.160504/"))
+                        .contact(new Contact()
+                                .email("namisme16052004@gmail.com")
+                                .name("Nguyen Thanh Nam")
+                                .url("https://www.facebook.com/nam.160504/"))
                         .license(new License()
                                 .name("Apache 2.0")
                                 .url("https://www.apache.org/licenses/LICENSE-2.0.html")))
                 .servers(List.of(new Server()
                         .url(serverUrl)
-                        .description(serverDescription)));
-//                .components(new Components()
-//                        .addSecuritySchemes("Bearer Token", new SecurityScheme()
-//                                .type(SecurityScheme.Type.HTTP)
-//                                .scheme("bearer")
-//                                .bearerFormat("JWT")))
-//                .security(List.of(new SecurityRequirement()
-//                        .addList("Bearer Token")));
+                        .description(serverDescription)))
+//                .security(List.of(new SecurityRequirement().addList("Bearer Authentication")))
+                .addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
+                .components(new Components()
+                        .addSecuritySchemes("Bearer Authentication", new SecurityScheme()
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")));
+
     }
 
     @Bean

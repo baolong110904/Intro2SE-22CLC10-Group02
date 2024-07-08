@@ -25,31 +25,72 @@ spring:
   devtools:
     livereload:
       enabled: true
-  #      port: 35730
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+    web:
+      pageable:
+        one-indexed-parameters: true
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
 
-server:
-  port: 8088
-  error:
-    include-message: always
-
 logging:
   level:
     root: info
     org:
+      springframework.security: debug
       hibernate:
         stat: debug
-        type:
-          descriptor:
-            sql: trace
+        type.descriptor.sql: trace
 
-jwt:
-  expiration: 2592000 # 30 days
-  secretKey: qo/+EpB+p1CdYauZMmLbO06Ls1A6GoU0j0LYJFnLQbc=
+server:
+  error:
+    include-message: always
+  port: 8080
 
 api:
   v1: api/v1
-  v2: api/v2
+
+jwt:
+  secret: ${JWT_SECRET}
+  rsa-private-key: classpath:certs/privateKey.pem
+  rsa-public-key: classpath:certs/publicKey.pem
+  access-token: 8640000
+  refresh-token: 8640000
+
+country:
+  api-key: ${COUNTRY_API_KEY}
+
+rapid:
+  api-key: ${RAPID_API_KEY}
+
+geo:
+  api-key: ${GEO_API_KEY}
+  url: ${GEO_URL}
+
+imgur:
+  client-id: ${IMGUR_CLIENT_ID}
+  client-secret: ${IMGUR_CLIENT_SECRET}
+
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+  url: ${CLOUDINARY_URL}
+
+avatar:
+  folder: ${AVATAR_FOLDER}

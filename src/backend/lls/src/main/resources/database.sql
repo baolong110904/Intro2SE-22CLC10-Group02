@@ -264,3 +264,4 @@ FROM levels;
 SELECT *
 FROM roles;
 
+SELECT * from countries;

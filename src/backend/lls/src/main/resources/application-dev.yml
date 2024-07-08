@@ -10,5 +10,5 @@ open:
     version: v1.0.0
     description: RESTful API for Language Learning System
     server:
-      url: http://localhost:8088
+      url: http://localhost:8080
       description: Local server
