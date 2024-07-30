@@ -1,7 +1,36 @@
-import React from 'react'
-import Navbar2 from '../components/Navbar2.jsx';
+import React from "react"
+import Navbar2 from "../components/Navbar2.jsx"
+import axiosInstance from "../api/axios/customAxios"
+
 const Profile = () => {
+  const handleProfileButton = () => {
+    const email = localStorage.getItem("email")
+
+    if (email) {
+      axiosInstance
+        .get("/users/profile", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "X-Auth-User-Email": email,
+          },
+        })
+        .then((res) => {
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log("Error", err)
+        })
+    } else {
+      console.log("User not logged in")
+    }
+  }
+
   return (
+    // <div>
+    //   <h1>Profile</h1>
+    //   <button onClick={handleProfileButton}>Get Profile</button>
+    // </div>
+
     <div className="flex flex-col min-h-screen">
       <Navbar2 />
 
@@ -51,7 +80,7 @@ const Profile = () => {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Profile;
+export default Profile

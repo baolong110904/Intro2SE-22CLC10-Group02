@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap");
 @import "../node_modules/@syncfusion/ej2-base/styles/material.css";
 @import "../node_modules/@syncfusion/ej2-buttons/styles/material.css";
 @import "../node_modules/@syncfusion/ej2-calendars/styles/material.css";
@@ -10,18 +10,18 @@
 @import "../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css";
 @import "../node_modules/@syncfusion/ej2-react-schedule/styles/material.css";
 
-body{
+body {
   font-family: "Jost", sans-serif;
 }
-.active{
-  @apply text-blue-950 underline underline-offset-4
+.active {
+  @apply text-blue-950 underline underline-offset-4;
 }
-header{
+header {
   z-index: 10001 !important;
 }
-.gradientBg{
+.gradientBg {
   /* background: linear-gradient(99deg, #69adcc, #3b41bd 100%); */
-  background-image: linear-gradient(50deg,#2c3e50,#27ae60,#69adcc,#492579 100%);
+  background-image: linear-gradient(50deg, #2c3e50, #27ae60, #69adcc, #492579 100%);
   background-size: 400%;
   animation: bganimation 15s infinite;
 }
@@ -37,7 +37,7 @@ header{
   }
 }
 @property --num {
-  syntax: '<integer>';
+  syntax: "<integer>";
   initial-value: 0;
   inherits: false;
 }
@@ -46,7 +46,7 @@ header{
     --num: 0;
   }
   to {
-    --num: 20; 
+    --num: 20;
   }
 }
 @keyframes counter70 {
@@ -85,7 +85,7 @@ header{
 
 .nav-link:hover::after,
 .nav-link.active::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 100%;
   height: 2px; /* Adjust the height of the underline */
@@ -120,4 +120,24 @@ body.dark {
 
 .dark .text-black {
   color: #1a202c;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+.account-link {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.account-link:hover {
+  color: #007bff; /* Change to your preferred hover color */
+  text-decoration: underline;
+}
+
+.account-link::selection {
+  background-color: #007bff; /* Change to your preferred selection background color */
+  color: white; /* Change to your preferred selection text color */
 }

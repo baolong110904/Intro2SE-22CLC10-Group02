@@ -1,57 +1,61 @@
-import React, { useState, useEffect } from 'react';
-import Navbar2 from '../components/Navbar2.jsx';
-import Sidebar from '../components/Sidebar.jsx';
-import Dashboard from '../components/Dashboard.jsx';
-import Analytics from '../components/Analytics.jsx';
-import Message from '../components/Message.jsx';
-import Tools from '../components/Tool.jsx';
-import Setting from '../components/Setting.jsx';
+import React, { useState, useEffect } from "react"
+import Navbar2 from "../components/Navbar2.jsx"
+import Sidebar from "../components/Sidebar.jsx"
+import Dashboard from "../components/Dashboard.jsx"
+import Analytics from "../components/Analytics.jsx"
+import Message from "../components/Message.jsx"
+import Tools from "../components/Tool.jsx"
+import Setting from "../components/Setting.jsx"
 
 const TeacherHomePage = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [activePage, setActivePage] = useState('dashboard');
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [activePage, setActivePage] = useState("dashboard")
 
   useEffect(() => {
-    const body = document.body;
+    const body = document.body
     if (isDarkMode) {
-      body.classList.add('dark');
+      body.classList.add("dark")
     } else {
-      body.classList.remove('dark');
+      body.classList.remove("dark")
     }
-  }, [isDarkMode]);
+  }, [isDarkMode])
 
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+    setIsDarkMode(!isDarkMode)
+  }
 
   const renderActivePage = () => {
     switch (activePage) {
-      case 'dashboard':
-        return <Dashboard />;
-      case 'analytics':
-        return <Analytics />;
-      case 'message':
-        return <Message />;
-      case 'tools':
-        return <Tools />;
-      case 'setting':
-        return <Setting />;
+      case "dashboard":
+        return <Dashboard />
+      case "analytics":
+        return <Analytics />
+      case "message":
+        return <Message />
+      case "tools":
+        return <Tools />
+      case "setting":
+        return <Setting />
       default:
-        return <Dashboard />;
+        return <Dashboard />
     }
-  };
+  }
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-100 text-black'}`}>
-      <Navbar2 userName="Bao Long" isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+    <div
+      className={`min-h-screen ${isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}
+    >
+      <Navbar2
+        userName="Bao Long"
+        isDarkMode={isDarkMode}
+        toggleTheme={toggleTheme}
+      />
       <div className="flex">
         <Sidebar isDarkMode={isDarkMode} onNavItemClicked={setActivePage} />
-        <div className="flex-1 p-6">
-          {renderActivePage()}
-        </div>
+        <div className="flex-1 p-6">{renderActivePage()}</div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TeacherHomePage;
+export default TeacherHomePage
