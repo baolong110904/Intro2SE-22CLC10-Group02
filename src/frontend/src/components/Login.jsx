@@ -31,10 +31,10 @@ const Login = () => {
         const { access_token, user } = res.data
         localStorage.setItem("token", access_token)
         localStorage.setItem("email", user.email)
-        
+
         const roleRes = await VerifyRoleService(user.email)
 
-        const {success, status, data} = roleRes
+        const { success, status, data } = roleRes
 
         if (success) {
           console.log("Role:", success, status, data)

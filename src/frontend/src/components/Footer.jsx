@@ -6,8 +6,7 @@ import emImg from "../assets/email.svg"
 
 const Footer = () => {
   return (
-    <div className="bg-[#010851] md:px-18 p-4 mx-auto text-white"> 
-    
+    <div className="bg-[#010851] md:px-18 p-4 mx-auto text-white">
       <div className="my-12 flex flex-col md:flex-row gap-10">
         <div className="md:w-1/2 space-y-8">
           <a

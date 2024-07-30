@@ -26,13 +26,14 @@ const Profile = () => {
   }
 
   return (
-    // <div>
-    //   <h1>Profile</h1>
-    //   <button onClick={handleProfileButton}>Get Profile</button>
-    // </div>
+
 
     <div className="flex flex-col min-h-screen">
       <Navbar2 />
+      <div>
+        <h1>Profile</h1>
+        <button onClick={handleProfileButton}>Get Profile</button>
+      </div>
 
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white shadow rounded overflow-hidden">
