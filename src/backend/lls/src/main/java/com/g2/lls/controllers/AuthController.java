@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
         description = "REST APIs for Authentication"
 )
 @RestController
-@RequestMapping("${api.v1}")
+@RequestMapping("${api.v1}/auth")
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {

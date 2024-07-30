@@ -5,6 +5,7 @@ import com.g2.lls.domains.Role;
 import com.g2.lls.domains.User;
 import com.g2.lls.domains.VerificationToken;
 import com.g2.lls.dtos.SignUpDTO;
+import com.g2.lls.enums.RoleType;
 import com.g2.lls.repositories.AvatarRepository;
 import com.g2.lls.repositories.RoleRepository;
 import com.g2.lls.repositories.UserRepository;
@@ -44,10 +45,9 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new UserAlreadyExistsException("User with email: " + signUpDTO.getEmail() + " already exists");
         }
 
-        Role role = roleRepository.findById(signUpDTO.getRoleId())
-                .orElseThrow(() -> new DataNotFoundException("Can not find role with id: " + signUpDTO.getRoleId()));
+        Role role = roleRepository.findByName(signUpDTO.getRole());
 
-        if (role.getName().equals("ADMIN")) {
+        if (role.getName().equals(RoleType.ADMIN)) {
             log.error("Can not create user with role ADMIN");
             throw new DataNotFoundException("Can not create user with role ADMIN");
         }
@@ -65,7 +65,6 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .roles(roles)
                 .isEnabled(false)
                 .isMfaEnabled(false)
-                .updatedAt(TimeUtil.getTime())
                 .build();
 
         Optional<Avatar> existingAvatar = avatarRepository.findById(1L);

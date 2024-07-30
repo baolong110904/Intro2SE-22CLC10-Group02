@@ -15,12 +15,10 @@ public class TokenResponse {
 
     private UserLogin user;
 
-    @Getter
-    @Setter
+    @Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    @ToString
     public static class UserLogin {
         private String email;
     }

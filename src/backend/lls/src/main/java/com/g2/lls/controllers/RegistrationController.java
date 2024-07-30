@@ -22,7 +22,7 @@ import java.util.Optional;
         description = "REST APIs for Registration"
 )
 @RestController
-@RequestMapping("${api.v1}/register")
+@RequestMapping("${api.v1}/auth/register")
 @RequiredArgsConstructor
 @Slf4j
 public class RegistrationController {

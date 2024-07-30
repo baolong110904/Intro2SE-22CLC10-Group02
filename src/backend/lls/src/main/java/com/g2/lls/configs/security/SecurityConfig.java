@@ -1,6 +1,6 @@
 package com.g2.lls.configs.security;
 
-import com.g2.lls.utils.security.JwtTokenFilter;
+//import com.g2.lls.utils.security.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
-    private final JwtTokenFilter jwtTokenFilter;
+//    private final JwtTokenFilter jwtTokenFilter;
 
     @Value("${api.v1}")
     private String apiPrefix;
@@ -37,41 +37,43 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+
+        String[] whiteList = {
+                "/",
+                "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/actuator/**",
+                "/robots.txt",
+                "/robot.txt",
+                String.format("/%s/hello-world", apiPrefix),
+                String.format("/%s/auth/login", apiPrefix),
+                String.format("/%s/auth/register", apiPrefix),
+                String.format("/%s/auth/register/**", apiPrefix),
+                String.format("/%s/auth/reset-password", apiPrefix),
+                String.format("/%s/auth/reset-password/**", apiPrefix),
+                String.format("/%s/countries/**", apiPrefix),
+        };
+
         http
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(
-                                String.format("%s/countries/**", apiPrefix),
-                                String.format("%s/users", apiPrefix)
-                        )
-                        .hasAnyAuthority("SCOPE_ADMIN")
-
-                        .requestMatchers(
-                                String.format("%s/hello-world", apiPrefix),
-                                String.format("%s/login", apiPrefix),
-                                String.format("%s/register", apiPrefix),
-                                String.format("%s/register/**", apiPrefix),
-                                String.format("%s/reset-password", apiPrefix),
-                                String.format("%s/reset-password/**", apiPrefix),
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**"
-                        )
-                        .permitAll()
+                        .requestMatchers(whiteList).permitAll()
 
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
-                        .authenticationEntryPoint(customAuthenticationEntryPoint))
-                .exceptionHandling(
-                        exceptions -> exceptions
-                                .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
-                                .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
-                );
+                        .authenticationEntryPoint(customAuthenticationEntryPoint));
+//                .exceptionHandling(
+//                        exceptions -> exceptions
+//                                .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
+//                                .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
+//                );
         return http.build();
     }
 }

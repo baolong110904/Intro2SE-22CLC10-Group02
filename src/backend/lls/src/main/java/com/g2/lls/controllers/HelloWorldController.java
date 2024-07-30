@@ -27,12 +27,12 @@ public class HelloWorldController {
     public String helloWorld(WebRequest webRequest, Authentication authentication) {
         Locale locale = webRequest.getLocale();
         log.info(locale.getLanguage());
-        log.info("Name:" + authentication.getName());
-        log.info("Authorities" + authentication.getAuthorities().toString());
-        log.info("Principal" + authentication.getPrincipal().toString());
-        log.info("Credentials" + authentication.getCredentials().toString());
-        log.info("Details" + authentication.getDetails().toString());
-        log.info("Is authenticated" + authentication.isAuthenticated());
+//        log.info("Name:" + authentication.getName());
+//        log.info("Authorities" + authentication.getAuthorities().toString());
+//        log.info("Principal" + authentication.getPrincipal().toString());
+//        log.info("Credentials" + authentication.getCredentials().toString());
+//        log.info("Details" + authentication.getDetails().toString());
+//        log.info("Is authenticated" + authentication.isAuthenticated());
         try {
 //            Map params = ObjectUtils.asMap(
 //                    "use_filename", true,

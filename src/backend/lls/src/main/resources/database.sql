@@ -264,4 +264,10 @@ FROM levels;
 SELECT *
 FROM roles;
 
-SELECT * from countries;
+SELECT * from users;
+
+use oauth2;
+select * from users;
+select * from roles;
+select * from permissions;
+select * from avatars;

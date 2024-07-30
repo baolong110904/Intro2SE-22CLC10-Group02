@@ -1,0 +1,29 @@
+meta {
+  name: Register
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8080/api/v1/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "namisme16052004@gmail.com",
+    "password": "Namvt_16052004",
+    "username": "zeref.123",
+    "gender": "Male",
+    "address_id": 1,
+    "date_of_birth": "2004-05-16",
+    "first_name": "Nam",
+    "last_name": "Nguyễn",
+    "role": "STUDENT"
+  }
+}
+
+vars:post-response {
+  access_token: res.body.access_token
+}

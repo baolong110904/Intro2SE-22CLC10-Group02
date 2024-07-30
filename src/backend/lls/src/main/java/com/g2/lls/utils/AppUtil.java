@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 public class AppUtil {
     private static String apiPrefix;
@@ -28,9 +31,11 @@ public class AppUtil {
     public static final String DEFAULT_SORT_BY = "id";
     public static final String DEFAULT_SORT_DIRECTION = "asc";
 
-    String[] PERMITTED_HOSTS = {
-            "http://localhost:3000"
-    };
+    public static List<String> allowedOrigins = List.of("http://localhost:3000");
+    public static List<String> allowedMethods = Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
+
+    public static List<String> allowedHeaders = Arrays.asList("Authorization", "Content-Type", "Accept", "X-Auth-User-Id",
+            "X-Auth-User-Email");
 
     public static String applicationUrl(HttpServletRequest request) {
         return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getServletPath();

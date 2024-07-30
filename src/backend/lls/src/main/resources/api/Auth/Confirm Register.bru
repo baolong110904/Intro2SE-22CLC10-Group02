@@ -1,0 +1,33 @@
+meta {
+  name: Confirm Register
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8080/api/v1/auth/register/registrationConfirm?token=12f97091-6b9f-4201-8631-7a68de80f891
+  body: json
+  auth: none
+}
+
+query {
+  token: 12f97091-6b9f-4201-8631-7a68de80f891
+}
+
+body:json {
+  {
+    "email": "nam@gmail.com",
+    "password": "Namvt_16052004",
+    "username": "zeref",
+    "gender": "Male",
+    "address_id": 1,
+    "date_of_birth": "2004-05-16",
+    "first_name": "Nam",
+    "last_name": "Nguyễn",
+    "role_id": 2
+  }
+}
+
+vars:post-response {
+  access_token: res.body.access_token
+}

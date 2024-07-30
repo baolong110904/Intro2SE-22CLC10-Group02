@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @EnableConfigurationProperties(RSAKeyRecord.class)
 public class LlsApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(LlsApplication.class, args);
     }

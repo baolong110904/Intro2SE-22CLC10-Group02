@@ -22,7 +22,7 @@ import java.util.Optional;
         description = "REST APIs for Reset Password"
 )
 @RestController
-@RequestMapping("${api.v1}/reset-password")
+@RequestMapping("${api.v1}/auth/reset-password")
 @RequiredArgsConstructor
 @Slf4j
 public class ResetPasswordController {

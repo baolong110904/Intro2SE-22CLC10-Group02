@@ -2,6 +2,7 @@ package com.g2.lls.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.g2.lls.enums.GenderType;
+import com.g2.lls.enums.RoleType;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -47,6 +48,6 @@ public class SignUpDTO {
     @JsonProperty("last_name")
     private String lastName;
 
-    @JsonProperty("role_id")
-    private Long roleId;
+    @JsonProperty("role")
+    private RoleType role;
 }

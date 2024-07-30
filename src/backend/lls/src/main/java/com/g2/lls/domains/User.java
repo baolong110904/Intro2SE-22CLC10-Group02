@@ -15,7 +15,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -62,6 +64,10 @@ public class User {
     )
     private Set<Role> roles;
 
+//    @ManyToOne
+//    @JoinColumn(name = "role_id")
+//    private Role role;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Address> address = new HashSet<>();
 
@@ -69,11 +75,9 @@ public class User {
     private String refreshToken;
 
     @Column(name = "created_at")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant createdAt;
 
     @Column(name = "updated_at")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant updatedAt;
 
     @Column(name = "created_by")
@@ -82,27 +86,29 @@ public class User {
     @Column(name = "updated_by")
     private String updatedBy;
 
-    @PostPersist
-    public void handlePostPersist() {
-        this.createdAt = TimeUtil.getTime();
-        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+    @PrePersist
+    public void handleBeforeCreate() {
+        this.createdBy = SecurityUtil.getCurrentUserLogin().isPresent()
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+
+        this.createdAt = Instant.now();
     }
 
     @PreUpdate
-    public void handlePreUpdate() {
-        this.updatedAt = TimeUtil.getTime();
-        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
+    public void handleBeforeUpdate() {
+        this.updatedBy = SecurityUtil.getCurrentUserLogin().isPresent()
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+        this.updatedAt = Instant.now();
     }
 
     @Column(name = "is_mfa_enabled", columnDefinition = "BIT(1) DEFAULT FALSE")
     private Boolean isMfaEnabled;
 
+    // MFA secret key
     private String secret;
 
     @Column(name = "is_enabled", columnDefinition = "BIT(1) DEFAULT FALSE")
     private Boolean isEnabled;
-
-    public String getFullName() {
-        return this.firstName + " " + this.lastName;
-    }
 }

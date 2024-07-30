@@ -16,9 +16,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.JwtException;
-import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -128,6 +127,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiResponse<ApiErrorResponse>> handleAccessDeniedException(AccessDeniedException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(new ApiResponse<>(HttpStatus.FORBIDDEN.value(), false,
+                        new ApiErrorResponse(req.getMethod(), req.getRequestURI(), ex.getMessage()), TimeUtil.getTime()));
+    }
+
+    @ExceptionHandler(PermissionException.class)
+    public ResponseEntity<ApiResponse<ApiErrorResponse>> handlePermissionException(PermissionException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(new ApiResponse<>(HttpStatus.FORBIDDEN.value(), false,
+                        new ApiErrorResponse(req.getMethod(), req.getRequestURI(), ex.getMessage()), TimeUtil.getTime()));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), false,
                         new ApiErrorResponse(req.getMethod(), req.getRequestURI(), ex.getMessage()), TimeUtil.getTime()));
     }
 }
