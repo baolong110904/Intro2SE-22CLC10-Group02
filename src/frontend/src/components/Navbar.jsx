@@ -29,6 +29,7 @@ const Navbar = () => {
 
   const openModal = () => {
     setIsModalOpen(true);
+    setIsMenuOpen(false);
   }
 
   const closeModal = () => {
@@ -37,6 +38,7 @@ const Navbar = () => {
 
   const openSignupModal = () => {
     setIsModalSignupOpen(true);
+    setIsMenuOpen(false);
   }
 
   const closeSignupModal = () => {
@@ -45,30 +47,24 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 100);
     };
 
     window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
+    <header className={`fixed top-0 left-0 right-0 transition-all duration-300 z-50 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
       <nav className="px-4 py-4 max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center">
-          <img src={logo} alt="Logo" className="w-12 h-12 mr-2" />
-          <NavLink to="/" className="text-xl font-bold text-blue-950 logo-text">
+          <img src={logo} alt="Logo" className="w-8 h-8 sm:w-12 sm:h-12 mr-2" />
+          <NavLink to="/" className="text-lg sm:text-xl font-bold text-blue-950 logo-text">
             G2 <span className={`${isScrolled ? 'text-black' : 'text-white'}`}>Language Learning</span>
           </NavLink>
         </div>
-        <ul className="md:flex gap-12 text-lg hidden">
+        
+        <ul className="hidden lg:flex gap-6 xl:gap-12 text-lg">
           {navItems.map(({ link, path }) => (
             <li key={link}>
               <ScrollLink
@@ -85,34 +81,55 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <div className={`lg:flex gap-4 items-center hidden ${isScrolled ? 'text-black' : 'text-white'}`}>
+        <div className={`hidden lg:flex gap-4 items-center ${isScrolled ? 'text-black' : 'text-white'}`}>
           <a href="/" className={`hover:text-blue-950 ${isScrolled ? 'text-blue-950' : 'text-white'}`}><IoMdSearch /></a>
           <a href="/" className={`hover:text-blue-950 ${isScrolled ? 'text-blue-950' : 'text-white'}`}><CgProfile /></a>
           <a href="/" className={`hover:text-blue-950 ${isScrolled ? 'text-blue-950' : 'text-white'}`}><FaShoppingCart /></a>
-          <button onClick={openModal} className={`bg-transparent text-blue-600 px-6 py-2 font-medium rounded hover:bg-blue-600 hover:text-white transition-all duration-200 ease-in ${isScrolled ? 'text-black bg-blue-600 border border-blue-600 transition-all duration-200 ease-in' : 'text-white'}`}>Log in</button>
-          <button onClick={openSignupModal} className={`bg-transparent text-blue-600 px-6 py-2 font-medium rounded hover:bg-blue-600 hover:text-white transition-all duration-200 ease-in ${isScrolled ? 'text-black bg-blue-600 border border-blue-600 transition-all duration-200 ease-in' : 'text-white'}`}>Sign up</button>
+          <button onClick={openModal} className={`bg-transparent text-blue-600 px-4 py-2 text-sm font-medium rounded hover:bg-blue-600 hover:text-white transition-all duration-200 ease-in ${isScrolled ? 'text-black bg-blue-600 border border-blue-600' : 'text-white'}`}>Log in</button>
+          <button onClick={openSignupModal} className={`bg-transparent text-blue-600 px-4 py-2 text-sm font-medium rounded hover:bg-blue-600 hover:text-white transition-all duration-200 ease-in ${isScrolled ? 'text-black bg-blue-600 border border-blue-600' : 'text-white'}`}>Sign up</button>
           <ThemeToggle />
         </div>
-        {/* Model component */}
-        <Login isOpen={isModalOpen} onClose={closeModal}/>
-        <Signup isOpen={isModalSignupOpen} onClose={closeSignupModal}/>
 
-        <div className="md:hidden">
+        <div className="lg:hidden flex items-center gap-2">
+          <ThemeToggle />
           <button onClick={toggleMenu} className="cursor-pointer">
             {isMenuOpen ? <FaTimes className="w-5 h-5" /> : <FaBars className="w-5 h-5" />}
           </button>
         </div>
       </nav>
 
-      <div>
-        <ul className={`md:hidden gap-12 text-lg block space-y-4 px-4 py-6 mt-14 bg-white ${isMenuOpen ? 'fixed top-0 left-0 w-full transition-all ease-out duration-150' : 'hidden'}`}>
+      {/* Mobile menu */}
+      <div className={`lg:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
+        <ul className="px-4 py-6 bg-white space-y-4">
           {navItems.map(({ path, link }) => (
-            <li className="text-black" key={path}>
-              <NavLink onClick={toggleMenu} to={path} activeClassName="underline">{link}</NavLink>
+            <li key={path}>
+              <NavLink 
+                onClick={toggleMenu} 
+                to={path} 
+                className="block text-black hover:text-blue-600"
+                activeClassName="text-blue-600"
+              >
+                {link}
+              </NavLink>
             </li>
           ))}
+          <li className="flex gap-2">
+            <a href="/" className="text-blue-950"><IoMdSearch /></a>
+            <a href="/" className="text-blue-950"><CgProfile /></a>
+            <a href="/" className="text-blue-950"><FaShoppingCart /></a>
+          </li>
+          <li>
+            <button onClick={openModal} className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300">Log in</button>
+          </li>
+          <li>
+            <button onClick={openSignupModal} className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300">Sign up</button>
+          </li>
         </ul>
       </div>
+
+      {/* Modal components */}
+      <Login isOpen={isModalOpen} onClose={closeModal}/>
+      <Signup isOpen={isModalSignupOpen} onClose={closeSignupModal}/>
     </header>
   );
 };

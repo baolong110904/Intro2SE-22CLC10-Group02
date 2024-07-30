@@ -41,7 +41,7 @@ const Pricing = () => {
             <div className="text-center">
                 <h2 className="md:text-5xl text-3xl font-extrabold text-blue-950 dark:text-white mb=2">Here are all our plans</h2>
                 <br></br>
-                <p className="text-black dark:text-gray-400 md:w-1/3 mx-auto px-4">A simple paragraph is comprised of three major components, which is often a declarative sentence.</p>
+                <p className="text-black dark:text-gray-400 text-lg md:w-1/3 mx-auto px-4">A simple paragraph is comprised of three major components, which is often a declarative sentence.</p>
 
                 <div className="mt-16">
                     <label htmlFor="toggle" className="inline-flex items-center cursor-pointer">

@@ -21,7 +21,7 @@ const Login = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 dark:bg-black dark:bg-opacity-80 z-50">
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 dark:bg-black dark:bg-opacity-80 z-50" id = "login">
       <div className="relative w-full h-full bg-white dark:bg-neutral-900 rounded-lg shadow-lg">
         <button
           onClick={onClose}

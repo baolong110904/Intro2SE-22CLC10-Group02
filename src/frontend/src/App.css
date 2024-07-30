@@ -1,4 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+@import "../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-buttons/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-calendars/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-dropdowns/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-inputs/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-lists/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-navigations/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-popups/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-react-schedule/styles/material.css";
 
 body{
   font-family: "Jost", sans-serif;
@@ -90,4 +100,24 @@ header{
 
 .logo-text span {
   text-decoration: none; /* Ensure the logo span doesn't have an underline */
+}
+body.dark {
+  background-color: #1a202c;
+  color: #cbd5e0;
+}
+
+.dark .bg-gray-800 {
+  background-color: #2d3748;
+}
+
+.dark .bg-gray-700 {
+  background-color: #4a5568;
+}
+
+.dark .text-white {
+  color: #f7fafc;
+}
+
+.dark .text-black {
+  color: #1a202c;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 
 const Recruitment = () => {
   return (
-    <div className="md:px-14 p-4 max-w-s mx-auto py-10 dark:bg-darkBg" id="blogs">
+    <div className="md:px-14 p-4 max-w-s mx-auto py-10 dark:bg-darkBg" id="teacher">
        <div className="max-w-lg mx-auto relative">
           <input id="article-01" type="radio" name="slider" className="sr-only peer/01" />
           <input id="article-02" type="radio" name="slider" className="sr-only peer/02" />

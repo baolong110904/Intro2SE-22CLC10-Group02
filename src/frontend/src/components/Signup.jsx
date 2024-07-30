@@ -28,7 +28,7 @@ const SignUp = ({ isOpen, onClose }) => {
       return;
     }
     setPasswordMatch(true);
-    navigate('/blogs');
+    navigate('/teacher');
   };
 
   const openModal = () => {
@@ -36,52 +36,54 @@ const SignUp = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 dark:bg-black dark:bg-opacity-80 z-50">
-      <div className="relative w-full h-full bg-white dark:bg-neutral-900 rounded-lg shadow-lg">
+    <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-70 dark:bg-black dark:bg-opacity-80 z-50" id="signup">
+      <div className="relative w-full h-full max-w-7xl mx-auto bg-white dark:bg-neutral-900 rounded-lg shadow-lg overflow-auto">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-2xl text-cyan-950 dark:text-white"
+          className="absolute top-4 right-4 text-2xl text-cyan-950 dark:text-white z-10"
           aria-label="Close"
         >
           <IoClose />
         </button>
-        <section className="gradient-form h-full bg-neutral-200 dark:bg-darkBg">
-          <div className="container h-full p-10 text-cyan-950 dark:text-white">
-            <div className="flex h-full flex-wrap items-center justify-center">
-              <div className="h-full flex justify-center items-center">
-                <div className="block rounded-lg bg-white dark:bg-neutral-800 shadow-xl w-full p-4 max-w-screen-xl mx-auto mt-27 h-screen">
-                  <div className="g-0 lg:flex lg:flex-wrap h-full">
-                    <div className="lg:w-4/12 h-full flex flex-col" style={{ background: 'linear-gradient(to right, #54D9D1, #2B75E1, #5EA8E7, #1C41CD)' }}>
-                      <div className="px-4 py-4 text-white md:mx-6 md:p-8 flex-shrink-0">
-                        <h4 className="mb-2 text-lg font-semibold">
-                          Join us today and start learning!
-                        </h4>
-                        <p className="text-sm mb-4">
-                          Discover the best way to learn a new language with our innovative platform. Join now and take the first step towards mastering a new language.
-                        </p>
-                      </div>
-                      <div className="flex-grow flex justify-end">
-                        <img src={signUpImg} alt="Sign Up" className="w-full h-auto object-cover" />
+        <section className="gradient-form min-h-screen bg-neutral-200 dark:bg-darkBg">
+          <div className="container mx-auto p-4 md:p-10 text-cyan-950 dark:text-white">
+            <div className="flex flex-wrap items-center justify-center">
+              <div className="w-full max-w-screen-xl mx-auto">
+                <div className="block rounded-lg bg-white dark:bg-neutral-800 shadow-xl">
+                  <div className="lg:flex lg:flex-wrap">
+                    <div className="lg:w-5/12 hidden lg:block" style={{ background: 'linear-gradient(to right, #54D9D1, #2B75E1, #5EA8E7, #1C41CD)' }}>
+                      <div className="px-4 py-6 text-white md:p-12 flex flex-col h-full">
+                        <div>
+                          <h4 className="mb-6 text-xl font-semibold">
+                            Join us today and start learning!
+                          </h4>
+                          <p className="mb-6">
+                            Discover the best way to learn a new language with our innovative platform. Join now and take the first step towards mastering a new language.
+                          </p>
+                        </div>
+                        <div className="mt-auto">
+                          <img src={signUpImg} alt="Sign Up" className="w-full h-auto object-cover" />
+                        </div>
                       </div>
                     </div>
 
-                    <div className="px-4 md:px-0 lg:w-8/12 h-full flex flex-col justify-center">
-                      <div className="md:mx-6 md:p-12">
-                        <div className="text-center">
+                    <div className="lg:w-7/12 px-4 md:px-0">
+                      <div className="md:p-12 md:mx-6">
+                        <div className="text-center mb-10">
                           <img
-                            className="mx-auto w-36"
+                            className="mx-auto w-24 md:w-36"
                             src={logo}
                             alt="G2 Learning Language"
                           />
-                          <h3 className="mb-11 mt-2 pb-1 text-xl font-extrabold text-cyan-950 dark:text-white">
+                          <h3 className="mt-4 text-xl font-extrabold text-cyan-950 dark:text-white">
                             Get started with G2 Learning Language!
                           </h3>
                         </div>
 
-                        <form onSubmit={handleSubmit}>
-                          <p className="mb-4 font-bold text-cyan-950 dark:text-neutral-200">Create your account</p>
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                          <p className="font-bold text-cyan-950 dark:text-neutral-200">Create your account</p>
                           
-                          <div className="flex justify-center mb-6 space-x-4">
+                          <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
                             <button className="flex items-center justify-center w-full py-2 bg-white border border-gray-300 rounded shadow-md hover:bg-gray-100 focus:outline-none dark:bg-neutral-700 dark:border-neutral-600 dark:hover:bg-neutral-600">
                               <FcGoogle className="mr-2 text-xl" />
                               <span className="text-sm font-medium text-black dark:text-white">Sign up with Google</span>

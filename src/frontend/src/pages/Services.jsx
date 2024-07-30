@@ -128,8 +128,9 @@ const Services = () => {
                 <br />
                 <div className="flex flex-col lg:flex-row justify-between items-start gap-10">
                     <div className="lg:w-1/4 flex flex-col md:py-28 py-23 justify-center lg:justify-start items-center text-center lg:items-start lg:text-left h-full">
-                        <h3 className="text-xl font-bold">Why we are better than others</h3>
-                        <p className="text-base dark:text-darkText">A simple paragraph is comprised of 2 major components. The first sentence, which is often a declarative sentence, is called the topic sentence.</p>
+                        <h3 className="text-5xl font-bold">Why we are better than others</h3>
+                        <p className="text-base dark:text-darkText">We foster a vibrant community where learners can connect and collaborate, enhancing their educational journey through shared knowledge and support. 
+                        <br/>Additionally, we offer personalized online meetings with expert teachers, ensuring tailored guidance and mentorship to help each learner reach their full potential."</p>
                     </div>
                     <div className="w-full lg:w-3/4">
                         <div className='grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 items-start md:gap-12 gap-8'>
