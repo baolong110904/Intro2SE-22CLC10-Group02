@@ -14,7 +14,7 @@ spring:
   #    init:
   #      schema-locations: database.sql
   jpa:
-#    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: create-drop
     properties:
@@ -105,6 +105,12 @@ cloudinary:
 
 avatar:
   folder: ${AVATAR_FOLDER}
+
+material:
+  folder: ${MATERIAL_FOLDER}
+
+thumbnail:
+  folder: ${THUMBNAILS_FOLDER}
 
 vnPay:
     vnp_TmnCode: ${VNPAY_TMN_CODE}
