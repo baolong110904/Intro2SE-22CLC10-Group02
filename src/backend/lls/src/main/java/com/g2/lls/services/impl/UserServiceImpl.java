@@ -2,14 +2,10 @@ package com.g2.lls.services.impl;
 
 import com.g2.lls.configs.security.user.CustomUserDetails;
 import com.g2.lls.domains.Role;
-import com.g2.lls.dtos.AddressDTO;
 import com.g2.lls.dtos.LoginDTO;
 import com.g2.lls.dtos.UserDTO;
 import com.g2.lls.dtos.UserUpdateDTO;
-import com.g2.lls.dtos.response.AvatarResponse;
-import com.g2.lls.dtos.response.PaginationDTO;
-import com.g2.lls.dtos.response.TokenResponse;
-import com.g2.lls.dtos.response.UserResponse;
+import com.g2.lls.dtos.response.*;
 import com.g2.lls.domains.User;
 import com.g2.lls.enums.RoleType;
 import com.g2.lls.repositories.AddressRepository;
@@ -48,7 +44,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final AddressRepository addressRepository;
+     private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenUtil jwtTokenUtil;
@@ -121,9 +117,9 @@ public class UserServiceImpl implements UserService {
     public UserResponse getUserByEmail(String email) throws Exception {
         User user = fetchUserByEmail(email);
         UserResponse userResponse = modelMapper.map(user, UserResponse.class);
-        userResponse.setRoleType(user.getRoles().stream()
-                .map(role -> role.getName().name())
-                .collect(Collectors.toList()));
+        // userResponse.setRoleType(user.getRoles().stream()
+        //         .map(role -> role.getName().name())
+        //         .collect(Collectors.toList()));
         userResponse.setRole(user.getRoles());
         return userResponse;
     }
@@ -134,6 +130,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userUpdateDTO.getFirstName());
         user.setLastName(userUpdateDTO.getLastName());
         user.setUsername(userUpdateDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
         user.setDescription(userUpdateDTO.getDescription());
         user.setGender(userUpdateDTO.getGender());
         user.setIsMfaEnabled(userUpdateDTO.getIsMfaEnabled());
@@ -149,10 +146,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserRefreshToken(String email, String refreshToken) throws Exception {
+    public void updateUserRefreshToken(String email, String refreshToken) throws DataNotFoundException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new DataNotFoundException("Can not find user with email: " + email));
         user.setRefreshToken(refreshToken);
+
         userRepository.save(user);
     }
 
@@ -219,13 +217,11 @@ public class UserServiceImpl implements UserService {
                 .total(users.getTotalElements())
                 .build();
 
-        List<UserResponse> userResponses = users.getContent().stream()
-                .map(user -> modelMapper.map(user, UserResponse.class))
-                .toList();
+        List<User> userEntities = users.getContent();
 
         return PaginationDTO.builder()
                 .meta(meta)
-                .result(userResponses)
+                .result(userEntities)
                 .build();
     }
 
@@ -236,5 +232,9 @@ public class UserServiceImpl implements UserService {
                 .map(Role::getName)
                 .findFirst()
                 .orElseThrow(() -> new DataNotFoundException("Can not find role for user with email: " + email));
+    }
+
+    public User getUserByRefreshTokenAndEmail(String token, String email) {
+        return userRepository.findByRefreshTokenAndEmail(token, email);
     }
 }

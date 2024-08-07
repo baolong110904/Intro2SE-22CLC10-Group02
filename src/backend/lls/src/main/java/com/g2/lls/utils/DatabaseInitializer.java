@@ -62,7 +62,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                 .build();
 
         if (thumbnailCount == 0) {
-            log.info("Initializing thumnails...");
+            log.info("Initializing thumbnails...");
             thumbnailRepository.saveAndFlush(thumbnail);
         }
 
@@ -76,7 +76,9 @@ public class DatabaseInitializer implements CommandLineRunner {
                             "POST", "User"),
                     "Get all Users", new Permission("Get all users", String.format("/%s/users", apiPrefix),
                             "GET", "User"),
-                    "Get a user", new Permission("Get a user", String.format("/%s/users/profile", apiPrefix),
+                    "Get a user", new Permission("Get a user", String.format("/%s/users/{id}", apiPrefix),
+                            "GET", "User"),
+                    "Get profile", new Permission("Get profile", String.format("/%s/users/profile", apiPrefix),
                             "GET", "User"),
                     "Update a user", new Permission("Update a user", String.format("/%s/users/{id}", apiPrefix),
                             "PUT", "User"),
@@ -86,36 +88,34 @@ public class DatabaseInitializer implements CommandLineRunner {
                             "POST", "User")
             )));
 
-            // Auth permissions
-            permissions.put("Auth", new HashMap<>(Map.of(
-                    "Forgot password", new Permission("Forgot password", String.format("/%s/auth/forgot-password", apiPrefix),
-                            "POST", "Auth"),
-                    "Login", new Permission("Login", String.format("/%s/auth/login", apiPrefix),
-                            "POST", "Auth"),
-                    "Logout", new Permission("Logout", String.format("/%s/auth/logout", apiPrefix),
-                            "POST", "Auth"),
-                    "Refresh token", new Permission("Refresh token", String.format("/%s/auth/refresh", apiPrefix),
-                            "POST", "Auth"),
-                    "Register", new Permission("Register", String.format("/%s/auth/register", apiPrefix),
-                            "POST", "Auth"),
-                    "Reset password", new Permission("Reset password", String.format("/%s/auth/reset-password", apiPrefix),
-                            "POST", "Auth")
-            )));
-
             // Role permissions
             permissions.put("Role", new HashMap<>(Map.of(
                     "Create a role", new Permission("Create a role", String.format("/%s/roles", apiPrefix),
                             "POST", "Role"),
+                    "Update a role", new Permission("Update a role", String.format("/%s/roles/{id}", apiPrefix),
+                            "PUT", "Role"),
+                    "Delete a role", new Permission("Delete a role", String.format("/%s/roles/{id}", apiPrefix),
+                            "DELETE", "Role"),
+                    "Verify a role", new Permission("Verify a role", String.format("/%s/roles/verify", apiPrefix),
+                            "POST", "Role"),
                     "Get all roles", new Permission("Get all roles", String.format("/%s/roles", apiPrefix),
                             "GET", "Role"),
                     "Get a role", new Permission("Get a role", String.format("/%s/roles/{id}", apiPrefix),
-                            "GET", "Role"),
-                    "Update a role", new Permission("Update a role", String.format("/%s/roles", apiPrefix),
-                            "PUT", "Role"),
-                    "Delete a role", new Permission("Delete a role", String.format("/%s/roles", apiPrefix),
-                            "DELETE", "Role"),
-                    "Verify a role", new Permission("Verify a role", String.format("/%s/roles/verify", apiPrefix),
-                            "POST", "Role")
+                            "GET", "Role")
+            )));
+
+            // Permission permissions
+            permissions.put("Permission", new HashMap<>(Map.of(
+                    "Create a permission", new Permission("Create a permission", String.format("/%s/permissions", apiPrefix),
+                            "POST", "Permission"),
+                    "Update a permission", new Permission("Update a permission", String.format("/%s/permissions/{id}", apiPrefix),
+                            "PUT", "Permission"),
+                    "Delete a permission", new Permission("Delete a permission", String.format("/%s/permissions/{id}", apiPrefix),
+                            "DELETE", "Permission"),
+                    "Get all permissions", new Permission("Get all permissions", String.format("/%s/permissions", apiPrefix),
+                            "GET", "Permission"),
+                    "Get a permission", new Permission("Get a permission", String.format("/%s/permissions/{id}", apiPrefix),
+                            "GET", "Permission")
             )));
 
             // VNPay permissions
@@ -126,12 +126,16 @@ public class DatabaseInitializer implements CommandLineRunner {
                             "GET", "VNPay")
             )));
 
+            // VideoSDK permissions
+            permissions.put("VideoSDK", new HashMap<>(Map.of(
+                    "Get token", new Permission("Get token", String.format("/%s/video-sdk/token", apiPrefix),
+                            "GET", "VideoSDK")
+            )));
+
             // Course permissions
             permissions.put("Course", new HashMap<>(Map.of(
                     "Create a course", new Permission("Create a course", String.format("/%s/courses", apiPrefix),
                             "POST", "Course"),
-//                    "Get all courses", new Permission("Get all courses", String.format("/%s/courses", apiPrefix),
-//                            "GET", "Course"),
                     "Get course's details", new Permission("Get course's details", String.format("/%s/courses/{id}", apiPrefix),
                             "GET", "Course"),
                     "Update a course", new Permission("Update a course", String.format("/%s/courses/{id}", apiPrefix),
@@ -151,18 +155,14 @@ public class DatabaseInitializer implements CommandLineRunner {
             permissions.values().forEach(permissionMap -> permissionRepository.saveAllAndFlush(permissionMap.values()));
         }
 
-        // Get Permissions with User -> Create a user
-//        Permission createUserPermission = permissions.get("User").get("Create a user");
-//        log.info("Create User Permission: {}", createUserPermission);
-
         if (roleCount == 0) {
             log.info("Initializing roles...");
 
             // admin -> all permissions
-            List<Permission> authPermissions = permissionRepository.findByModule("Auth");
             List<Permission> userPermissions = permissionRepository.findByModule("User");
             List<Permission> rolePermissions = permissionRepository.findByModule("Role");
             List<Permission> vnPayPermissions = permissionRepository.findByModule("VNPay");
+            List<Permission> videoSDKPermissions = permissionRepository.findByModule("VideoSDK");
             List<Permission> coursePermissions = permissionRepository.findByModule("Course");
 
             List<Permission> adminPermissions = permissionRepository.findAll();
@@ -172,24 +172,25 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .permissions(adminPermissions)
                     .build();
 
-            List<Permission> studentPermissions = new ArrayList<>(authPermissions);
+            List<Permission> studentPermissions = new ArrayList<>();
             studentPermissions.add(permissions.get("User").get("Get a user"));
             studentPermissions.add(permissions.get("User").get("Update a user"));
             studentPermissions.add(permissions.get("Role").get("Verify a role"));
             studentPermissions.add(permissions.get("Course").get("Get a course"));
-            studentPermissions.add(permissions.get("Course").get("Get all courses"));
+            studentPermissions.add(permissions.get("Course").get("Get course's details"));
             studentPermissions.addAll(vnPayPermissions);
             Role roleStudent = Role.builder()
                     .name(RoleType.STUDENT)
                     .permissions(studentPermissions)
                     .build();
 
-            List<Permission> teacherPermissions = new ArrayList<>(authPermissions);
+            List<Permission> teacherPermissions = new ArrayList<>();
             teacherPermissions.add(permissions.get("User").get("Get a user"));
             teacherPermissions.add(permissions.get("User").get("Update a user"));
             teacherPermissions.add(permissions.get("Role").get("Verify a role"));
             teacherPermissions.addAll(coursePermissions);
             teacherPermissions.addAll(vnPayPermissions);
+            teacherPermissions.addAll(videoSDKPermissions);
             Role roleTeacher = Role.builder()
                     .name(RoleType.TEACHER)
                     .permissions(teacherPermissions)
@@ -311,7 +312,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             Course course1 = Course.builder()
                     .thumbnail(thumbnail)
                     .name("English class")
-                    .teacherId(3l)
+                    .teacherId(3L)
                     .description("English class for beginner")
                     .isEnabled(true)
                     .build();
@@ -321,7 +322,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             Course course2 = Course.builder()
                     .thumbnail(thumbnail)
                     .name("Japanese class")
-                    .teacherId(4l)
+                    .teacherId(4L)
                     .description("Japanese class for beginner")
                     .isEnabled(true)
                     .build();

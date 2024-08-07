@@ -4,7 +4,6 @@ import com.g2.lls.utils.AppUtil;
 import com.g2.lls.utils.security.SecurityUtil;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 import java.time.Instant;
 
@@ -12,7 +11,6 @@ import java.time.Instant;
 @Table(name = "reset_password_tokens")
 @Data
 @NoArgsConstructor
-@Slf4j
 public class ResetPasswordToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,10 +59,10 @@ public class ResetPasswordToken {
         this.token = token;
         this.user = user;
         Instant now = Instant.now();
-        this.expirationDate = now.plusSeconds(AppUtil.EXPIRATION_SECONDS);
+        expirationDate = now.plusSeconds(AppUtil.EXPIRATION_SECONDS);
     }
 
     public Boolean isExpired() {
-        return this.expirationDate.isBefore(Instant.now());
+        return expirationDate.isBefore(Instant.now());
     }
 }

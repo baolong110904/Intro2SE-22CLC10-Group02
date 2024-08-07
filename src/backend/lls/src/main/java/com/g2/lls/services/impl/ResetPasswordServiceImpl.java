@@ -3,9 +3,7 @@ package com.g2.lls.services.impl;
 import com.g2.lls.domains.ResetPasswordToken;
 import com.g2.lls.domains.User;
 import com.g2.lls.repositories.ResetPasswordTokenRepository;
-import com.g2.lls.repositories.RoleRepository;
 import com.g2.lls.repositories.UserRepository;
-import com.g2.lls.repositories.VerificationTokenRepository;
 import com.g2.lls.services.ResetPasswordService;
 import com.g2.lls.utils.AppUtil;
 import com.g2.lls.utils.exception.DataNotFoundException;
@@ -56,7 +54,6 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
             log.error("Token {} not found", token);
             throw new DataNotFoundException("Token " + token + " not found");
         }
-        Instant now = Instant.now();
         if (resetPasswordToken.get().isExpired()) {
             log.error("Token {} is expired", token);
             return false;

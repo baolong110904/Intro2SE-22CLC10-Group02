@@ -4,10 +4,7 @@ import com.g2.lls.domains.User;
 import com.g2.lls.dtos.LoginDTO;
 import com.g2.lls.dtos.UserDTO;
 import com.g2.lls.dtos.UserUpdateDTO;
-import com.g2.lls.dtos.response.AvatarResponse;
-import com.g2.lls.dtos.response.PaginationDTO;
-import com.g2.lls.dtos.response.TokenResponse;
-import com.g2.lls.dtos.response.UserResponse;
+import com.g2.lls.dtos.response.*;
 import com.g2.lls.enums.RoleType;
 import com.g2.lls.utils.exception.DataNotFoundException;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +31,7 @@ public interface UserService {
 
     void deleteUser(Long id) throws Exception;
 
-    void updateUserRefreshToken(String email, String refreshToken) throws Exception;
+    void updateUserRefreshToken(String email, String refreshToken) throws DataNotFoundException;
     TokenResponse login(LoginDTO loginDTO) throws Exception;
 
     Optional<User> findByEmail(String email);
@@ -46,4 +43,6 @@ public interface UserService {
     PaginationDTO fetchAllUsers(Specification<User> spec, Pageable pageable);
 
     RoleType verifyRole(String email) throws Exception;
+
+    User getUserByRefreshTokenAndEmail(String token, String email);
 }

@@ -1,9 +1,7 @@
 package com.g2.lls.controllers;
 
 
-import com.cloudinary.Cloudinary;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
+import com.g2.lls.utils.VideoSDKJwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -19,9 +17,10 @@ import java.util.Locale;
 @RequiredArgsConstructor
 @Slf4j
 public class HelloWorldController {
-    private final ObjectMapper objectMapper;
-    private final Cloudinary cloudinary;
-    private final HttpServletRequest request;
+    // private final ObjectMapper objectMapper;
+    // private final Cloudinary cloudinary;
+    // private final HttpServletRequest request;
+    private final VideoSDKJwtUtil videoSDKJwtUtil;
 
     @GetMapping("")
     public String helloWorld(WebRequest webRequest, Authentication authentication) {
@@ -55,7 +54,11 @@ public class HelloWorldController {
             // get image from cloudinary
 //            Map response = cloudinary.api().resource("g2/avatar/default", ObjectUtils.emptyMap());
 //            return objectMapper.writeValueAsString(response);
-            return "Hello World";
+            return """
+                    {
+                        "token": "%s"
+                    }
+                    """.formatted(videoSDKJwtUtil.generateToken());
         } catch (Exception e) {
             throw new RuntimeException("Error uploading image to cloudinary");
         }

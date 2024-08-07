@@ -19,14 +19,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
-import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -37,11 +30,12 @@ import java.util.concurrent.TimeUnit;
 public class ScheduledTask {
     private final ObjectMapper objectMapper;
     private final RedisTemplate<String, String> redisTemplate;
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+    // private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
     @Value("${country.api-key}")
     private String apiKey;
 
+    @Async
     private void clearCache() {
         redisTemplate.delete(Objects.requireNonNull(redisTemplate.keys("*")));
     }

@@ -4,16 +4,13 @@ import com.g2.lls.configs.security.RSAKeyRecord;
 import com.g2.lls.configs.security.user.CustomUserDetailsService;
 import com.g2.lls.repositories.UserRepository;
 import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.KeyUse;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.util.Base64;
 import com.nimbusds.jose.util.Base64URL;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -107,11 +104,11 @@ public class SecurityUtil {
 
     @Bean
     public JwtEncoder jwtEncoder() throws NoSuchAlgorithmException {
-//        return new NimbusJwtEncoder(
-//                new ImmutableSecret<>(getSecretKey()));
+        // return new NimbusJwtEncoder(
+        //        new ImmutableSecret<>(getSecretKey()));
 
-        PublicKey publicKey = rsaKeyRecord.rsaPublicKey();
-        String kid = Base64URL.encode(MessageDigest.getInstance("SHA-256").digest(publicKey.getEncoded())).toString();
+         PublicKey publicKey = rsaKeyRecord.rsaPublicKey();
+         String kid = Base64URL.encode(MessageDigest.getInstance("SHA-256").digest(publicKey.getEncoded())).toString();
         RSAKey rsaKey = new RSAKey.Builder(rsaKeyRecord.rsaPublicKey())
                 .privateKey(rsaKeyRecord.rsaPrivateKey())
                 .algorithm(JWT_ALGORITHM)
@@ -125,16 +122,16 @@ public class SecurityUtil {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-//        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(getSecretKey())
-//                .macAlgorithm(JwtTokenUtil.JWT_ALGORITHM).build();
-//        return token -> {
-//            try {
-//                return jwtDecoder.decode(token);
-//            } catch (Exception e) {
-//                log.error(e.getMessage());
-//                throw new RuntimeException(e);
-//            }
-//        };
+    //    NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(getSecretKey())
+    //            .macAlgorithm(JwtTokenUtil.JWT_ALGORITHM).build();
+    //    return token -> {
+    //        try {
+    //            return jwtDecoder.decode(token);
+    //        } catch (Exception e) {
+    //            log.error(e.getMessage());
+    //            throw new RuntimeException(e);
+    //        }
+    //    };
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withPublicKey(rsaKeyRecord.rsaPublicKey()).build();
         return token -> {
             try {
@@ -197,5 +194,12 @@ public class SecurityUtil {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
+    }
+
+    public static Optional<String> getCurrentUserJWT() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return Optional.ofNullable(securityContext.getAuthentication())
+                .filter(authentication -> authentication.getCredentials() instanceof String)
+                .map(authentication -> (String) authentication.getCredentials());
     }
 }

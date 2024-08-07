@@ -210,6 +210,12 @@
             <artifactId>payos-java</artifactId>
             <version>1.0.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.slugify</groupId>
+            <artifactId>slugify</artifactId>
+            <version>3.0.7</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -227,6 +233,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>lls</finalName>
     </build>
     <repositories>
         <repository>

@@ -3,7 +3,6 @@ package com.g2.lls.dtos.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.g2.lls.domains.Role;
 import com.g2.lls.enums.GenderType;
-import com.g2.lls.enums.RoleType;
 import lombok.*;
 
 import java.time.Instant;
@@ -16,6 +15,8 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class UserResponse {
+    private Long id;
+
     private String email;
 
     private String username;
@@ -47,7 +48,7 @@ public class UserResponse {
     private String createdBy;
 
     @JsonProperty("updated_at")
-    private Instant updatedAt;
+    private Instant updatedAt;  
 
     @JsonProperty("updated_by")
     private String updatedBy;
@@ -56,6 +57,5 @@ public class UserResponse {
 
     private Set<Role> role;
 
-    @JsonProperty("role_type")
-    private List<String> roleType;
+    // private List<String> roleType;
 }

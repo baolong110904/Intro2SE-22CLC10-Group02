@@ -3,7 +3,6 @@ package com.g2.lls.domains;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.g2.lls.enums.RoleType;
-import com.g2.lls.utils.TimeUtil;
 import com.g2.lls.utils.security.SecurityUtil;
 import jakarta.persistence.*;
 import lombok.*;
@@ -54,6 +53,8 @@ public class Role {
 
     @Column(name = "updated_by")
     private String updatedBy;
+
+    private String description;
 
     @PrePersist
     public void handleBeforeCreate() {

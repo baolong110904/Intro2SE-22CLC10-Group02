@@ -23,7 +23,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -32,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class CountryController {
     private final ObjectMapper objectMapper;
-    private final ConcurrentHashMap<String, String> countryCache;
+    // private final ConcurrentHashMap<String, String> countryCache;
     private final RedisTemplate<String, String> redisTemplate;
 
     @Value("${country.api-key}")

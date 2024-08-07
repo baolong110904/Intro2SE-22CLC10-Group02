@@ -27,11 +27,7 @@ public class PermissionInterceptorConfiguration implements WebMvcConfigurer {
                 "/robots.txt",
                 "/robot.txt",
                 String.format("/%s/hello-world", apiPrefix),
-                String.format("/%s/auth/login", apiPrefix),
-                String.format("/%s/auth/register", apiPrefix),
-                String.format("/%s/auth/register/**", apiPrefix),
-                String.format("/%s/auth/reset-password", apiPrefix),
-                String.format("/%s/auth/reset-password/**", apiPrefix),
+                String.format("/%s/auth/**", apiPrefix),
                 String.format("/%s/countries/**", apiPrefix),
         };
         registry.addInterceptor(getPermissionInterceptor())
