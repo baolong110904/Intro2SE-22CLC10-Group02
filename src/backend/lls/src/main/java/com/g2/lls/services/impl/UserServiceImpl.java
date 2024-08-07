@@ -8,7 +8,6 @@ import com.g2.lls.dtos.UserUpdateDTO;
 import com.g2.lls.dtos.response.*;
 import com.g2.lls.domains.User;
 import com.g2.lls.enums.RoleType;
-import com.g2.lls.repositories.AddressRepository;
 import com.g2.lls.repositories.RoleRepository;
 import com.g2.lls.repositories.UserRepository;
 import com.g2.lls.services.CloudinaryService;
@@ -36,7 +35,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +42,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-     private final AddressRepository addressRepository;
+    // private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenUtil jwtTokenUtil;

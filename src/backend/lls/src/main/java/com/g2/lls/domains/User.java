@@ -1,8 +1,6 @@
 package com.g2.lls.domains;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.g2.lls.enums.GenderType;
-import com.g2.lls.utils.TimeUtil;
 import com.g2.lls.utils.security.SecurityUtil;
 import jakarta.persistence.*;
 import lombok.*;

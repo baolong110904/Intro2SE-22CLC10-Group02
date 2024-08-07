@@ -2,9 +2,7 @@ package com.g2.lls.utils.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.g2.lls.domains.User;
-import com.g2.lls.dtos.response.TokenResponse;
 import com.g2.lls.repositories.UserRepository;
-import com.g2.lls.services.UserService;
 import com.g2.lls.utils.TimeUtil;
 import com.g2.lls.utils.exception.DataNotFoundException;
 import com.google.gson.Gson;

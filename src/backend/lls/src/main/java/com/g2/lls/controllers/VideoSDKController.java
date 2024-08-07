@@ -5,7 +5,6 @@ import com.g2.lls.dtos.response.VideoSDKResponse;
 import com.g2.lls.utils.TimeUtil;
 import com.g2.lls.utils.VideoSDKJwtUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

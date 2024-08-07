@@ -107,8 +107,8 @@ public class SecurityUtil {
         // return new NimbusJwtEncoder(
         //        new ImmutableSecret<>(getSecretKey()));
 
-         PublicKey publicKey = rsaKeyRecord.rsaPublicKey();
-         String kid = Base64URL.encode(MessageDigest.getInstance("SHA-256").digest(publicKey.getEncoded())).toString();
+        // PublicKey publicKey = rsaKeyRecord.rsaPublicKey();
+        // String kid = Base64URL.encode(MessageDigest.getInstance("SHA-256").digest(publicKey.getEncoded())).toString();
         RSAKey rsaKey = new RSAKey.Builder(rsaKeyRecord.rsaPublicKey())
                 .privateKey(rsaKeyRecord.rsaPrivateKey())
                 .algorithm(JWT_ALGORITHM)

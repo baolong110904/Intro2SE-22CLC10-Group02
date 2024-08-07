@@ -10,10 +10,7 @@ import com.g2.lls.services.UserService;
 import com.g2.lls.utils.TimeUtil;
 import com.g2.lls.utils.exception.DataNotFoundException;
 import com.g2.lls.utils.security.JwtTokenUtil;
-import com.g2.lls.utils.security.SecurityUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,13 +59,6 @@ public class AuthController {
                 .maxAge(jwtRefreshTokenExpiration)
                 .path("/")
                 .build();
-
-//        Cookie cookie1 = new Cookie("refresh_token", refreshToken);
-//        cookie1.setHttpOnly(true);
-//        cookie1.setSecure(true);
-//        cookie1.setMaxAge(jwtRefreshTokenExpiration.intValue());
-//        cookie1.setPath("/");
-//        response.addCookie(cookie1);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
@@ -145,13 +135,6 @@ public class AuthController {
                 .path("/")
                 .maxAge(0)
                 .build();
-
-//        Cookie cookie1 = new Cookie("refresh_token", "");
-//        cookie1.setHttpOnly(true);
-//        cookie1.setSecure(true);
-//        cookie1.setMaxAge(0);
-//        cookie1.setPath("/");
-//        response.addCookie(cookie1);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, deleteSpringCookie.toString())

@@ -1,10 +1,8 @@
 package com.g2.lls.services.impl;
 
 import com.g2.lls.domains.Permission;
-import com.g2.lls.domains.User;
 import com.g2.lls.dtos.response.PaginationDTO;
 import com.g2.lls.repositories.PermissionRepository;
-import com.g2.lls.repositories.UserRepository;
 import com.g2.lls.services.PermissionService;
 import com.g2.lls.utils.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
