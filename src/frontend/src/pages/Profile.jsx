@@ -26,8 +26,6 @@ const Profile = () => {
   }
 
   return (
-
-
     <div className="flex flex-col min-h-screen">
       <Navbar2 />
       <div>
