@@ -39,6 +39,7 @@ public class SecurityConfig {
                 "/actuator/**",
                 "/robots.txt",
                 "/robot.txt",
+                String.format("/%s/courses/overview", apiPrefix),
                 String.format("/%s/hello-world", apiPrefix),
                 String.format("/%s/auth/**", apiPrefix),
                 String.format("/%s/countries/**", apiPrefix),
