@@ -1,0 +1,20 @@
+meta {
+  name: Get All Permissions (Admin)
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8080/api/v1/permissions?page=1&size=25
+  body: none
+  auth: bearer
+}
+
+query {
+  page: 1
+  size: 25
+}
+
+auth:bearer {
+  token: {{access_token}}
+}

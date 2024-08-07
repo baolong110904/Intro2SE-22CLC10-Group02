@@ -1,7 +1,6 @@
 package com.g2.lls.configs.security;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import com.g2.lls.dtos.response.ApiErrorResponse;
 import com.g2.lls.dtos.response.ApiResponse;

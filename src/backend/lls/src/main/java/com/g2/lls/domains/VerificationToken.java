@@ -61,10 +61,10 @@ public class VerificationToken {
         this.token = token;
         this.user = user;
         Instant now = Instant.now();
-        this.expirationDate = now.plusSeconds(AppUtil.EXPIRATION_SECONDS);
+        expirationDate = now.plusSeconds(AppUtil.EXPIRATION_SECONDS);
     }
 
     public Boolean isExpired() {
-        return this.expirationDate.isBefore(Instant.now());
+        return expirationDate.isBefore(Instant.now());
     }
 }

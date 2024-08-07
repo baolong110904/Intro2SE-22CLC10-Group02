@@ -1,8 +1,12 @@
 package com.g2.lls.utils.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.g2.lls.domains.User;
 import com.g2.lls.dtos.response.TokenResponse;
+import com.g2.lls.repositories.UserRepository;
+import com.g2.lls.services.UserService;
 import com.g2.lls.utils.TimeUtil;
+import com.g2.lls.utils.exception.DataNotFoundException;
 import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +35,7 @@ public class JwtTokenUtil {
     private final Gson gson;
     private final ObjectMapper objectMapper;
     private final JwtDecoder jwtDecoder;
+    private final UserRepository userRepository;
 
     @Value("${jwt.access-token}")
     private Long jwtAccessTokenExpiration;
@@ -42,21 +46,9 @@ public class JwtTokenUtil {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-//    @Value("${jwt.key}")
-//    private ECKey jwtKey;
-
-//    private ECKey generateSecretKey() throws JOSEException {
-//        ECKey ecKey = new ECKeyGenerator(Curve.P_256)
-//                .keyUse(KeyUse.SIGNATURE)
-//                .keyID(UUID.randomUUID().toString())
-//                .generate();
-//        log.info("Generated secret key: {}", ecKey.toJSONString());
-//        return ecKey;
-//    }
-
-    public String createAccessToken(Authentication authentication){
+    public String createAccessToken(Authentication authentication) throws DataNotFoundException {
         Instant now = TimeUtil.getTime();
-        Instant validity = now.plus(this.jwtAccessTokenExpiration, ChronoUnit.SECONDS);
+        Instant validity = now.plus(jwtAccessTokenExpiration, ChronoUnit.SECONDS);
         log.info("Create access token for user: {}", authentication.getAuthorities());
         log.info("Expiration: {}", validity);
 
@@ -65,11 +57,16 @@ public class JwtTokenUtil {
 
         log.info("Scopes: {}", scopes);
 
+        User user = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+
         JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
                 .issuer("g2")
                 .issuedAt(now)
                 .expiresAt(validity)
-                .subject(authentication.getName())
+                .subject(user.getEmail())
+                .claim("id", user.getId())
+                .claim("username", user.getUsername())
                 .claim("scope", scopes)
                 .build();
 
@@ -83,17 +80,22 @@ public class JwtTokenUtil {
                 .build();
 
 //        return jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
-        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, jwtClaimsSet)).getTokenValue();
+        return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, jwtClaimsSet)).getTokenValue();
     }
-    public String createRefreshToken(String email, TokenResponse dto) {
+    public String createRefreshToken(String email) throws DataNotFoundException {
         Instant now = TimeUtil.getTime();
-        Instant validity = now.plus(this.jwtRefreshTokenExpiration, ChronoUnit.SECONDS);
+        Instant validity = now.plus(jwtRefreshTokenExpiration, ChronoUnit.SECONDS);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
 
         JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
                 .issuer("g2")
                 .issuedAt(now)
                 .expiresAt(validity)
                 .subject(email)
+                .claim("id", user.getId())
+                .claim("username", user.getUsername())
                 .claim("scope", "refresh_token")
                 .build();
 //        JwsHeader jwsHeader = JwsHeader
@@ -105,7 +107,16 @@ public class JwtTokenUtil {
                 .build();
 
 //        return jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
-        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, jwtClaimsSet)).getTokenValue();
+        return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, jwtClaimsSet)).getTokenValue();
+    }
+
+    public Jwt checkValidRefreshToken(String token){
+        try {
+            return jwtDecoder.decode(token);
+        } catch (Exception e) {
+            log.error("Error checking refresh token: {}", e.getMessage());
+            throw e;
+        }
     }
     
     public String extractEmail(String token) {

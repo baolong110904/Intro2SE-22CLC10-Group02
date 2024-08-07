@@ -2,8 +2,6 @@ package com.g2.lls.services;
 
 import com.g2.lls.domains.ResetPasswordToken;
 import com.g2.lls.domains.User;
-import com.g2.lls.utils.exception.DataNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 

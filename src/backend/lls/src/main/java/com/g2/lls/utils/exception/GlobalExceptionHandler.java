@@ -6,12 +6,10 @@ import com.g2.lls.utils.TimeUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNullApi;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,12 +23,10 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
-@Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final HttpServletRequest req;
     @Override
@@ -77,6 +73,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiResponse<ApiErrorResponse>> handleDataNotFoundException(DataNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ApiResponse<>(HttpStatus.NOT_FOUND.value(), false,
+                        new ApiErrorResponse(req.getMethod(), req.getRequestURI(), ex.getMessage()), TimeUtil.getTime()));
+    }
+
+    @ExceptionHandler(DataAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<ApiErrorResponse>> handleDataAlreadyExistsException(DataAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiResponse<>(HttpStatus.CONFLICT.value(), false,
                         new ApiErrorResponse(req.getMethod(), req.getRequestURI(), ex.getMessage()), TimeUtil.getTime()));
     }
 

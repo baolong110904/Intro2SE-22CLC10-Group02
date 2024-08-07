@@ -33,3 +33,9 @@ build/
 
 ### VS Code ###
 .vscode/
+mysql-data
+redis-data
+
+Dockerfile
+docker-compose.yml
+

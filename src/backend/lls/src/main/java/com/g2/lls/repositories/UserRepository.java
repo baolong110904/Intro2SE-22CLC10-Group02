@@ -19,4 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long>,
     // find all users by role_id
     @Query("SELECT u FROM User u JOIN u.roles r WHERE r.id = :roleId")
     List<User> findAllByRoleId(Long roleId);
+
+    User findByRefreshTokenAndEmail(String refreshToken, String email);
 }

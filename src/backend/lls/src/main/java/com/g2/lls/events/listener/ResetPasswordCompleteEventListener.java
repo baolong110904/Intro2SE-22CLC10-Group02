@@ -2,9 +2,7 @@ package com.g2.lls.events.listener;
 
 import com.g2.lls.domains.User;
 import com.g2.lls.events.ResetPasswordCompleteEvent;
-import com.g2.lls.services.RegistrationService;
 import com.g2.lls.services.ResetPasswordService;
-import com.g2.lls.utils.exception.DataNotFoundException;
 import com.g2.lls.utils.exception.EmailFailureException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

@@ -12,12 +12,10 @@ import com.g2.lls.repositories.UserRepository;
 import com.g2.lls.repositories.VerificationTokenRepository;
 import com.g2.lls.services.RegistrationService;
 import com.g2.lls.utils.AppUtil;
-import com.g2.lls.utils.TimeUtil;
 import com.g2.lls.utils.exception.DataNotFoundException;
 import com.g2.lls.utils.exception.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

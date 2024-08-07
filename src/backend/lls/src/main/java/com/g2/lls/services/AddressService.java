@@ -1,7 +1,6 @@
 package com.g2.lls.services;
 
 import com.g2.lls.dtos.AddressDTO;
-import com.g2.lls.utils.exception.DataNotFoundException;
 
 import java.util.List;
 

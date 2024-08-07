@@ -12,8 +12,8 @@ import com.g2.lls.utils.CustomHeaders;
 import com.g2.lls.utils.TimeUtil;
 import com.turkraft.springfilter.boot.Filter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @Tag(
         name = "User",
         description = "REST APIs for User"
@@ -31,7 +29,6 @@ import java.util.List;
 @RestController
 @RequestMapping("${api.v1}/users")
 @RequiredArgsConstructor
-@Slf4j
 public class UserController {
     private final UserService userService;
 
@@ -68,10 +65,11 @@ public class UserController {
     }
 
     @PostMapping(value = "/uploads/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public AvatarResponse uploadAvatar(
+    public ResponseEntity<ApiResponse<AvatarResponse>> uploadAvatar(
             @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
             @ModelAttribute("file") MultipartFile file) throws Exception {
-        return userService.uploadProfilePictureByEmail(email, file);
+        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
+                userService.uploadProfilePictureByEmail(email, file), TimeUtil.getTime()));
     }
 
     @DeleteMapping("/{id}")
@@ -85,7 +83,7 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> updateUser(
             @PathVariable Long id,
-            @RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
+            @Valid @RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
                 userService.updateUser(id, userUpdateDTO), TimeUtil.getTime()));
     }

@@ -11,7 +11,6 @@ import com.g2.lls.services.CloudinaryService;
 import com.g2.lls.utils.exception.DataNotFoundException;
 import com.g2.lls.utils.exception.UserNotActivatedException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class CloudinaryServiceImpl implements CloudinaryService {
     private final Cloudinary cloudinary;
     private final UserRepository userRepository;
