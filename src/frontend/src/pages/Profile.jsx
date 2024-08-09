@@ -32,13 +32,12 @@ const Profile = () => {
         <h1>Profile</h1>
         <button onClick={handleProfileButton}>Get Profile</button>
       </div>
-
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white shadow rounded overflow-hidden">
           <div className="flex items-center px-6 py-4">
             <img
               className="w-16 h-16 rounded-full object-cover mx-2"
-              alt="Profile picture"
+              alt=""
               src="https://picsum.photos/200"
             />
             <div className="flex flex-col">

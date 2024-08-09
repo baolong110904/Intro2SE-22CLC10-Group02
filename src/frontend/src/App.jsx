@@ -7,17 +7,15 @@ import TeacherHomePage from "./pages/TeacherHomePage.jsx"
 import Profile from "./pages/Profile.jsx"
 import Login from "./components/Login.jsx"
 import Signup from "./components/Signup.jsx"
+import StudentHomePage from "./pages/StudentHomePage.jsx"
 function App() {
   // State to manage whether to show Login or Signup page
-
   const location = useLocation()
-
   useEffect(() => {
     document.querySelector("html").style.scrollBehavior = "auto"
     window.scroll({ top: 0 })
     document.querySelector("html").style.scrollBehavior = ""
   }, [location.pathname]) // triggered on route change
-
   return (
     <>
       <Routes>
@@ -25,7 +23,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/teacher" element={<TeacherHomePage />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />}/>
+        <Route path="/student" element={<StudentHomePage/>}/>
       </Routes>
     </>
   )

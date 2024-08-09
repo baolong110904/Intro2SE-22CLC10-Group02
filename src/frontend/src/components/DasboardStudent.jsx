@@ -102,7 +102,7 @@ const Dashboard = () => {
             </div>
           </>
         )
-      case "teachingSessions":
+      case "studyingSessions":
         return (
           <div className="bg-white py-24 sm:py-32">
             <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -196,10 +196,10 @@ const Dashboard = () => {
           Timetable
         </button>
         <button
-          className={`px-4 py-2 ${activeSection === "teachingSessions" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
-          onClick={() => setActiveSection("teachingSessions")}
+          className={`px-4 py-2 ${activeSection === "studyingSessions" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
+          onClick={() => setActiveSection("studyingSessions")}
         >
-          My Teaching classes
+          My Studying Sessions
         </button>
         <button
           className={`px-4 py-2 ${activeSection === "lessonSupport" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
