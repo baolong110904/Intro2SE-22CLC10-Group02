@@ -4,9 +4,6 @@ import { FaBars, FaTimes, FaShoppingCart } from "react-icons/fa"
 import { CgProfile } from "react-icons/cg"
 import { IoMdSearch } from "react-icons/io"
 import logo from ".//G2Learning.svg" // Adjust path if necessary
-import { Link as ScrollLink } from "react-scroll"
-import Login from "../components/Login"
-import Signup from "../components/Signup"
 import ThemeToggle from "../components/ThemeToggle"
 import { useNavigate } from "react-router-dom"
 
@@ -15,8 +12,6 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
   const navigate = useNavigate()
-  // const [isModalOpen, setIsModalOpen] = useState(false)
-  // const [isModalSignupOpen, setIsModalSignupOpen] = useState(false)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -55,48 +50,16 @@ const Navbar = () => {
     { path: "/home", link: "Home" },
     { path: "/services", link: "Services" },
     { path: "/about", link: "About" },
-    // { path: "/recruitment", link: "Blogs" },
+    { path: "/recruitment", link: "Blogs" },
     { path: "/pricing", link: "Pricing" },
   ]
 
-  // const openModal = () => {
-  //   setIsModalOpen(true)
-  //   setIsMenuOpen(false)
-  // }
-
-  // const closeModal = () => {
-  //   setIsModalOpen(false)
-  // }
-
-  // const openSignupModal = () => {
-  //   setIsModalSignupOpen(true)
-  //   setIsMenuOpen(false)
-  // }
-
-  // const closeSignupModal = () => {
-  //   setIsModalSignupOpen(false)
-  // }
-
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     setIsScrolled(window.scrollY > 100)
-  //   }
-
-  //   window.addEventListener("scroll", handleScroll)
-  //   return () => window.removeEventListener("scroll", handleScroll)
-  // }, [])
-
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 100) {
-        setIsScrolled(true)
-      } else {
-        setIsScrolled(false)
-      }
+      setIsScrolled(window.scrollY > 100)
     }
 
     window.addEventListener("scroll", handleScroll)
-
     handleIsLogin()
 
     return () => {
@@ -104,13 +67,9 @@ const Navbar = () => {
     }
   }, [])
 
-  useEffect(() => {
-    handleIsLogin()
-  }, [])
-
   return (
     <header
-      className={`fixed top-0 left-0 right-0 transition-all duration-300 z-50 ${isScrolled ? "bg-white shadow-lg" : "bg-transparent"}`}
+      className={`fixed top-0 left-0 right-0 transition-all duration-300 z-50 bg-white dark:bg-gray-800 shadow-lg ${isScrolled ? 'shadow-md' : ''}`}
     >
       <nav className="px-4 py-4 max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center">
@@ -121,68 +80,47 @@ const Navbar = () => {
           />
           <NavLink
             to="/"
-            className="text-lg sm:text-xl font-bold text-blue-950 logo-text"
+            className="text-lg sm:text-xl font-bold text-blue-950 dark:text-white logo-text"
           >
-            G2{" "}
-            <span className={`${isScrolled ? "text-black" : "text-white"}`}>
-              Language Learning
-            </span>
+            G2 <span className="text-black dark:text-white">Language Learning</span>
           </NavLink>
         </div>
-
+  
         <ul className="hidden lg:flex gap-6 xl:gap-12 text-lg">
           {navItems.map(({ link, path }) => (
             <li key={link}>
-              <ScrollLink
-                to={link.toLowerCase()}
-                spy={true}
-                smooth={true}
-                offset={-100}
-                className={`nav-link cursor-pointer ${isScrolled ? "text-black" : "text-white"}`}
-                activeClass="active"
+              <NavLink
+                to={path}
+                className="nav-link cursor-pointer text-black dark:text-white"
+                activeClassName="active"
               >
                 {link}
-              </ScrollLink>
+              </NavLink>
             </li>
           ))}
         </ul>
 
-        <div
-          className={`hidden lg:flex gap-4 items-center ${isScrolled ? "text-black" : "text-white"}`}
-        >
-          <a
-            href="/"
-            className={`hover:text-blue-950 ${isScrolled ? "text-blue-950" : "text-white"}`}
-          >
-            <IoMdSearch />
-          </a>
-          <a
-            href="/"
-            className={`hover:text-blue-950 ${isScrolled ? "text-blue-950" : "text-white"}`}
-          >
-            <CgProfile />
-          </a>
-          <a
-            href="/"
-            className={`hover:text-blue-950 ${isScrolled ? "text-blue-950" : "text-white"}`}
-          >
-            <FaShoppingCart />
-          </a>
+        <div className="hidden lg:flex gap-4 items-center">
+          <NavLink to="/search" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+            <IoMdSearch className="w-5 h-5" />
+          </NavLink>
+          <NavLink to="/profile" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+            <CgProfile className="w-5 h-5" />
+          </NavLink>
+          <NavLink to="/cart" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+            <FaShoppingCart className="w-5 h-5" />
+          </NavLink>
           <button
-            // onClick={openModal}
             onClick={handleLoginLogoutButton}
-            className={`bg-transparent text-blue-600 px-4 py-2 text-sm font-medium rounded hover:bg-blue-600 hover:text-white transition-all duration-200 ease-in ${isScrolled ? "text-black bg-blue-600 border border-blue-600" : "text-white"}`}
+            className="bg-blue-600 text-white px-4 py-2 text-sm font-medium rounded hover:bg-blue-700 transition-all duration-200 ease-in"
           >
-            {/* Log in */}
             {isLogin ? "Log out" : "Log in"}
           </button>
 
           <button
-            // onClick={openSignupModal}
             onClick={handleProfileSignUpButton}
-            className={`bg-transparent text-blue-600 px-4 py-2 text-sm font-medium rounded hover:bg-blue-600 hover:text-white transition-all duration-200 ease-in ${isScrolled ? "text-black bg-blue-600 border border-blue-600" : "text-white"}`}
+            className="bg-transparent text-blue-600 px-4 py-2 text-sm font-medium rounded border border-blue-600 hover:bg-blue-600 hover:text-white transition-all duration-200 ease-in"
           >
-            {/* Sign up */}
             {isLogin ? "Profile" : "Sign up"}
           </button>
           <ThemeToggle />
@@ -216,42 +154,34 @@ const Navbar = () => {
             </li>
           ))}
           <li className="flex gap-2">
-            <a href="/" className="text-blue-950">
+            <NavLink to="/search" className="text-blue-950">
               <IoMdSearch />
-            </a>
-            <a href="/" className="text-blue-950">
+            </NavLink>
+            <NavLink to="/profile" className="text-blue-950">
               <CgProfile />
-            </a>
-            <a href="/" className="text-blue-950">
+            </NavLink>
+            <NavLink to="/cart" className="text-blue-950">
               <FaShoppingCart />
-            </a>
+            </NavLink>
           </li>
           <li>
             <button
-              // onClick={openModal}
               onClick={handleLoginLogoutButton}
               className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300"
             >
-              {/* Log in */}
               {isLogin ? "Log out" : "Log in"}
             </button>
           </li>
           <li>
             <button
-              // onClick={openSignupModal}
               onClick={handleProfileSignUpButton}
               className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300"
             >
-              {/* Sign up */}
               {isLogin ? "Profile" : "Sign up"}
             </button>
           </li>
         </ul>
       </div>
-
-      {/* Modal components */}
-      {/* <Login isOpen={isModalOpen} onClose={closeModal} />
-      <Signup isOpen={isModalSignupOpen} onClose={closeSignupModal} /> */}
     </header>
   )
 }
