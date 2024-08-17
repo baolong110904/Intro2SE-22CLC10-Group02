@@ -1,5 +1,6 @@
 package com.g2.lls.utils;
 
+import com.beust.ah.A;
 import com.g2.lls.domains.*;
 import com.g2.lls.enums.GenderType;
 import com.g2.lls.enums.RoleType;
@@ -85,7 +86,9 @@ public class DatabaseInitializer implements CommandLineRunner {
                     "Delete a user", new Permission("Delete a user", String.format("/%s/users/{id}", apiPrefix),
                             "DELETE", "User"),
                     "Upload avatar", new Permission("Upload avatar", String.format("/%s/users/uploads/avatar", apiPrefix),
-                            "POST", "User")
+                            "POST", "User"),
+                    "Get avatar", new Permission("Get avatar", String.format("/%s/users/avatar", apiPrefix),
+                        "GET", "User")
             )));
 
             // Role permissions
@@ -175,6 +178,9 @@ public class DatabaseInitializer implements CommandLineRunner {
             List<Permission> studentPermissions = new ArrayList<>();
             studentPermissions.add(permissions.get("User").get("Get a user"));
             studentPermissions.add(permissions.get("User").get("Update a user"));
+            studentPermissions.add(permissions.get("User").get("Get profile"));
+            studentPermissions.add(permissions.get("User").get("Upload avatar"));
+            studentPermissions.add(permissions.get("User").get("Get avatar"));
             studentPermissions.add(permissions.get("Role").get("Verify a role"));
             studentPermissions.add(permissions.get("Course").get("Get a course"));
             studentPermissions.add(permissions.get("Course").get("Get course's details"));
@@ -187,6 +193,9 @@ public class DatabaseInitializer implements CommandLineRunner {
             List<Permission> teacherPermissions = new ArrayList<>();
             teacherPermissions.add(permissions.get("User").get("Get a user"));
             teacherPermissions.add(permissions.get("User").get("Update a user"));
+            studentPermissions.add(permissions.get("User").get("Get profile"));
+            studentPermissions.add(permissions.get("User").get("Upload avatar"));
+            studentPermissions.add(permissions.get("User").get("Get avatar"));
             teacherPermissions.add(permissions.get("Role").get("Verify a role"));
             teacherPermissions.addAll(coursePermissions);
             teacherPermissions.addAll(vnPayPermissions);
@@ -207,6 +216,13 @@ public class DatabaseInitializer implements CommandLineRunner {
             Role role = roleRepository.findByName(RoleType.ADMIN);
             Set<Role> roles = new HashSet<>(Set.of(role));
 
+            Avatar avatarAdmin1 = Avatar.builder()
+                    .publicId("g2/avatar/admin1")
+                    .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
+                    .userId(1L)
+                    .build();
+            avatarRepository.saveAndFlush(avatarAdmin1);
+
             User admin1 = User.builder()
                     .email("admin1@gmail.com")
                     .password(passwordEncoder.encode("admin1"))
@@ -219,10 +235,16 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .firstName("Nam")
                     .lastName("Nguyen")
                     .description("Admin Account")
-                    .avatar(avatar)
+                    .avatar(avatarAdmin1)
                     .build();
-
             userRepository.saveAndFlush(admin1);
+
+            Avatar avatarAdmin2 = Avatar.builder()
+                    .publicId("g2/avatar/admin2")
+                    .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
+                    .userId(2L)
+                    .build();
+            avatarRepository.saveAndFlush(avatarAdmin2);
 
             User admin2 = User.builder()
                     .email("admin2@gmail.com")
@@ -236,15 +258,21 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .firstName("Nam")
                     .lastName("Nguyen")
                     .description("Admin Account")
-                    .avatar(avatar)
+                    .avatar(avatarAdmin2)
                     .build();
-
             userRepository.saveAndFlush(admin2);
+
+            Avatar avatarTeacher1 = Avatar.builder()
+                    .publicId("g2/avatar/teacher1")
+                    .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
+                    .userId(3L)
+                    .build();
+            avatarRepository.saveAndFlush(avatarTeacher1);
 
             User teacher1 = User.builder()
                     .email("teacher1@gmail.com")
                     .password(passwordEncoder.encode("teacher1"))
-                    .username("teacher")
+                    .username("teacher1")
                     .gender(GenderType.Female)
                     .roles(new HashSet<>(Set.of(roleRepository.findByName(RoleType.TEACHER))))
                     .isEnabled(true)
@@ -253,10 +281,16 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .firstName("Nam")
                     .lastName("Nguyen")
                     .description("Teacher Account")
-                    .avatar(avatar)
+                    .avatar(avatarTeacher1)
                     .build();
-
             userRepository.saveAndFlush(teacher1);
+
+            Avatar avatarTeacher2 = Avatar.builder()
+                    .publicId("g2/avatar/teacher2")
+                    .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
+                    .userId(4L)
+                    .build();
+            avatarRepository.saveAndFlush(avatarTeacher2);
 
             User teacher2 = User.builder()
                     .email("teacher2@gmail.com")
@@ -270,10 +304,16 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .firstName("Nam")
                     .lastName("Nguyen")
                     .description("Teacher Account")
-                    .avatar(avatar)
+                    .avatar(avatarTeacher2)
                     .build();
-
             userRepository.saveAndFlush(teacher2);
+
+            Avatar avatarStudent1 = Avatar.builder()
+                    .publicId("g2/avatar/student1")
+                    .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
+                    .userId(5L)
+                    .build();
+            avatarRepository.saveAndFlush(avatarStudent1);
 
             User student1 = User.builder()
                     .email("student1@gmail.com")
@@ -287,10 +327,16 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .firstName("Nam")
                     .lastName("Nguyen")
                     .description("Student Account")
-                    .avatar(avatar)
+                    .avatar(avatarStudent1)
                     .build();
-
             userRepository.saveAndFlush(student1);
+
+            Avatar avatarStudent2 = Avatar.builder()
+                    .publicId("g2/avatar/student2")
+                    .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
+                    .userId(6L)
+                    .build();
+            avatarRepository.saveAndFlush(avatarStudent2);
 
             User student2 = User.builder()
                     .email("student2@gmail.com")
@@ -304,7 +350,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .firstName("Nam")
                     .lastName("Nguyen")
                     .description("Student Account")
-                    .avatar(avatar)
+                    .avatar(avatarStudent2)
                     .build();
 
             userRepository.saveAndFlush(student2);

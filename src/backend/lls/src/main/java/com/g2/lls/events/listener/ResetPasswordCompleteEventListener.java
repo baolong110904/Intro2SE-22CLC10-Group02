@@ -8,6 +8,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -22,6 +23,9 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 @Slf4j
 public class ResetPasswordCompleteEventListener implements ApplicationListener<ResetPasswordCompleteEvent> {
+    @Value("${react.base-url}")
+    private String reactBaseUrl;
+
     private final ResetPasswordService resetPasswordService;
     private final JavaMailSender mailSender;
     private User user;
@@ -36,7 +40,8 @@ public class ResetPasswordCompleteEventListener implements ApplicationListener<R
             log.error("Error: ", e);
             throw new RuntimeException(e);
         }
-        String url = event.getApplicationUrl() + "/reset?token=" + token;
+//        String url = event.getApplicationUrl() + "/reset?token=" + token;
+        String url = reactBaseUrl + "/reset-password?token=" + token;
 
         sendResetPasswordVerificationEmail(url).exceptionally(e -> {
             log.error("Error: ", e);

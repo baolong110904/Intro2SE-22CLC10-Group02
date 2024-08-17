@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Data
@@ -16,6 +17,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class UserDTO {
+    private Long id;
+
     @NotBlank(message = "Email is required")
     // @Email(message = "Email is not valid")
     private String email;
@@ -27,6 +30,14 @@ public class UserDTO {
     //         message = "Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 digit and 1 special character")
     private String password;
 
+    private GenderType gender;
+
+    private String description;
+
+    private String avatar;
+
+    private String secret;
+
     @JsonProperty("first_name")
     private String firstName;
 
@@ -36,12 +47,20 @@ public class UserDTO {
     @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;
 
-    private GenderType gender;
-
-    private String description;
-
     @JsonProperty("is_mfa_enabled")
     private Boolean isMfaEnabled;
+
+    @JsonProperty("created_at")
+    private Instant createdAt;
+
+    @JsonProperty("created_by")
+    private String createdBy;
+
+    @JsonProperty("updated_at")
+    private Instant updatedAt;
+
+    @JsonProperty("updated_by")
+    private String updatedBy;
 
     private RoleType role;
 

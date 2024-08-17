@@ -28,7 +28,9 @@ public class PermissionInterceptorConfiguration implements WebMvcConfigurer {
                 "/robot.txt",
                 String.format("/%s/hello-world", apiPrefix),
                 String.format("/%s/auth/**", apiPrefix),
+                String.format("/%s/users/avatar", apiPrefix),
                 String.format("/%s/countries/**", apiPrefix),
+                String.format("/%s/payments/vn-pay/**", apiPrefix),
         };
         registry.addInterceptor(getPermissionInterceptor())
                 .excludePathPatterns(whiteList);
