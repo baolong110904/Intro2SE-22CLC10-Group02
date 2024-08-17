@@ -8,6 +8,9 @@ import Profile from "./pages/Profile.jsx"
 import Login from "./components/Login.jsx"
 import Signup from "./components/Signup.jsx"
 import StudentHomePage from "./pages/StudentHomePage.jsx"
+import CheckEmail from "./components/CheckEmail.jsx"
+import RequestResetPassword from "./components/RequestResetPassword.jsx"
+import ResetPassword from "./components/ResetPassword.jsx"
 function App() {
   // State to manage whether to show Login or Signup page
   const location = useLocation()
@@ -25,6 +28,9 @@ function App() {
         <Route path="/teacher" element={<TeacherHomePage />} />
         <Route path="/profile" element={<Profile />}/>
         <Route path="/student" element={<StudentHomePage/>}/>
+        <Route path="/check-email" element={<CheckEmail />} />
+        <Route path="/request-reset-password" element={<RequestResetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Routes>
     </>
   )

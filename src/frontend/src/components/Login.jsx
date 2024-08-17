@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { IoClose } from "react-icons/io5"
 import { FiEye, FiEyeOff } from "react-icons/fi"
 import { FcGoogle } from "react-icons/fc"
@@ -21,6 +21,14 @@ const Login = () => {
   // const [isSignupOpen, setIsSignupOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("token")
+    const email = localStorage.getItem("email")
+    if (accessToken && email) {
+      navigate("/")
+    }
+  }, [navigate])
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -204,7 +212,9 @@ const Login = () => {
                               <Signup isOpen={isSignupOpen} />
                           </div> */}
                           <div className="flex flex-col lg:flex-row items-center lg:justify-between space-y-2 lg:space-y-2">
-                            <p className="text-cyan-950 dark:text-neutral-200 account-link">
+                            <p className="text-cyan-950 dark:text-neutral-200 account-link"
+                              onClick={() => navigate("/request-reset-password")}
+                            >
                               Forgot password?
                             </p>
                             <p

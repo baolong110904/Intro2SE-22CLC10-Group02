@@ -1,9 +1,10 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import logo from "./G2LL.svg"
 import { FiEye, FiEyeOff } from "react-icons/fi"
 import Footer from "./Footer"
 import Navbar from "./Navbar"
+import SignupService from "../api/auth/SignupService"
 
 const signUpImg = "https://imgur.com/aTIxqDa.png"
 
@@ -17,29 +18,56 @@ const SignUp = () => {
   const [passwordMatch, setPasswordMatch] = useState(true)
   const [currentStep, setCurrentStep] = useState(1)
   const [role, setRole] = useState("")
-  const [address, setAddress] = useState("")
-  const [phoneNumber, setPhoneNumber] = useState("")
+  const [username, setUsername] = useState("")
+  const [gender, setGender] = useState("")
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [dateOfBirth, setDateOfBirth] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
   const navigate = useNavigate()
+
+  const handleSignUp = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await SignupService(email, password, username, gender, firstName, lastName, dateOfBirth, role)
+      navigate("/check-email")
+    } catch (error) {
+      console.error(error)
+      setErrorMessage("Something went wrong. Please try again.")
+    }
+  }
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem("token")
+    const email = localStorage.getItem("email")
+    if (accessToken && email) {
+      navigate("/")
+    }
+  }, [navigate])
 
   const isEmailValid = (email) => {
     // Add your email validation logic here
     return /^\S+@\S+\.\S+$/.test(email)
   }
 
-  const handleSignUp = (e) => {
-    e.preventDefault()
-    if (password !== confirmPassword) {
-      setPasswordMatch(false)
-      return
-    }
-    setPasswordMatch(true)
-    navigate("/blogs")
+  const isPasswordValid = (password) => {
+    return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(password)
+  }
+
+  const isUsernameValid = (username) => {
+    return /^[a-zA-Z0-9_.]{2,50}$/.test(username)
   }
 
   const handleNextStep = (e) => {
     e.preventDefault()
     if (!isEmailValid(email)) {
-      // Handle invalid email
+      setErrorMessage("Invalid email")
+      console.log("Invalid email")
+      return
+    }
+    if (!isPasswordValid(password)) {
+      setErrorMessage("Password must contain at least 8 characters, one uppercase, one lowercase, one number")
+      console.log("Invalid password")
       return
     }
     if (password !== confirmPassword) {
@@ -48,6 +76,7 @@ const SignUp = () => {
     }
     setPasswordMatch(true)
     setCurrentStep(2)
+    setErrorMessage("")
     console.log("Moving to step 2");
   }
 
@@ -58,13 +87,42 @@ const SignUp = () => {
       return
     }
     if (!isEmailValid(email)) {
-      // Handle invalid email
+      setErrorMessage("Invalid email")
       return
     }
+    if (!isPasswordValid(password)) {
+      setErrorMessage("Password must contain at least 8 characters, one uppercase, one lowercase, one number")
+      return
+    }
+    if (!isUsernameValid(username)) {
+      setErrorMessage("Username must be alphanumeric and have at least 2 characters and maximum 50 characters allow underscore, dot")
+      return
+    }
+    if (!firstName) {
+      setErrorMessage("First name is required")
+      return
+    }
+    if (!lastName) {
+      setErrorMessage("Last name is required")
+      return
+    }
+    if (!dateOfBirth) {
+      setErrorMessage("Date of birth is required")
+      return
+    }
+    if (!gender) {
+      setErrorMessage("Gender is required")
+      return
+    }
+    if (!role) {
+      setErrorMessage("Role is required")
+      return
+    }
+    setErrorMessage("")
     //backend
-    console.log({ email, password, role, address, phoneNumber })
+    console.log({ email, password, username, firstName, lastName, dateOfBirth, gender, role })
     setPasswordMatch(true)
-    navigate("/teacher")
+    navigate("/")
   }
 
   const Step1 = () => {
@@ -140,12 +198,107 @@ const SignUp = () => {
             </p>
           )}
         </div>
+
+        {/* Error message */}
+        {errorMessage && (
+          <div className="mb-4 text-red-500">{errorMessage}</div>
+        )}
       </form>
     );
   };
   const Step2 = () => {
     return (
       <div className="space-y-6">
+        {/* Username input */}
+        <div className="relative mb-6">
+          <label
+            htmlFor="username"
+            className="block mb-2 text-neutral-500 dark:text-neutral-400"
+          >
+            Username
+          </label>
+          <input
+            type="text"
+            className="block min-h-[auto] w-full rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
+            id="username"
+            placeholder="Username"
+            defaultValue={username}
+            onBlur={(e) => setUsername(e.target.value)}
+          />
+        </div>
+
+        {/* First name input */}
+        <div className="relative mb-6">
+          <label
+            htmlFor="firstName"
+            className="block mb-2 text-neutral-500 dark:text-neutral-400"
+          >
+            First Name
+          </label>
+          <input
+            type="text"
+            className="block min-h-[auto] w-full rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
+            id="firstName"
+            placeholder="First Name"
+            defaultValue={firstName}
+            onBlur={(e) => setFirstName(e.target.value)}
+          />
+        </div>
+
+        {/* Last name input */}
+        <div className="relative mb-6">
+          <label
+            htmlFor="lastName"  
+            className="block mb-2 text-neutral-500 dark:text-neutral-400"
+          >
+            Last Name
+          </label>
+          <input
+            type="text"
+            className="block min-h-[auto] w-full rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
+            id="lastName"
+            placeholder="Last Name"
+            defaultValue={lastName}
+            onBlur={(e) => setLastName(e.target.value)}
+          />
+        </div>
+
+        {/* Date of birth input */}
+        <div className="relative mb-6">
+          <label
+            htmlFor="dateOfBirth"
+            className="block mb-2 text-neutral-500 dark:text-neutral-400"
+          >
+            Date of Birth
+          </label>
+          <input
+            type="date"
+            className="block min-h-[auto] w-full rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
+            id="dateOfBirth"
+            placeholder="Date of Birth"
+            defaultValue={dateOfBirth}
+            onBlur={(e) => setDateOfBirth(e.target.value)}
+          />
+        </div>
+  
+        {/* Gender selection */}
+        <div className="relative mb-6">
+          <label htmlFor="gender" className="block mb-2 text-neutral-500 dark:text-neutral-400">
+            Gender
+          </label>
+          <select
+            id="gender"
+            className="block min-h-[auto] w-full rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+          >
+            <option value="">Select gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+      
+
         {/* Role selection */}
         <div className="relative mb-6">
           <label htmlFor="role" className="block mb-2 text-neutral-500 dark:text-neutral-400">
@@ -158,45 +311,15 @@ const SignUp = () => {
             onChange={(e) => setRole(e.target.value)}
           >
             <option value="">Select a role</option>
-            <option value="teacher">Teacher</option>
-            <option value="student">Student</option>
+            <option value="TEACHER">Teacher</option>
+            <option value="STUDENT">Student</option>
           </select>
         </div>
-  
-        {/* Address input */}
-        <div className="relative mb-6">
-          <label
-            htmlFor="address"
-            className="block mb-2 text-neutral-500 dark:text-neutral-400"
-          >
-            Address
-          </label>
-          <input
-            type="address"
-            className="block min-h-[auto] w-full rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
-            id="address"
-            placeholder="Address"
-            defaultValue={address}
-            onBlur={(e) => setAddress(e.target.value)}
-          />
-        </div>
-        {/* Phone number input */}
-        <div className="relative mb-6">
-          <label
-            htmlFor="phoneNumber"
-            className="block mb-2 text-neutral-500 dark:text-neutral-400"
-          >
-            Phone Number
-          </label>
-          <input
-            type="tel"
-            className="block min-h-[auto] w-full rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
-            id="phoneNumber"
-            placeholder="Phone Number"
-            defaultValue={phoneNumber}
-            onBlur={(e) => setPhoneNumber(e.target.value)}
-          />
-        </div>
+
+        {/* Error message */}
+        {errorMessage && (
+          <div className="mb-4 text-red-500">{errorMessage}</div>
+        )}
       </div>
     );
   };
@@ -287,7 +410,7 @@ const SignUp = () => {
                             <div className="mb-1 pb-1 pt-5 text-center">
                               <button
                                 className="animate-slidein700 opacity-0 py-2 hover:bg-blue-600 hover:text-white justify-center whitespace-nowrap dark:bg-blue-600 dark:text-white dark:border-slate-600 dark:hover:bg-blue-700 dark:hover:text-white shadow focus:ring-blue-500/50 focus-visible:outline-none focus-visible:ring focus-visible:ring-blue-500/50 relative before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%,transparent_100%)] before:bg-[length:200%_100%] before:transition before:duration-[0.4s] before:ease-out before:content-[''] hover:before:animate-[shimmer_1.5s_ease-out_infinite] border border-slate-500 font-medium leading-normal text-blue-600 w-full rounded-lg flex items-center"
-                                onClick={handleSubmit}
+                                onClick={handleSignUp}
                               >
                                 Sign Up
                               </button>
