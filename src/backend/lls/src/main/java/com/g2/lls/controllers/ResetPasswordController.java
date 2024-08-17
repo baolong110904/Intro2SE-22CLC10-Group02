@@ -36,14 +36,15 @@ public class ResetPasswordController {
         log.info("Email: {}", emailDTO.getEmail());
         Optional<User> user = userService.findByEmail(emailDTO.getEmail());
         if (user.isEmpty()) {
-            return "User with email " + emailDTO.getEmail() + " not found";
+//            return "User with email " + emailDTO.getEmail() + " not found";
+            return "User not found. Please, request a new password reset link!";
         }
         try {
 //            String token = UUID.randomUUID().toString();
 //            resetPasswordService.createResetPasswordToken(user.get(), token);
             log.info("Url: {}", AppUtil.applicationUrl(request));
             publisher.publishEvent(new ResetPasswordCompleteEvent(user.get(), AppUtil.applicationUrl(request)));
-            return "Success!  Please, check your email for the reset password link";
+            return "Success. Please, check your email for the reset password link!";
         } catch (Exception e) {
             log.error("Error: {}", e.getMessage());
             return e.getMessage();
@@ -55,15 +56,15 @@ public class ResetPasswordController {
                                 @RequestParam String token) {
         try {
             if (!resetPasswordService.validateToken(token)) {
-                return "Invalid token";
+                return "Invalid token. Please, request a new password reset link!";
             }
             Optional<User> user = resetPasswordService.getUserByToken(token);
             if (user.isEmpty()) {
-                return "User not found";
+                return "User not found. Please, request a new password reset link!";
             }
             resetPasswordService.changePassword(user.get(), resetPasswordDTO.getNewPassword());
 //            resetPasswordService.deleteResetPasswordToken(token);
-            return "Success!  Password reset successfully";
+            return "Success. Password reset successfully!";
         } catch (Exception e) {
             log.error("Error: {}", e.getMessage());
             return e.getMessage();

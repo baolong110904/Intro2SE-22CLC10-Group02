@@ -56,10 +56,10 @@ public class UserServiceImpl implements UserService {
             log.error("Can not find user with id: {}", id);
             throw new DataNotFoundException("Can not find user with id: " + id);
         }
-        if (user.get().getIsEnabled() == null || !user.get().getIsEnabled()) {
-            log.error("User is not active");
-            throw new UserNotActivatedException("User is not active");
-        }
+//        if (user.get().getIsEnabled() == null || !user.get().getIsEnabled()) {
+//            log.error("User is not active");
+//            throw new UserNotActivatedException("User is not active");
+//        }
         return user.get();
     }
 
@@ -123,15 +123,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateUser(Long id, UserUpdateDTO userUpdateDTO) throws Exception {
+    public UserResponse updateUser(Long id, UserDTO userDTO) throws Exception {
         User user = fetchUserById(id);
-        user.setFirstName(userUpdateDTO.getFirstName());
-        user.setLastName(userUpdateDTO.getLastName());
-        user.setUsername(userUpdateDTO.getUsername());
-        user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
-        user.setDescription(userUpdateDTO.getDescription());
-        user.setGender(userUpdateDTO.getGender());
-        user.setIsMfaEnabled(userUpdateDTO.getIsMfaEnabled());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setDescription(userDTO.getDescription());
+        user.setGender(userDTO.getGender());
+        user.setIsMfaEnabled(userDTO.getIsMfaEnabled());
+        user.setUpdatedAt(Instant.now());
+        user.setUpdatedBy(userDTO.getUpdatedBy());
+        user.setCreatedBy(userDTO.getCreatedBy());
+        user.setCreatedAt(userDTO.getCreatedAt());
+        user.setSecret(userDTO.getSecret());
+        user.setIsEnabled(userDTO.getIsEnabled());
+
         userRepository.save(user);
         return modelMapper.map(user, UserResponse.class);
     }
@@ -232,7 +239,14 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new DataNotFoundException("Can not find role for user with email: " + email));
     }
 
+    @Override
     public User getUserByRefreshTokenAndEmail(String token, String email) {
         return userRepository.findByRefreshTokenAndEmail(token, email);
+    }
+
+    @Override
+    public AvatarResponse getProfilePicture(String email) throws Exception {
+        User user = fetchUserByEmail(email);
+        return cloudinaryService.getAvatar(user.getId());
     }
 }

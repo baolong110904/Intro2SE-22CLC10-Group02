@@ -27,11 +27,12 @@ public interface UserService {
 
     UserResponse getUserByEmail(String email) throws Exception;
 
-    UserResponse updateUser(Long id, UserUpdateDTO userDTO) throws Exception;
+    UserResponse updateUser(Long id, UserDTO userDTO) throws Exception;
 
     void deleteUser(Long id) throws Exception;
 
     void updateUserRefreshToken(String email, String refreshToken) throws DataNotFoundException;
+
     TokenResponse login(LoginDTO loginDTO) throws Exception;
 
     Optional<User> findByEmail(String email);
@@ -45,4 +46,6 @@ public interface UserService {
     RoleType verifyRole(String email) throws Exception;
 
     User getUserByRefreshTokenAndEmail(String token, String email);
+
+    AvatarResponse getProfilePicture(String email) throws Exception;
 }

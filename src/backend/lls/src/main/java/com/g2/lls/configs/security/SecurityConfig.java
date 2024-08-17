@@ -42,7 +42,9 @@ public class SecurityConfig {
                 String.format("/%s/courses/overview", apiPrefix),
                 String.format("/%s/hello-world", apiPrefix),
                 String.format("/%s/auth/**", apiPrefix),
+                String.format("/%s/users/avatar", apiPrefix),
                 String.format("/%s/countries/**", apiPrefix),
+                String.format("/%s/payments/vn-pay/**", apiPrefix),
         };
 
         http

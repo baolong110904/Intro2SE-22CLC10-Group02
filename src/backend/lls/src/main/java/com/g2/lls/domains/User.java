@@ -1,5 +1,6 @@
 package com.g2.lls.domains;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.g2.lls.enums.GenderType;
 import com.g2.lls.utils.security.SecurityUtil;
 import jakarta.persistence.*;
@@ -106,11 +107,13 @@ public class User {
     }
 
     @Column(name = "is_mfa_enabled", columnDefinition = "BIT(1) DEFAULT FALSE")
+    @JsonProperty("is_mfa_enabled")
     private Boolean isMfaEnabled;
 
     // MFA secret key
     private String secret;
 
     @Column(name = "is_enabled", columnDefinition = "BIT(1) DEFAULT FALSE")
+    @JsonProperty("is_enabled")
     private Boolean isEnabled;
 }
