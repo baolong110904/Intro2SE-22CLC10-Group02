@@ -83,8 +83,15 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<UserResponse>> updateUser(
             @PathVariable Long id,
-            @Valid @RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
+            @Valid @RequestBody UserDTO userDTO) throws Exception {
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
-                userService.updateUser(id, userUpdateDTO), TimeUtil.getTime()));
+                userService.updateUser(id, userDTO), TimeUtil.getTime()));
+    }
+
+    @GetMapping("/avatar")
+    public ResponseEntity<ApiResponse<AvatarResponse>> getProfilePicture(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email) throws Exception {
+        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
+                userService.getProfilePicture(email), TimeUtil.getTime()));
     }
 }
