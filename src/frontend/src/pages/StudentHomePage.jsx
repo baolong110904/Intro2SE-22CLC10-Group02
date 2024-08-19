@@ -5,7 +5,7 @@ import Analytics from "../components/Analytics.jsx"
 import Message from "../components/Message.jsx"
 import Tools from "../components/Tool.jsx"
 import Setting from "../components/Setting.jsx"
-import DashboardStudent from "../components/DasboardStudent.jsx"
+import DashboardStudent from "../components/StudentDashboard.jsx"
 
 const StudentHomePage = () => {
     const [isDarkMode, setIsDarkMode] = useState(false)
