@@ -1,11 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const CheckEmail = () => {
   const navigate = useNavigate();
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <Navbar />
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full">
         <h1 className="text-3xl font-bold text-gray-800 mb-4">Check Your Email</h1>
         <p className="text-gray-600 mb-6">

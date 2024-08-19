@@ -33,7 +33,7 @@ const SignUp = () => {
       navigate("/check-email")
     } catch (error) {
       console.error(error)
-      setErrorMessage("Something went wrong. Please try again.")
+      setErrorMessage("Something went wrong. Please try again!")
     }
   }
 
@@ -61,12 +61,12 @@ const SignUp = () => {
   const handleNextStep = (e) => {
     e.preventDefault()
     if (!isEmailValid(email)) {
-      setErrorMessage("Invalid email")
+      setErrorMessage("Invalid email!")
       console.log("Invalid email")
       return
     }
     if (!isPasswordValid(password)) {
-      setErrorMessage("Password must contain at least 8 characters, one uppercase, one lowercase, one number")
+      setErrorMessage("Password must contain at least 8 characters, including uppercase, lowercase, and numbers!")
       console.log("Invalid password")
       return
     }
@@ -87,39 +87,38 @@ const SignUp = () => {
       return
     }
     if (!isEmailValid(email)) {
-      setErrorMessage("Invalid email")
+      setErrorMessage("Invalid email!")
       return
     }
     if (!isPasswordValid(password)) {
-      setErrorMessage("Password must contain at least 8 characters, one uppercase, one lowercase, one number")
+      setErrorMessage("Password must contain at least 8 characters, including uppercase, lowercase, and numbers!")
       return
     }
     if (!isUsernameValid(username)) {
-      setErrorMessage("Username must be alphanumeric and have at least 2 characters and maximum 50 characters allow underscore, dot")
+      setErrorMessage("Username must be alphanumeric and have at least 2 characters and maximum 50 characters allow underscore, dot!")
       return
     }
     if (!firstName) {
-      setErrorMessage("First name is required")
+      setErrorMessage("First name is required!")
       return
     }
     if (!lastName) {
-      setErrorMessage("Last name is required")
+      setErrorMessage("Last name is required!")
       return
     }
     if (!dateOfBirth) {
-      setErrorMessage("Date of birth is required")
+      setErrorMessage("Date of birth is required!")
       return
     }
     if (!gender) {
-      setErrorMessage("Gender is required")
+      setErrorMessage("Gender is required!")
       return
     }
     if (!role) {
-      setErrorMessage("Role is required")
+      setErrorMessage("Role is required!")
       return
     }
     setErrorMessage("")
-    //backend
     console.log({ email, password, username, firstName, lastName, dateOfBirth, gender, role })
     setPasswordMatch(true)
     navigate("/")

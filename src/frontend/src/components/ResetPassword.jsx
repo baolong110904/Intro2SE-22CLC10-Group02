@@ -15,12 +15,17 @@ const LoadingIcon = () => (
 const ResetPassword = () => {
   const [email, setEmail] = useState("")
   const [newPassword, setNewPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [message, setMessage] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [token, setToken] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const location = useLocation()
+
+  const isPasswordValid = (password) => {
+    return /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(password)
+  }
 
   useEffect(() => {
     const accessToken = localStorage.getItem("token")
@@ -46,6 +51,14 @@ const ResetPassword = () => {
     setErrorMessage("")
     if (!token) {
       setErrorMessage("No token available. Cannot reset password!")
+      return
+    }
+    if (!isPasswordValid(newPassword)) {
+      setErrorMessage("Password must contain at least 8 characters, including uppercase, lowercase, and numbers!")
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setErrorMessage("Passwords do not match!")
       return
     }
     try {
@@ -127,6 +140,25 @@ const ResetPassword = () => {
                         placeholder="Enter your new password"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+
+                    {/* Confirm Password input */}
+                    <div className="relative mb-6">
+                      <label
+                        htmlFor="confirmPassword"
+                        className="block mb-2 text-neutral-500 dark:text-neutral-400"
+                      >
+                        Confirm Password
+                      </label>
+                      <input
+                        type="password"
+                        className="peer block min-h-[auto] w-full rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
+                        id="confirmPassword"
+                        placeholder="Confirm your new password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                       />
                     </div>

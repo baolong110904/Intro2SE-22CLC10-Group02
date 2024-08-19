@@ -11,6 +11,7 @@ import StudentHomePage from "./pages/StudentHomePage.jsx"
 import CheckEmail from "./components/CheckEmail.jsx"
 import RequestResetPassword from "./components/RequestResetPassword.jsx"
 import ResetPassword from "./components/ResetPassword.jsx"
+import { AdminPage } from "./admin/AdminPage.jsx"
 function App() {
   // State to manage whether to show Login or Signup page
   const location = useLocation()
@@ -31,6 +32,7 @@ function App() {
         <Route path="/check-email" element={<CheckEmail />} />
         <Route path="/request-reset-password" element={<RequestResetPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/admin/*" element={<AdminPage />} />
       </Routes>
     </>
   )
