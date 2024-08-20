@@ -1,5 +1,6 @@
 package com.g2.lls.domains;
 
+import com.g2.lls.events.listener.CourseListener;
 import com.g2.lls.utils.security.SecurityUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EntityListeners(CourseListener.class)
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +38,9 @@ public class Course {
     // references documents
     @Column(name = "document_id")
     private String documentId;
+
+    @Column(name = "price")
+    private Long price;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Material> materials;

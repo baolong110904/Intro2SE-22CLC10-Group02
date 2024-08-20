@@ -47,6 +47,21 @@ public class VNPayController {
 //    }
     @GetMapping("/vn-pay/callback")
     public ResponseEntity<Void> payCallbackHandler(HttpServletRequest request) {
+        /*
+         * vnp_Amount=1000000&
+         * vnp_BankCode=NCB&
+         * vnp_BankTranNo=VNP14558521&
+         * vnp_CardType=ATM&
+         * vnp_OrderInfo=Thanh+toan+don+hang%3A05805233&
+         * vnp_PayDate=20240818212258&
+         * vnp_ResponseCode=00&
+         * vnp_TmnCode=6TP2XWK4&
+         * vnp_TransactionNo=14558521&
+         * vnp_TransactionStatus=00&
+         * vnp_TxnRef=39007802&
+         * vnp_SecureHash=dd65bb8450f490b2e9071613b98b8deac0d1a6e4c7e2d69767ccb5a911cce7e270de67b444e9120810e83b5a1a5b3d9987f296f60bbfb326d5b520a3e1194b7a
+         */
+        System.out.println("Callback");
         String status = request.getParameter("vnp_ResponseCode");
         String orderId = request.getParameter("vnp_TxnRef");
 

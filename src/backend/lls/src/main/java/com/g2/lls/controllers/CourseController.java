@@ -1,9 +1,15 @@
 package com.g2.lls.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.g2.lls.domains.Course;
 import com.g2.lls.dtos.CourseDTO;
+import com.g2.lls.dtos.CourseFilterDTO;
 import com.g2.lls.dtos.response.*;
+import com.g2.lls.services.CourseRedisService;
 import com.g2.lls.services.CourseService;
+import com.g2.lls.utils.CustomHeaders;
 import com.g2.lls.utils.TimeUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,6 +26,7 @@ import java.util.List;
 @Slf4j
 public class CourseController {
     private final CourseService courseService;
+    private final CourseRedisService courseRedisService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<CourseResponse>> createCourse(@RequestBody CourseDTO courseDTO) throws Exception {
@@ -31,13 +38,25 @@ public class CourseController {
     public ThumbnailResponse uploadAvatar(
             @PathVariable Long id,
             @ModelAttribute("file") MultipartFile file) throws Exception {
-        return courseService.uploadThumnailForCourse(id,file);
+        return courseService.uploadThumbnailForCourse(id,file);
     }
 
-    @GetMapping("/overview")
-    public ResponseEntity<ApiResponse<List<CourseResponse>>> getAllCourses() throws Exception {
-        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
-                courseService.getAllCourses(), TimeUtil.getTime()));
+    @PostMapping("/all")
+    public ResponseEntity<?> getAllCourses(
+            @Valid @RequestBody CourseFilterDTO courseFilterDTO) throws Exception {
+
+        List<CourseResponse> coursesResponses = courseRedisService.getAllCourses(courseFilterDTO);
+
+        if(coursesResponses == null) {
+            coursesResponses = courseService.getAllCourses(courseFilterDTO);
+            courseRedisService.saveAllCourses(
+                coursesResponses,
+                courseFilterDTO
+            );
+        }
+        return ResponseEntity.ok().body(coursesResponses);
+//        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
+//                courseService.getAllCourses(courseFilterDTO)  , TimeUtil.getTime()));
     }
 
     @GetMapping("/{id}")
@@ -57,16 +76,18 @@ public class CourseController {
             @PathVariable Long id) throws Exception {
         courseService.deleteCourse(id);
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
-                "User deleted", TimeUtil.getTime()));
+                "Course deleted", TimeUtil.getTime()));
     }
 
-    @PostMapping("/{courseId}/{studentId}")
-    public ResponseEntity<ApiResponse<CourseResponse>> addStudentToCourse(
-            @PathVariable Long courseId, @PathVariable Long studentId
+    @PostMapping("/add-student")
+    public ResponseEntity<ApiResponse<List<CourseResponse>>> addStudentToCourse(
+            @RequestBody List<Long> courseIds,
+            @RequestParam String email
     ) throws Exception {
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
-                courseService.addStudent(courseId, studentId), TimeUtil.getTime()));
+                courseService.addStudent(courseIds, email), TimeUtil.getTime()));
     }
+
 
     @PutMapping("/{courseId}/{studentId}")
     public ResponseEntity<ApiResponse<CourseResponse>> removeStudentToCourse(

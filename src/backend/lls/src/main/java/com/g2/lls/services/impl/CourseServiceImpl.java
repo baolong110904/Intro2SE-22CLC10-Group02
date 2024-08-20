@@ -3,6 +3,7 @@ package com.g2.lls.services.impl;
 import com.g2.lls.domains.Course;
 import com.g2.lls.domains.User;
 import com.g2.lls.dtos.CourseDTO;
+import com.g2.lls.dtos.CourseFilterDTO;
 import com.g2.lls.dtos.response.CourseResponse;
 import com.g2.lls.dtos.response.MaterialResponse;
 import com.g2.lls.dtos.response.ThumbnailResponse;
@@ -11,21 +12,26 @@ import com.g2.lls.repositories.UserRepository;
 import com.g2.lls.services.CourseService;
 import com.g2.lls.services.UserService;
 import com.g2.lls.utils.security.SecurityUtil;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
 @Service
+@Transactional
 public class CourseServiceImpl implements CourseService {
     private final CourseRepository courseRepository;
     private final UserService userService;
     private final UserRepository userRepository;
     private final CloudinaryServiceImpl cloudinaryServiceImpl;
+    private final UserServiceImpl userServiceImpl;
     private ModelMapper modelMapper;
 
     @Override
@@ -54,8 +60,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseResponse> getAllCourses() throws Exception {
-        List<Course> courses = courseRepository.findAll();
+    public List<CourseResponse> getAllCourses(CourseFilterDTO courseFilterDTO) throws Exception {
+        List<Course> courses = courseRepository.findAll(courseFilterDTO);
         List<CourseResponse> courseResponses = new ArrayList<>();
         for(Course course : courses) {
             courseResponses.add(convertToCourseResponse(course));
@@ -94,8 +100,25 @@ public class CourseServiceImpl implements CourseService {
     public CourseResponse updateCourse(Long id, CourseDTO courseDTO) throws Exception {
         Optional<Course> course = courseRepository.findById(id);
         if (course.isPresent()) {
-            courseRepository.save(modelMapper.map(courseDTO, Course.class));
-            return convertToCourseResponse(course.get());
+             Course currenCourse = course.get();
+
+            Field[] courseDTOFields = courseDTO.getClass().getDeclaredFields();
+            Field[] currenCourseFields = currenCourse.getClass().getDeclaredFields();
+
+            for (Field courseField : currenCourseFields) {
+                for (Field courseDTOField : courseDTOFields) {
+                    if (courseDTOField.getName().equals(courseField.getName())) {
+                        courseField.setAccessible(true);
+                        courseDTOField.setAccessible(true);
+                        if (courseDTOField.get(courseDTO) != null && courseDTOField.get(courseDTO) != "") {
+                            courseField.set(currenCourse, courseDTOField.get(courseDTO));
+                        }
+                    }
+                }
+            }
+
+             courseRepository.save(currenCourse);
+             return convertToCourseResponse(course.get());
         }
         else {
             throw new Exception();
@@ -103,23 +126,21 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseResponse addStudent(Long id, Long studentId) throws Exception {
-        Optional<Course> course = courseRepository.findById(id);
-        Optional<User> user = userRepository.findById(studentId);
-        if (course.isPresent() && user.isPresent()) {
-            Course currentCourse = course.get();
-            List<User> currentUsers = currentCourse.getUsers();
+    public List<CourseResponse> addStudent(List<Long> courseIds, String email) throws Exception {
+        List<Course> courses = courseRepository.findByIdIn(courseIds);
+        User user = userServiceImpl.fetchUserByEmail(email);
+        List<CourseResponse> courseResponses = new ArrayList<>();
 
-            if(!currentUsers.contains(user.get())) {
-                currentUsers.addLast(user.get());
-                currentCourse.setUsers(currentUsers);
-                courseRepository.save(currentCourse);
+        for (Course course : courses) {
+            List<User> currentUsers = course.getUsers();
+            if(!currentUsers.contains(user)) {
+                currentUsers.addLast(user);
+                course.setUsers(currentUsers);
+                courseRepository.save(course);
             }
-            return convertToCourseResponse(course.get());
+            courseResponses.add(convertToCourseResponse(course));
         }
-        else {
-            throw new Exception();
-        }
+        return courseResponses;
     }
 
     @Override
@@ -148,7 +169,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public ThumbnailResponse uploadThumnailForCourse(Long id, MultipartFile file) throws Exception {
+    public ThumbnailResponse uploadThumbnailForCourse(Long id, MultipartFile file) throws Exception {
         return cloudinaryServiceImpl.updateThumbnail(id, file);
     }
 }

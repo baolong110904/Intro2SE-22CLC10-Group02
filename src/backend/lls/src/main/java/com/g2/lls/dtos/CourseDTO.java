@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CourseDTO {
-
     @NotBlank
     private String name;
 
@@ -22,6 +21,9 @@ public class CourseDTO {
     @NotBlank
     @JsonProperty("start_date")
     private String startDate;
+
+    @NotBlank
+    private Long price;
 
 //    @NotBlank
 //    @JsonProperty("level_id")

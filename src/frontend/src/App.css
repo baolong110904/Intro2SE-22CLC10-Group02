@@ -141,3 +141,110 @@ input[type="password"]::-ms-clear {
   background-color: #007bff; /* Change to your preferred selection background color */
   color: white; /* Change to your preferred selection text color */
 }
+
+.cart-dropdown {
+  position: fixed;
+  top: 85px; /* Điều chỉnh vị trí từ trên xuống nếu cần */
+  right: 60px; /* Điều chỉnh vị trí từ bên phải nếu cần */
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 400px; /* Điều chỉnh chiều rộng nếu cần */
+  max-height: 400px; /* Giới hạn chiều cao nếu cần */
+  overflow-y: auto; /* Thêm thanh cuộn dọc nếu danh sách quá dài */
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cart-item img {
+  width: 100px; /* Điều chỉnh kích thước hình ảnh */
+  height: 50px;
+  object-fit: cover; /* Đảm bảo hình ảnh không bị méo */
+  margin-right: 10px;
+}
+
+.cart-item-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-item-info .course-name {
+  font-weight: bold;
+}
+
+.cart-item-info .course-price {
+  color: #666;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+}
+
+.remove-cart-button {
+  background-color: #ff4d4d; /* Màu nền đỏ sáng */
+  color: #fff; /* Màu chữ trắng */
+  border: none;
+  border-radius: 4px; /* Bo tròn góc */
+  padding: 6px 12px; /* Khoảng cách bên trong */
+  cursor: pointer;
+  font-size: 14px; /* Kích thước chữ */
+  font-weight: bold; /* Chữ đậm */
+  transition: background-color 0.3s, transform 0.2s; /* Hiệu ứng chuyển màu và zoom */
+  position: absolute; /* Định vị tuyệt đối để điều chỉnh vị trí chính xác */
+  right: 10px; /* Cách lề phải 10px */
+  top: 50%; /* Căn giữa theo chiều dọc */
+  transform: translateY(-50%); /* Căn giữa chính xác theo chiều dọc */
+  z-index: 1; /* Đảm bảo nút nằm trên các phần tử khác */
+}
+
+.remove-cart-button:hover {
+  background-color: #ff3333; /* Màu nền đỏ đậm khi hover */
+  transform: scale(1.05); /* Phóng to một chút khi hover */
+}
+
+.remove-cart-button:focus {
+  outline: none; /* Bỏ viền khi focus */
+  box-shadow: 0 0 0 2px rgba(255, 77, 77, 0.5); /* Hiệu ứng viền khi focus */
+}
+
+.cart-total {
+  display: flex;
+  justify-content: space-between; /* Căn chỉnh nội dung sang hai bên */
+  padding-top: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.checkout-button {
+  background-color: #4CAF50; /* Màu nền xanh lá cây */
+  color: #fff; /* Màu chữ trắng */
+  border: none;
+  border-radius: 4px; /* Bo tròn góc */
+  padding: 6px 12px; /* Khoảng cách bên trong */
+  cursor: pointer;
+  font-size: 14px; /* Kích thước chữ */
+  font-weight: bold; /* Chữ đậm */
+  transition: background-color 0.3s, transform 0.2s; /* Hiệu ứng chuyển màu và zoom */
+}
+
+.checkout-button:hover {
+  background-color: #45a049; /* Màu nền xanh lá cây đậm khi hover */
+  transform: scale(1.05); /* Phóng to một chút khi hover */
+}
+
+.checkout-button:focus {
+  outline: none; /* Bỏ viền khi focus */
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5); /* Hiệu ứng viền khi focus */
+}

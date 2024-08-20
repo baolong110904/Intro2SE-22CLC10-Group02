@@ -13,6 +13,8 @@ import java.time.Instant;
 @Builder
 public class CourseResponse {
 
+    private Long id;
+
     @JsonProperty("course_name")
     private String name;
 
@@ -49,4 +51,8 @@ public class CourseResponse {
 
     @JsonProperty("number_of_student")
     private int numStudent = 0;
+
+    private Long price;
+
+    private String email;
 }
