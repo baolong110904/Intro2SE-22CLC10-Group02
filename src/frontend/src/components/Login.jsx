@@ -6,8 +6,7 @@ import LoginService from "../api/auth/LoginService"
 import VerifyRoleService from "../api/auth/VerifyRoleService"
 import Footer from "./Footer"
 import Navbar from "./Navbar"
-
-const loginImg = "https://imgur.com/lZDCpNR.png"
+import loginImg from "../assets/login.png"
 
 // const Login = ({ isOpen, onClose }) => {
 const Login = () => {

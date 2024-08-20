@@ -1,7 +1,6 @@
 import React from "react"
 import "react-responsive-carousel/lib/styles/carousel.min.css"
-
-const banner1 = "https://imgur.com/7kCBjTT.png"
+import banner1 from "../assets/banner.png"
 
 const Banner = () => {
   return (

@@ -5,8 +5,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi"
 import Footer from "./Footer"
 import Navbar from "./Navbar"
 import SignupService from "../api/auth/SignupService"
-
-const signUpImg = "https://imgur.com/aTIxqDa.png"
+import signUpImg from "../assets/register.png"
 
 // const SignUp = ({ isOpen, onClose }) => {
 const SignUp = () => {

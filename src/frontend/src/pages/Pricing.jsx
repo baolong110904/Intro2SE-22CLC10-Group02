@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import green from "../assets/green.png";
+import red from "../assets/red.png";
 
 const Pricing = () => {
   const [isYearly, setIsYearly] = useState(false)
@@ -37,8 +39,8 @@ const Pricing = () => {
           availableInPremium: false,
         },
       ],
-      green: "https://imgur.com/OUVC8sX.png",
-      red: "https://imgur.com/xdLfK6i.png",
+      green: green,
+      red: red,
     },
     {
       name: "Premium",
@@ -73,8 +75,8 @@ const Pricing = () => {
           availableInPremium: true,
         },
       ],
-      green: "https://imgur.com/OUVC8sX.png",
-      red: "https://imgur.com/xdLfK6i.png",
+      green: green,
+      red: red,
     },
   ]
 

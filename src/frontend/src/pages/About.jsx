@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from "react"
 import "https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"
 import "https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+import aboutImg1 from "../assets/about.png"
 
 const About = () => {
   const [shown, setShown] = useState(false)
   const aboutRef = useRef(null)
-  const aboutImg1 = "https://i.imgur.com/AjsvMzm.png"
 
   useEffect(() => {
     const options = {

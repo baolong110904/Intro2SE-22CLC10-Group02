@@ -2,21 +2,22 @@ import React, { useState } from "react"
 import { Carousel } from "react-responsive-carousel"
 import "react-responsive-carousel/lib/styles/carousel.min.css"
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md"
+import featuredImg1 from "../assets/feature1.png"
+import featuredImg2 from "../assets/feature2.png"
+import featuredImg3 from "../assets/feature3.png"
 
-const a1 = "https://imgur.com/3HVA7k7.png"
-const a2 = "https://imgur.com/rC0dndm.png"
-const a3 = "https://imgur.com/LSf6nJK.png"
-const a4 = "https://imgur.com/Avoi7N7.png"
-const a5 = "https://imgur.com/VIE1dbG.png"
-const a6 = "https://imgur.com/hqx98Pe.png"
-const a7 = "https://imgur.com/6z5kZ8H.png"
-const b1 = "https://imgur.com/gzKd5ZK.png"
-const b2 = "https://imgur.com/cROJfdB.png"
-const b3 = "https://imgur.com/UiydXwq.png"
-const images = [a1, a2, a3, a4, a5, a6, a7]
-const featuredImg1 = "https://imgur.com/TRnNjkq.png"
-const featuredImg2 = "https://imgur.com/ZBmNwDM.png"
-const featuredImg3 = "https://imgur.com/nACjgMp.png"
+import b1 from "../assets/b1.png"
+import b2 from "../assets/b2.png"
+import b3 from "../assets/b3.png"
+import china from "../assets/china.png"
+import japan from "../assets/japan.png"
+import korea from "../assets/korea.png"
+import spain from "../assets/spain.png"
+import france from "../assets/france.png"
+import germany from "../assets/germany.png"
+import america from "../assets/america.png"
+
+const images = [china, america, france, germany, korea, japan, spain]
 
 const carousels = [
   [
