@@ -204,5 +204,32 @@ export default {
         }
       },
     },
-    plugins: ["babel-plugin-react-css-modules"],
+    plugins: [
+        require("@tailwindcss/forms"),
+        "babel-plugin-react-css-modules",
+      ],
+      plugins: ["babel-plugin-react-css-modules"],
+      // Add safelist here to handle dynamic classes
+      safelist: [
+        {
+          pattern: /bg-(indigo|gray|green|blue|red|purple)-500/,
+          variants: ['hover', 'focus'],
+        },
+        {
+          pattern: /bg-(indigo|gray|green|blue|red|purple)-200/,
+          variants: ['hover', 'focus'],
+        },
+        {
+          pattern: /text-(indigo|gray|green|blue|red|purple)-400/,
+          variants: ['hover', 'focus'],
+        },
+        'bg-blue-600',
+        'text-white',
+        'rounded-full',
+        'w-7',
+        'h-7',
+        'flex',
+        'items-center',
+        'justify-center',
+      ],    
   }

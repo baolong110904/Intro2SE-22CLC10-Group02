@@ -1,5 +1,4 @@
 import React, {useState, useContext, useEffect} from "react";
-// import ContextWrapper from "./ContextWrapper";
 import Sidebar from "./Sidebar"
 import Month from "./Month"
 import CalendarHeader from "./CalendarHeader"

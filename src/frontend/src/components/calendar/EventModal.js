@@ -2,11 +2,11 @@ import React, { useContext, useState } from "react";
 import GlobalContext from "./GlobalContext";
 
 const labelsClasses = [
-  // "orange",
+  "indigo",
   "gray",
-  // "green",
+  "green",
   "blue",
-  // "red",
+  "red",
   "purple",
 ];
 
@@ -49,7 +49,7 @@ export default function EventModal() {
   }
   return (
     <div className="h-screen w-full fixed left-0 top-0 flex justify-center items-center">
-      <form className="bg-orange-400 rounded-lg shadow-2xl w-1/4">
+      <form className="bg-white rounded-lg shadow-2xl w-1/4">
         <header className="bg-gray-100 px-4 py-2 flex justify-between items-center">
           <span className="material-icons-outlined text-gray-400">
             drag_handle
