@@ -1,22 +1,15 @@
-import React, { useState, useEffect } from "react"
-import { startOfWeek } from "date-fns"
-import {
-  ScheduleComponent,
-  ViewsDirective,
-  ViewDirective,
-  Day,
-  Week,
-  WorkWeek,
-  Month,
-  Agenda,
-  Inject,
-  Resize,
-  DragAndDrop,
-} from "@syncfusion/ej2-react-schedule"
-import { DatePickerComponent } from "@syncfusion/ej2-react-calendars"
-import "@syncfusion/ej2-base/styles/material.css"
-import "@syncfusion/ej2-react-schedule/styles/material.css"
-import { scheduleData } from "../data/calendar"
+
+import React, { useState, useEffect, useContext } from "react";
+// import CalendarHeader from "./calendar/CalendarHeader.js";
+// import CreateEventButton from "./calendar/CreateEventButton.js";
+// import Month from "./calendar/Month.js";
+// import Sidebar from "./calendar/Sidebar.js";
+import ContextWrapper from "./calendar/ContextWrapper.js";
+// import EventModal from "./calendar/EventModal.js";
+// import GlobalContext from "./calendar/GlobalContext.js"
+// import {getMonth} from "./calendar/util.js"
+
+import Calendar from "./calendar/Calendar.js"
 
 const posts = [
   {
@@ -37,71 +30,23 @@ const posts = [
     },
   },
   // More posts...
-]
+];
 
 const Dashboard = () => {
-  const [currentTime, setCurrentTime] = useState(new Date())
-  const [currentWeek, setCurrentWeek] = useState(
-    startOfWeek(new Date(), { weekStartsOn: 1 }),
-  )
-  const [scheduleObj, setScheduleObj] = useState(null)
-  const [activeSection, setActiveSection] = useState("timetable") // State to manage active section
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 1000) // Update every second
-
-    return () => clearInterval(timer)
-  }, [])
-
-  const change = (args) => {
-    setCurrentWeek(args.value)
-    if (scheduleObj) {
-      scheduleObj.selectedDate = args.value
-      scheduleObj.dataBind()
-    }
-  }
-
-  const onDragStart = (args) => {
-    console.log("Drag start:", args)
-  }
+  const [activeSection, setActiveSection] = useState("timetable");
+  // const [currenMonth, setCurrentMonth] = useState(getMonth());
+  // const { monthIndex, showEventModal } = useContext(GlobalContext);
 
   const renderActiveSection = () => {
     switch (activeSection) {
       case "timetable":
-        return (
-          <>
-            <ScheduleComponent
-              key={currentWeek} // Add key to ensure proper updates
-              height="450px"
-              ref={(schedule) => setScheduleObj(schedule)}
-              selectedDate={currentWeek}
-              eventSettings={{ dataSource: scheduleData }}
-              dragStart={onDragStart}
-            >
-              <ViewsDirective>
-                <ViewDirective option="Day" />
-                <ViewDirective option="Week" />
-                <ViewDirective option="WorkWeek" />
-                <ViewDirective option="Month" />
-                <ViewDirective option="Agenda" />
-              </ViewsDirective>
-              <Inject
-                services={[Day, Week, WorkWeek, Month, Agenda, Resize, DragAndDrop]}
-              />
-            </ScheduleComponent>
-            <div className="mt-5">
-              <DatePickerComponent
-                value={currentWeek}
-                showClearButton={false}
-                placeholder="Current Date"
-                floatLabelType="Always"
-                change={change}
-              />
-            </div>
-          </>
-        )
+      return (
+          <React.StrictMode>
+          <ContextWrapper>
+          <Calendar/>
+          </ContextWrapper>
+          </React.StrictMode>
+      );
       case "teachingSessions":
         return (
           <div className="bg-white py-24 sm:py-32">
@@ -110,9 +55,6 @@ const Dashboard = () => {
                 <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
                   YOUR CLASSES
                 </h2>
-                {/* <p className="mt-2 text-lg leading-8 text-gray-600">
-                  Learn how to grow your business with our expert advice.
-                </p> */}
               </div>
               <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
                 {posts.map((post) => (
@@ -163,17 +105,17 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-        )
+        );
       case "lessonSupport":
-        return <div>My Lesson Support sessions</div>
+        return <div>My Lesson Support sessions</div>;
       case "teachingSupport":
-        return <div>My Teaching Support sessions</div>
+        return <div>My Teaching Support sessions</div>;
       case "ea":
-        return <div>EA</div>
+        return <div>EA</div>;
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <div
@@ -184,47 +126,65 @@ const Dashboard = () => {
         <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">
           Dashboard
         </h2>
-        <div className="flex space-x-2">
-          {/* Add any additional top controls or information here if needed */}
-        </div>
+        <div className="flex space-x-2"></div>
       </div>
       <div className="mb-6 flex flex-wrap space-x-4">
         <button
-          className={`px-4 py-2 ${activeSection === "timetable" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
+          className={`px-4 py-2 ${
+            activeSection === "timetable"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+          } rounded-md`}
           onClick={() => setActiveSection("timetable")}
         >
           Timetable
         </button>
         <button
-          className={`px-4 py-2 ${activeSection === "teachingSessions" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
+          className={`px-4 py-2 ${
+            activeSection === "studyingSessions"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+          } rounded-md`}
           onClick={() => setActiveSection("teachingSessions")}
         >
-          My Teaching classes
+          My Teaching Sessions
         </button>
         <button
-          className={`px-4 py-2 ${activeSection === "lessonSupport" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
-          onClick={() => setActiveSection("lessonSupport")}
+          className={`px-4 py-2 ${
+            activeSection === "lessonSupport"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+          } rounded-md`}
+          onClick={() => setActiveSection("materials")}
         >
-          My Lesson Support sessions
+          Materials
         </button>
         <button
-          className={`px-4 py-2 ${activeSection === "teachingSupport" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
-          onClick={() => setActiveSection("teachingSupport")}
+          className={`px-4 py-2 ${
+            activeSection === "teachingSupport"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+          } rounded-md`}
+          onClick={() => setActiveSection("onlineMeeting")}
         >
-          My Teaching Support sessions
+          Online Meeting
         </button>
         <button
-          className={`px-4 py-2 ${activeSection === "ea" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
-          onClick={() => setActiveSection("ea")}
+          className={`px-4 py-2 ${
+            activeSection === "ea"
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+          } rounded-md`}
+          onClick={() => setActiveSection("forum")}
         >
-          EA
+          Forum
         </button>
       </div>
       <div className="relative bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
         {renderActiveSection()}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
