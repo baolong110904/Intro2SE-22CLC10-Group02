@@ -1,14 +1,13 @@
 
-import React, { useState, useEffect, useContext } from "react";
-// import CalendarHeader from "./calendar/CalendarHeader.js";
-// import CreateEventButton from "./calendar/CreateEventButton.js";
-// import Month from "./calendar/Month.js";
-// import Sidebar from "./calendar/Sidebar.js";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Step 1: Import useNavigate
 import ContextWrapper from "./calendar/ContextWrapper.js";
-// import EventModal from "./calendar/EventModal.js";
-// import GlobalContext from "./calendar/GlobalContext.js"
-// import {getMonth} from "./calendar/util.js"
-
+import ava1 from "../assets/ava1.png";
+import ava2 from "../assets/ava2.png";
+import recording from "../assets/recording.png";
+import screensharing from "../assets/screensharing.png";
+import virtualbg from "../assets/virtualbg.png";
+import shareexperience from "../assets/shareexperience.png";
 import Calendar from "./calendar/Calendar.js"
 
 const posts = [
@@ -34,6 +33,7 @@ const posts = [
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("timetable");
+  const navigate = useNavigate();
   // const [currenMonth, setCurrentMonth] = useState(getMonth());
   // const { monthIndex, showEventModal } = useContext(GlobalContext);
 
@@ -106,12 +106,123 @@ const Dashboard = () => {
             </div>
           </div>
         );
-      case "lessonSupport":
-        return <div>My Lesson Support sessions</div>;
-      case "teachingSupport":
-        return <div>My Teaching Support sessions</div>;
-      case "ea":
-        return <div>EA</div>;
+      case "materials":
+          return <div>Materials</div>;
+      case "onlineMeeting":
+        return (
+          <div className="p-8 bg-white rounded-lg shadow-lg">
+            {/* Header Section */}
+            <div className="text-center mb-8">
+              <h1 className="text-4xl font-bold mb-2">Welcome to the Meeting</h1>
+              <p className="text-gray-600 mb-4">
+                Join the meeting to collaborate with others
+              </p>
+              <button
+                className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+                onClick={() => navigate("/onlineMeeting")} // Navigate to /onlineMeeting
+              >
+                Join Now
+              </button>
+            </div>
+
+            {/* Features, Feedback, Highlights Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Meeting Features */}
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">Meeting Features</h2>
+                <ul className="space-y-4">
+                  <li className="flex items-center">
+                    <img
+                      src={screensharing}
+                      alt="Feature 1"
+                      className="w-16 h-16 rounded-lg"
+                    />
+                    <div className="ml-4">
+                      <h3 className="font-semibold">Screen Sharing</h3>
+                      <p className="text-green-600">Enabled</p>
+                    </div>
+                  </li>
+                  <li className="flex items-center">
+                    <img
+                      src={recording}
+                      alt="Feature 2"
+                      className="w-16 h-16 rounded-lg"
+                    />
+                    <div className="ml-4">
+                      <h3 className="font-semibold">Recording</h3>
+                      <p className="text-green-600">Enabled</p>
+                    </div>
+                  </li>
+                  <li className="flex items-center">
+                    <img
+                      src={virtualbg}
+                      alt="Feature 3"
+                      className="w-16 h-16 rounded-lg"
+                    />
+                    <div className="ml-4">
+                      <h3 className="font-semibold">Virtual Backgrounds</h3>
+                      <p className="text-green-600">Enabled</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Meeting Feedback */}
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">Meeting Feedback</h2>
+                <div className="space-y-4">
+                  <div className="bg-gray-100 p-4 rounded-lg shadow">
+                    <p className="font-semibold">Great meeting, very informative</p>
+                    <div className="flex items-center mt-2">
+                      <span className="text-yellow-500">★★★★★</span>
+                      <div className="ml-4 flex items-center">
+                        <img
+                          src={ava1} // Replace with actual avatar path
+                          alt="John Doe Avatar"
+                          className="w-8 h-8 rounded-full"
+                        />
+                        <span className="ml-2 text-gray-600">John Doe</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-gray-100 p-4 rounded-lg shadow">
+                    <p className="font-semibold">Enjoyed the interactive session</p>
+                    <div className="flex items-center mt-2">
+                      <span className="text-yellow-500">★★★★★</span>
+                      <div className="ml-4 flex items-center">
+                        <img
+                          src={ava2}// Replace with actual avatar path
+                          alt="Jane Smith Avatar"
+                          className="w-8 h-8 rounded-full"
+                        />
+                        <span className="ml-2 text-gray-600">Jane Smith</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Meeting Highlights */}
+              <div>
+                <h2 className="text-2xl font-semibold mb-4">Meeting Highlights</h2>
+                <div className="bg-gray-100 p-4 rounded-lg shadow">
+                  <img
+                    src={shareexperience}
+                    alt="Highlight"
+                    className="w-full rounded-lg mb-4"
+                  />
+                  <p className="font-semibold">
+                    Great collaboration today! #TeamWork
+                  </p>
+                  <p className="text-gray-600">- @grace</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case "forum":
+        return <div>Forum</div>;
       default:
         return null;
     }
@@ -141,7 +252,7 @@ const Dashboard = () => {
         </button>
         <button
           className={`px-4 py-2 ${
-            activeSection === "studyingSessions"
+            activeSection === "teachingSessions"
               ? "bg-blue-500 text-white"
               : "bg-gray-200 dark:bg-gray-700 dark:text-white"
           } rounded-md`}
@@ -151,7 +262,7 @@ const Dashboard = () => {
         </button>
         <button
           className={`px-4 py-2 ${
-            activeSection === "lessonSupport"
+            activeSection === "materials"
               ? "bg-blue-500 text-white"
               : "bg-gray-200 dark:bg-gray-700 dark:text-white"
           } rounded-md`}
@@ -161,7 +272,7 @@ const Dashboard = () => {
         </button>
         <button
           className={`px-4 py-2 ${
-            activeSection === "teachingSupport"
+            activeSection === "onlineMeeting"
               ? "bg-blue-500 text-white"
               : "bg-gray-200 dark:bg-gray-700 dark:text-white"
           } rounded-md`}
@@ -171,7 +282,7 @@ const Dashboard = () => {
         </button>
         <button
           className={`px-4 py-2 ${
-            activeSection === "ea"
+            activeSection === "forum"
               ? "bg-blue-500 text-white"
               : "bg-gray-200 dark:bg-gray-700 dark:text-white"
           } rounded-md`}
