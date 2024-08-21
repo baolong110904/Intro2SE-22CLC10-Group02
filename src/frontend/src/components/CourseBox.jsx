@@ -1,39 +1,17 @@
 import React from "react";
 import { Box, Grid, Button, Typography } from "@mui/material";
 import SchoolIcon from '@mui/icons-material/School';
+import GetUserCourses from "../api/courses/GetUserCourse";
 
-const languageCourses = [
-    {
-      id: 1,
-      course_name: "Spanish for Beginners",
-      description: "Learn the basics of the Spanish language, including vocabulary, grammar, and pronunciation, with real-life scenarios.",
-      thumbnail: "https://example.com/spanish-thumbnail.jpg",
-    },
-    {
-      id: 2,
-      course_name: "French Essentials",
-      description: "Master essential French phrases and grammar rules to communicate effectively in everyday situations.",
-      thumbnail: "https://example.com/french-thumbnail.jpg",
-    },
-    {
-      id: 3,
-      course_name: "Mandarin Chinese Basics",
-      description: "Start learning Mandarin Chinese with an emphasis on pronunciation, common phrases, and basic writing.",
-      thumbnail: "https://example.com/mandarin-thumbnail.jpg",
-    },
-    {
-      id: 4,
-      course_name: "German for Travelers",
-      description: "Get familiar with German language essentials, perfect for travelers looking to navigate Germany with confidence.",
-      thumbnail: "https://example.com/german-thumbnail.jpg",
-    },
-    {
-      id: 5,
-      course_name: "Japanese Language and Culture",
-      description: "Explore the Japanese language along with cultural nuances, focusing on conversational skills and etiquette.",
-      thumbnail: "https://example.com/japanese-thumbnail.jpg",
-    },
-  ];
+let languageCourses = []
+
+const email = localStorage.getItem("email")
+const role = localStorage.getItem("role")
+
+let curentCourses = await GetUserCourses(email, role);
+console.log(curentCourses)
+
+languageCourses = curentCourses.data.data
   
 
 const CourseGrid = () => {
@@ -121,7 +99,7 @@ const CourseGrid = () => {
                   },
                 }}
               >
-                Learn
+                View
               </Button>
             </Box>
           </Box>
