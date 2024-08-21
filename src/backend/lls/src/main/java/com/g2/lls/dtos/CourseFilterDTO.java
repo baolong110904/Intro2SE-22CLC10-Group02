@@ -14,4 +14,5 @@ public class CourseFilterDTO {
     private Long minPrice;
     private Long maxPrice;
     private String language;
+    private String courseName;
 }

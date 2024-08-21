@@ -34,8 +34,10 @@ public class CourseRepositoryCustomImpl implements CourseRepositoryCustom {
             sql.append(" AND C.price" + " >= " + course.getMinPrice() + " ");
         if (course.getMaxPrice() != null)
             sql.append(" AND C.price" + " <= " + course.getMaxPrice() + " ");
+        if (course.getCourseName() != "")
+            sql.append(" AND C.name" + " LIKE '%" + course.getCourseName() + "%' ");
         if (course.getLanguage() != "")
-            sql.append(" AND C.name" + " LIKE '%" + course.getLanguage() + "%' ");
+            sql.append(" AND C.description" + " LIKE '%" + course.getLanguage() + "%' ");
         if (course.getFirstName() != "")
             sql.append(" AND U.first_name" + " LIKE '%" + course.getFirstName() + "%' ");
     }
