@@ -1,9 +1,12 @@
 import axiosInstance from "../axios/customAxios"
 
-const addStudentToCourses = async (courseIds) => {
+const addStudentToCourses = async (courseIds, orderId) => {
     try {
-        const res = await axiosInstance.post("/courses/add-student", courseIds, {
-            params: { email: localStorage.getItem("email")}})
+        const res = await axiosInstance.post("/courses/add-student", {
+          courseIds : courseIds,
+          email: localStorage.getItem("email"),
+          orderId: orderId
+        })
         return res
       } catch (err) {
         let error = ""

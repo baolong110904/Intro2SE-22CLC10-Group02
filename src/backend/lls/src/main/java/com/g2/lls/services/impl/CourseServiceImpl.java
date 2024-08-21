@@ -9,7 +9,7 @@ import com.g2.lls.dtos.response.MaterialResponse;
 import com.g2.lls.dtos.response.ThumbnailResponse;
 import com.g2.lls.repositories.CourseRepository;
 import com.g2.lls.repositories.UserRepository;
-import com.g2.lls.services.CourseRedisService;
+import com.g2.lls.services.RedisService;
 import com.g2.lls.services.CourseService;
 import com.g2.lls.services.UserService;
 import com.g2.lls.utils.security.SecurityUtil;
@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
     private final UserRepository userRepository;
     private final CloudinaryServiceImpl cloudinaryServiceImpl;
     private final UserServiceImpl userServiceImpl;
-    private final CourseRedisService courseRedisService;
+    private final RedisService redisService;
     private ModelMapper modelMapper;
 
     @Override
@@ -128,7 +128,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseResponse> addStudent(List<Long> courseIds, String email) throws Exception {
+    public List<CourseResponse> addStudent(List<Long> courseIds, String email, Long orderId) throws Exception {
+        if (!redisService.checkOrder(orderId)){
+            throw new Exception("Can not find this order or payment failed.");
+        }
+
         List<Course> courses = courseRepository.findByIdIn(courseIds);
         User user = userServiceImpl.fetchUserByEmail(email);
         List<CourseResponse> courseResponses = new ArrayList<>();
@@ -144,9 +148,9 @@ public class CourseServiceImpl implements CourseService {
             }
             courseResponses.add(convertToCourseResponse(course));
         }
-
         if (flag) {
-            courseRedisService.deleteCart(user.getId());
+            redisService.deleteCart(user.getId());
+            redisService.deleteOrder(orderId);
         }
 
         return courseResponses;

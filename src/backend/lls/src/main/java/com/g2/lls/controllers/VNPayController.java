@@ -2,6 +2,7 @@ package com.g2.lls.controllers;
 
 import com.g2.lls.dtos.response.ApiResponse;
 import com.g2.lls.dtos.response.VNPayResDTO;
+import com.g2.lls.services.RedisService;
 import com.g2.lls.services.VNPayService;
 import com.g2.lls.utils.TimeUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 public class VNPayController {
     private final VNPayService vnpayService;
+    private final RedisService redisService;
 
     @Value("${react.base-url}")
     private String reactBaseUrl;
@@ -68,6 +70,8 @@ public class VNPayController {
         if (status.equals("00")) {
             String reactAppUrl = String.format("%s/payment-success", reactBaseUrl);
             String redirectUrl = reactAppUrl + "?status=" + status + "&orderId=" + orderId;
+
+            redisService.addOrder(orderId, status);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(URI.create(redirectUrl));

@@ -15,7 +15,7 @@ public interface CourseService {
     CourseResponse getCourseById(Long id) throws Exception;
     void deleteCourse(Long id) throws Exception;
     CourseResponse updateCourse(Long id, CourseDTO courseDTO) throws Exception;
-    List<CourseResponse> addStudent(List<Long> courseIds, String email) throws Exception;
+    List<CourseResponse> addStudent(List<Long> courseIds, String email, Long orderId) throws Exception;
     CourseResponse removeStudent(Long id, Long studentId) throws Exception;
     MaterialResponse uploadMaterial(Long id, MultipartFile file) throws Exception;
     ThumbnailResponse uploadThumbnailForCourse(Long id, MultipartFile file) throws Exception;

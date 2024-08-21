@@ -1,10 +1,9 @@
 package com.g2.lls.events.listener;
 
 import com.g2.lls.domains.Course;
-import com.g2.lls.services.CourseRedisService;
-import com.g2.lls.services.impl.CourseRedisServiceImpl;
+import com.g2.lls.services.RedisService;
+import com.g2.lls.services.impl.RedisServiceImpl;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -13,11 +12,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class CourseListener {
 
-    private final CourseRedisService courseRedisService;
+    private final RedisService courseRedisService;
 
     private final Logger logger = LoggerFactory.getLogger(CourseListener.class);
 
-    public CourseListener(@Lazy CourseRedisServiceImpl courseRedisService) {
+    public CourseListener(@Lazy RedisServiceImpl courseRedisService) {
         this.courseRedisService = courseRedisService;
     }
 

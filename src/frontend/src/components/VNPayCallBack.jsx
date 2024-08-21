@@ -27,8 +27,9 @@ function PaymentCallback() {
       console.log(courses.data.data)
       const courseIds = courses.data.data.map(course => course.id);
       console.log(courseIds)
-      const response = await addStudentToCourses(courseIds)
+      const response = await addStudentToCourses(courseIds, orderId)
       console.log(response)
+      console.log(orderId)
       if (response.data.status === 200) {
         // Nếu xác nhận thành công, chuyển hướng đến trang thành công
         navigate('/student');

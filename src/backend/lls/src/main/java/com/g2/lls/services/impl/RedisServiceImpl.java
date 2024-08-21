@@ -6,8 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.g2.lls.domains.User;
 import com.g2.lls.dtos.CourseFilterDTO;
 import com.g2.lls.dtos.response.CourseResponse;
-import com.g2.lls.repositories.UserRepository;
-import com.g2.lls.services.CourseRedisService;
+import com.g2.lls.services.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CourseRedisServiceImpl implements CourseRedisService {
+public class RedisServiceImpl implements RedisService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
     private final UserServiceImpl userServiceImpl;
@@ -45,6 +44,36 @@ public class CourseRedisServiceImpl implements CourseRedisService {
     public void deleteCart(Long studentId) {
         String cartKey = "cart:" + studentId;
         redisTemplate.delete(cartKey);
+    }
+
+    @Override
+    public void addOrder(String orderId, String status) {
+        String orderKey = "order:" + orderId;
+        if ("00".equals(status)) {
+            redisTemplate.opsForSet().add(orderKey, "success");
+        } else {
+            redisTemplate.opsForSet().add(orderKey, "failed");
+        }
+    }
+
+
+    @Override
+    public boolean checkOrder(Long orderId) {
+        String orderKey = "order:" + orderId;
+        String keyType = redisTemplate.type(orderKey).code();
+
+        if ("set".equals(keyType)) {
+            return Boolean.TRUE.equals(redisTemplate.opsForSet().isMember(orderKey, "success"));
+        }
+
+        return false;
+    }
+
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        String orderKey = "order:" + orderId;
+        redisTemplate.delete(orderKey);
     }
 
     @Override

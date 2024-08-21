@@ -2,17 +2,14 @@ package com.g2.lls.controllers;
 
 import com.g2.lls.dtos.response.ApiResponse;
 import com.g2.lls.dtos.response.CourseResponse;
-import com.g2.lls.services.CourseRedisService;
+import com.g2.lls.services.RedisService;
 import com.g2.lls.services.CourseService;
 import com.g2.lls.utils.TimeUtil;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -23,7 +20,7 @@ import java.util.List;
 public class CartController {
 
     private final CourseService courseService;
-    private final CourseRedisService courseRedisService;
+    private final RedisService courseRedisService;
 
     @PostMapping()
     public ResponseEntity<ApiResponse<CourseResponse>> addCourseCart(

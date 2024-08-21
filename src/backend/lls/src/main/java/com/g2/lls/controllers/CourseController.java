@@ -1,13 +1,11 @@
 package com.g2.lls.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.g2.lls.domains.Course;
 import com.g2.lls.dtos.CourseDTO;
 import com.g2.lls.dtos.CourseFilterDTO;
+import com.g2.lls.dtos.CourseStudentRequestDTO;
 import com.g2.lls.dtos.response.*;
-import com.g2.lls.services.CourseRedisService;
+import com.g2.lls.services.RedisService;
 import com.g2.lls.services.CourseService;
-import com.g2.lls.utils.CustomHeaders;
 import com.g2.lls.utils.TimeUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +24,7 @@ import java.util.List;
 @Slf4j
 public class CourseController {
     private final CourseService courseService;
-    private final CourseRedisService courseRedisService;
+    private final RedisService courseRedisService;
 
     @PostMapping
     public ResponseEntity<ApiResponse<CourseResponse>> createCourse(@RequestBody CourseDTO courseDTO) throws Exception {
@@ -81,11 +79,10 @@ public class CourseController {
 
     @PostMapping("/add-student")
     public ResponseEntity<ApiResponse<List<CourseResponse>>> addStudentToCourse(
-            @RequestBody List<Long> courseIds,
-            @RequestParam String email
-    ) throws Exception {
+            @RequestBody CourseStudentRequestDTO courses
+            ) throws Exception {
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
-                courseService.addStudent(courseIds, email), TimeUtil.getTime()));
+                courseService.addStudent(courses.getCourseIds(), courses.getEmail(), courses.getOrderId()), TimeUtil.getTime()));
     }
 
 
