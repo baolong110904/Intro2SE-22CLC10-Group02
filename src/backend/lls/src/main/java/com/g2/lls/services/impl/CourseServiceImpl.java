@@ -9,6 +9,7 @@ import com.g2.lls.dtos.response.MaterialResponse;
 import com.g2.lls.dtos.response.ThumbnailResponse;
 import com.g2.lls.repositories.CourseRepository;
 import com.g2.lls.repositories.UserRepository;
+import com.g2.lls.services.CourseRedisService;
 import com.g2.lls.services.CourseService;
 import com.g2.lls.services.UserService;
 import com.g2.lls.utils.security.SecurityUtil;
@@ -32,6 +33,7 @@ public class CourseServiceImpl implements CourseService {
     private final UserRepository userRepository;
     private final CloudinaryServiceImpl cloudinaryServiceImpl;
     private final UserServiceImpl userServiceImpl;
+    private final CourseRedisService courseRedisService;
     private ModelMapper modelMapper;
 
     @Override
@@ -131,15 +133,22 @@ public class CourseServiceImpl implements CourseService {
         User user = userServiceImpl.fetchUserByEmail(email);
         List<CourseResponse> courseResponses = new ArrayList<>();
 
+        boolean flag = false;
         for (Course course : courses) {
             List<User> currentUsers = course.getUsers();
             if(!currentUsers.contains(user)) {
+                flag = true;
                 currentUsers.addLast(user);
                 course.setUsers(currentUsers);
                 courseRepository.save(course);
             }
             courseResponses.add(convertToCourseResponse(course));
         }
+
+        if (flag) {
+            courseRedisService.deleteCart(user.getId());
+        }
+
         return courseResponses;
     }
 

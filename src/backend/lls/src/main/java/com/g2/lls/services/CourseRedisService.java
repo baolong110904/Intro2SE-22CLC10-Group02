@@ -12,4 +12,5 @@ public interface CourseRedisService {
     CourseResponse addCourseToCart(CourseResponse courseResponse) throws Exception;
     List<CourseResponse> getCart(String email) throws Exception;
     List<CourseResponse> removeCourseFromCart(Long courseId, String email) throws Exception;
+    void deleteCart(Long studentId);
 }

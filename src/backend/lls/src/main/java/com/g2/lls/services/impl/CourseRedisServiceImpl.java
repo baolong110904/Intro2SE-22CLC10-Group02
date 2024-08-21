@@ -42,6 +42,12 @@ public class CourseRedisServiceImpl implements CourseRedisService {
     }
 
     @Override
+    public void deleteCart(Long studentId) {
+        String cartKey = "cart:" + studentId;
+        redisTemplate.delete(cartKey);
+    }
+
+    @Override
     public void saveAllCourses(List<CourseResponse> courses, CourseFilterDTO courseFilterDTO) throws JsonProcessingException {
         String key =  this.getKeyFrom(courseFilterDTO);
         String json = objectMapper.writeValueAsString(courses);
