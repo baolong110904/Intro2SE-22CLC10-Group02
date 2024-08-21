@@ -15,6 +15,7 @@ const Courses = () => {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
     const [products, setProducts] = useState([]);
+    const [courseName, setCourseName] = useState('');
     const [shouldFetch, setShouldFetch] = useState(true);
     const [cart, setCart] = useState([]);
     const [isCartVisible, setIsCartVisible] = useState(false);
@@ -79,6 +80,10 @@ const Courses = () => {
         setFirstName(searchTerm)
     };
 
+    const handleCourseName = (courseName) => {
+        setCourseName(courseName)
+    };
+
     const handleCategoryFilter = (language) => {
         setLanguage(language)
     };
@@ -101,6 +106,7 @@ const Courses = () => {
                 try {
                     const data = {
                         firstName: firstName,
+                        courseName : courseName,
                         language: language,
                         minPrice: minPrice,
                         maxPrice: maxPrice
@@ -119,7 +125,7 @@ const Courses = () => {
             }
         }
         fetchData();
-    }, [shouldFetch, firstName, language, minPrice, maxPrice]);
+    }, [shouldFetch, firstName, courseName, language, minPrice, maxPrice]);
 
     useEffect(() => {
         const fetchCart = async () => {
@@ -243,6 +249,31 @@ const Courses = () => {
                                 variant="outlined"
                                 size="small"
                                 onChange={(e) => handleSearch(e.target.value)}
+                                sx={{
+                                    '& .MuiOutlinedInput-root': {
+                                        '&:hover fieldset': {
+                                            borderColor: 'primary.main',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: 'primary.main',
+                                        },
+                                    },
+                                }}
+                            />
+                        </Box>
+
+                        <Box sx={{ mb: 3 }}>
+                            <Typography variant="body2" sx={{ mb: 1, fontWeight: 500 }}>
+                                Course name
+                            </Typography>
+                            <TextField
+                                fullWidth
+                                id="course_name"
+                                name="course_name"
+                                placeholder="Course name..."
+                                variant="outlined"
+                                size="small"
+                                onChange={(e) => handleCourseName(e.target.value)}
                                 sx={{
                                     '& .MuiOutlinedInput-root': {
                                         '&:hover fieldset': {
