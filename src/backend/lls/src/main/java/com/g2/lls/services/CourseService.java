@@ -19,4 +19,5 @@ public interface CourseService {
     CourseResponse removeStudent(Long id, Long studentId) throws Exception;
     MaterialResponse uploadMaterial(Long id, MultipartFile file) throws Exception;
     ThumbnailResponse uploadThumbnailForCourse(Long id, MultipartFile file) throws Exception;
+    List<CourseResponse> getUserCourses(String email, String role) throws Exception;
 }

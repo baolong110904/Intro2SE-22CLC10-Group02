@@ -85,6 +85,14 @@ public class CourseController {
                 courseService.addStudent(courses.getCourseIds(), courses.getEmail(), courses.getOrderId()), TimeUtil.getTime()));
     }
 
+    @GetMapping
+    public ResponseEntity<ApiResponse<List<CourseResponse>>> getUserCourses(
+            @RequestParam String email,
+            @RequestParam String role
+    ) throws Exception {
+        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
+                courseService.getUserCourses(email, role), TimeUtil.getTime()));
+    }
 
     @PutMapping("/{courseId}/{studentId}")
     public ResponseEntity<ApiResponse<CourseResponse>> removeStudentToCourse(

@@ -153,6 +153,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                             "POST", "Course")),
                     Map.entry("Update thumbnail", new Permission("Update thumbnail", String.format("/%s/courses/{id}/uploads/thumbnail", apiPrefix),
                             "POST", "Course"))
+//                    Map.entry("Get User's courses", new Permission("Get User's courses", String.format("/%s/courses", apiPrefix),
+//                            "GET", "Course"))
 //                    Map.entry("Get all courses", new Permission("Get all courses", String.format("/%s/courses/all", apiPrefix),
 //                            "POST", "Course")),
 //                    Map.entry("Add course to cart", new Permission("Add course to cart", String.format("/%s/courses/cart", apiPrefix),
@@ -190,6 +192,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             studentPermissions.add(permissions.get("Role").get("Verify a role"));
             studentPermissions.add(permissions.get("Course").get("Get a course"));
             studentPermissions.add(permissions.get("Course").get("Get course's details"));
+//            studentPermissions.add(permissions.get("Course").get("Get User's courses"));
 //            studentPermissions.add(permissions.get("Course").get("Get all courses"));
 //            studentPermissions.add(permissions.get("Course").get("Add course to cart"));
 //            studentPermissions.add(permissions.get("Course").get("Remove course from cart"));
@@ -371,6 +374,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .description("English class for beginner")
                     .isEnabled(true)
                     .price(200000l)
+                    .users(List.of(student1))
                     .build();
 
             courseRepository.saveAndFlush(course1);
@@ -382,6 +386,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .description("Japanese class for beginner")
                     .isEnabled(true)
                     .price(100000l)
+                    .users(List.of(student1, student2))
                     .build();
 
             courseRepository.saveAndFlush(course2);

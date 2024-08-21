@@ -7,6 +7,7 @@ import com.g2.lls.dtos.CourseFilterDTO;
 import com.g2.lls.dtos.response.CourseResponse;
 import com.g2.lls.dtos.response.MaterialResponse;
 import com.g2.lls.dtos.response.ThumbnailResponse;
+import com.g2.lls.enums.RoleType;
 import com.g2.lls.repositories.CourseRepository;
 import com.g2.lls.repositories.UserRepository;
 import com.g2.lls.services.RedisService;
@@ -184,5 +185,32 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public ThumbnailResponse uploadThumbnailForCourse(Long id, MultipartFile file) throws Exception {
         return cloudinaryServiceImpl.updateThumbnail(id, file);
+    }
+
+    @Override
+    public List<CourseResponse> getUserCourses(String email, String role) throws Exception {
+        List<CourseResponse> courseResponses = new ArrayList<>();
+        User user = userServiceImpl.fetchUserByEmail(email);
+
+        if (RoleType.STUDENT.toString().equals(role)) {
+            List<Course> courses = courseRepository.findAll();
+            for (Course course : courses) {
+                if(course.getUsers().contains(user)) {
+                    courseResponses.add(convertToCourseResponse(course));
+                }
+            }
+            return courseResponses;
+        }
+        else if (RoleType.TEACHER.toString().equals(role)) {
+            List<Course> courses = courseRepository.findAll();
+            for (Course course : courses) {
+                if(course.getTeacherId().equals(user.getId())) {
+                    courseResponses.add(convertToCourseResponse(course));
+                }
+            }
+            return courseResponses;
+        }
+
+        return null;
     }
 }
