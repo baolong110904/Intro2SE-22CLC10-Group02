@@ -11,10 +11,11 @@ const role = localStorage.getItem("role")
 let curentCourses = await GetUserCourses(email, role);
 console.log(curentCourses)
 
-languageCourses = curentCourses.data.data
+// languageCourses = curentCourses.data.data
   
 
 const CourseGrid = () => {
+  languageCourses = curentCourses.data.data
   return (
     <Grid container spacing={5}>
       {languageCourses.map((product) => (
