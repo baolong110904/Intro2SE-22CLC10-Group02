@@ -11,7 +11,11 @@ const role = localStorage.getItem("role")
 let curentCourses = await GetUserCourses(email, role);
 console.log(curentCourses)
 
+<<<<<<< HEAD
 // languageCourses = curentCourses.data.data
+=======
+
+>>>>>>> acbe9d927771bc94fe611895361efaa1625cc810
   
 
 const CourseGrid = () => {
