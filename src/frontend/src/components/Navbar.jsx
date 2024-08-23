@@ -74,11 +74,11 @@ const Navbar = () => {
 
   useEffect(() => {
     handleIsLogin()
-  }, []) 
+  }, [])
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 transition-all duration-300 z-50 bg-white dark:bg-gray-800 shadow-lg ${isScrolled ? 'shadow-md' : ''}`}
+      className={`fixed top-0 left-0 right-0 transition-all duration-300 z-50 bg-white dark:bg-gray-800 shadow-lg ${isScrolled ? "shadow-md" : ""}`}
     >
       <nav className="px-4 py-4 max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center">
@@ -94,7 +94,7 @@ const Navbar = () => {
             G2 <span className="text-black dark:text-white">Language Learning</span>
           </NavLink>
         </div>
-  
+
         <ul className="hidden lg:flex gap-6 xl:gap-12 text-lg">
           {navItems.map(({ link, path }) => (
             <li key={link}>
@@ -110,13 +110,22 @@ const Navbar = () => {
         </ul>
 
         <div className="hidden lg:flex gap-4 items-center">
-          <NavLink to="/search" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+          <NavLink
+            to="/search"
+            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          >
             <IoMdSearch className="w-5 h-5" />
           </NavLink>
-          <NavLink to="/profile" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+          <NavLink
+            to="/profile"
+            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          >
             <CgProfile className="w-5 h-5" />
           </NavLink>
-          <NavLink to="/cart" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+          <NavLink
+            to="/cart"
+            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          >
             <FaShoppingCart className="w-5 h-5" />
           </NavLink>
           <button

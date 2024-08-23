@@ -1,57 +1,56 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from 'react-router-dom';
-import { Box, Button, Typography, Modal, Grid } from "@mui/material";
-import SchoolIcon from '@mui/icons-material/School';
-import { useNavigate } from 'react-router-dom';
-import GetUserCourses from "../api/courses/GetUserCourse";
-import addStudentToCourses from "../api/courses/AddStudentToCourse";
+import React, { useEffect, useState } from "react"
+import { useLocation } from "react-router-dom"
+import { Box, Button, Typography, Modal, Grid } from "@mui/material"
+import SchoolIcon from "@mui/icons-material/School"
+import { useNavigate } from "react-router-dom"
+import GetUserCourses from "../api/courses/GetUserCourse"
+import addStudentToCourses from "../api/courses/AddStudentToCourse"
 
 const PaymentCallBack = () => {
-  const [openSuccessModal, setOpenSuccessModal] = useState(false);
-  const [openFailModal, setOpenFailModal] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-
+  const [openSuccessModal, setOpenSuccessModal] = useState(false)
+  const [openFailModal, setOpenFailModal] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
-    handleSuccessfulPayment(); // Tự động gọi hàm khi component được load
-  }, []);
+    handleSuccessfulPayment() // Tự động gọi hàm khi component được load
+  }, [])
 
   const handleSuccessfulPayment = async (orderId) => {
     try {
       const email = localStorage.getItem("email")
       const role = localStorage.getItem("role")
-      const searchParams = new URLSearchParams(location.search);
-      const status = searchParams.get('status');
-      const orderId = searchParams.get('orderId');
+      const searchParams = new URLSearchParams(location.search)
+      const status = searchParams.get("status")
+      const orderId = searchParams.get("orderId")
 
-      const courses = await GetUserCourses(email, role);
-      console.log(courses.data.data);
-      const courseIds = courses.data.data.map(course => course.id);
-      console.log(courseIds);
-      const response = await addStudentToCourses(courseIds, orderId);
-      console.log(response);
+      const courses = await GetUserCourses(email, role)
+      console.log(courses.data.data)
+      const courseIds = courses.data.data.map((course) => course.id)
+      console.log(courseIds)
+      const response = await addStudentToCourses(courseIds, orderId)
+      console.log(response)
 
       if (response.data.status === 200) {
-        setOpenSuccessModal(true); // Hiển thị modal thông báo thành công
+        setOpenSuccessModal(true) // Hiển thị modal thông báo thành công
       } else {
-        setOpenFailModal(true); // Hiển thị modal thông báo thất bại
+        setOpenFailModal(true) // Hiển thị modal thông báo thất bại
       }
     } catch (error) {
-      console.error('Error confirming payment:', error);
-      setOpenFailModal(true); // Hiển thị modal thông báo thất bại
+      console.error("Error confirming payment:", error)
+      setOpenFailModal(true) // Hiển thị modal thông báo thất bại
     }
-  };
+  }
 
   const handleCloseSuccessModal = () => {
-    setOpenSuccessModal(false);
-    navigate('/student'); // Điều hướng đến trang khóa học sau khi đóng modal
-  };
+    setOpenSuccessModal(false)
+    navigate("/student") // Điều hướng đến trang khóa học sau khi đóng modal
+  }
 
   const handleCloseFailModal = () => {
-    setOpenFailModal(false);
-    navigate('/courses');
-  };
+    setOpenFailModal(false)
+    navigate("/courses")
+  }
 
   return (
     <>
@@ -59,16 +58,16 @@ const PaymentCallBack = () => {
       <Modal open={openSuccessModal} onClose={handleCloseSuccessModal}>
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
             width: 400,
-            bgcolor: 'background.paper',
+            bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
             borderRadius: 2,
-            textAlign: 'center'
+            textAlign: "center",
           }}
         >
           <Typography variant="h6" gutterBottom>
@@ -83,10 +82,10 @@ const PaymentCallBack = () => {
             onClick={handleCloseSuccessModal}
             sx={{
               mt: 2,
-              backgroundColor: '#4CAF50',
-              color: '#ffffff',
-              '&:hover': {
-                backgroundColor: '#388E3C',
+              backgroundColor: "#4CAF50",
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "#388E3C",
               },
             }}
           >
@@ -99,16 +98,16 @@ const PaymentCallBack = () => {
       <Modal open={openFailModal} onClose={handleCloseFailModal}>
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
             width: 400,
-            bgcolor: 'background.paper',
+            bgcolor: "background.paper",
             boxShadow: 24,
             p: 4,
             borderRadius: 2,
-            textAlign: 'center'
+            textAlign: "center",
           }}
         >
           <Typography variant="h6" gutterBottom>
@@ -122,10 +121,10 @@ const PaymentCallBack = () => {
             onClick={handleCloseFailModal}
             sx={{
               mt: 2,
-              backgroundColor: '#f44336',
-              color: '#ffffff',
-              '&:hover': {
-                backgroundColor: '#d32f2f',
+              backgroundColor: "#f44336",
+              color: "#ffffff",
+              "&:hover": {
+                backgroundColor: "#d32f2f",
               },
             }}
           >
@@ -134,7 +133,7 @@ const PaymentCallBack = () => {
         </Box>
       </Modal>
     </>
-  );
-};
+  )
+}
 
-export default PaymentCallBack;
+export default PaymentCallBack

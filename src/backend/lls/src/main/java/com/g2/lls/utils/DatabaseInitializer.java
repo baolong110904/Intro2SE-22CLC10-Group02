@@ -1,6 +1,5 @@
 package com.g2.lls.utils;
 
-import com.beust.ah.A;
 import com.g2.lls.domains.*;
 import com.g2.lls.enums.GenderType;
 import com.g2.lls.enums.RoleType;
@@ -14,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -21,17 +21,18 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class DatabaseInitializer implements CommandLineRunner {
-    private final CourseRepository courseRepository;
-    private final ThumbnailRepository thumbnailRepository;
-    private final MaterialRepository materialRepository;
     @Value("${api.v1}")
     private String apiPrefix;
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
     private final AvatarRepository avatarRepository;
     private final PasswordEncoder passwordEncoder;
     private final PermissionRepository permissionRepository;
+    private final CourseRepository courseRepository;
+    private final ThumbnailRepository thumbnailRepository;
+    private final MaterialRepository materialRepository;
 
     @Override
     @Transactional
@@ -82,6 +83,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                             "GET", "User"),
                     "Get profile", new Permission("Get profile", String.format("/%s/users/profile", apiPrefix),
                             "GET", "User"),
+                    "Update address", new Permission("Update address", String.format("/%s/users/address", apiPrefix),
+                        "PUT", "User"),
                     "Update a user", new Permission("Update a user", String.format("/%s/users/{id}", apiPrefix),
                             "PUT", "User"),
                     "Delete a user", new Permission("Delete a user", String.format("/%s/users/{id}", apiPrefix),
@@ -236,6 +239,20 @@ public class DatabaseInitializer implements CommandLineRunner {
             Role role = roleRepository.findByName(RoleType.ADMIN);
             Set<Role> roles = new HashSet<>(Set.of(role));
 
+            Address address1 = Address.builder()
+                    .phoneNumber("")
+                    .country("")
+                    .city("")
+                    .province("")
+                    .district("")
+                    .ward("")
+                    .address("")
+                    .addressType("")
+                    .isDefault(true)
+                    .createdAt(Instant.now())
+                    .updatedAt(Instant.now())
+                    .build();
+            addressRepository.saveAndFlush(address1);
             Avatar avatarAdmin1 = Avatar.builder()
                     .publicId("g2/avatar/admin1")
                     .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
@@ -256,9 +273,26 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .lastName("Nguyen")
                     .description("Admin Account")
                     .avatar(avatarAdmin1)
+                    .address(address1)
                     .build();
             userRepository.saveAndFlush(admin1);
+            address1.setUser(admin1);
+            addressRepository.saveAndFlush(address1);
 
+            Address address2 = Address.builder()
+                    .phoneNumber("")
+                    .country("")
+                    .city("")
+                    .province("")
+                    .district("")
+                    .ward("")
+                    .address("")
+                    .addressType("")
+                    .isDefault(true)
+                    .createdAt(Instant.now())
+                    .updatedAt(Instant.now())
+                    .build();
+            addressRepository.saveAndFlush(address2);
             Avatar avatarAdmin2 = Avatar.builder()
                     .publicId("g2/avatar/admin2")
                     .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
@@ -279,9 +313,26 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .lastName("Nguyen")
                     .description("Admin Account")
                     .avatar(avatarAdmin2)
+                    .address(address2)
                     .build();
             userRepository.saveAndFlush(admin2);
+            address2.setUser(admin2);
+            addressRepository.saveAndFlush(address2);
 
+            Address address3 = Address.builder()
+                    .phoneNumber("")
+                    .country("")
+                    .city("")
+                    .province("")
+                    .district("")
+                    .ward("")
+                    .address("")
+                    .addressType("")
+                    .isDefault(true)
+                    .createdAt(Instant.now())
+                    .updatedAt(Instant.now())
+                    .build();
+            addressRepository.saveAndFlush(address3);
             Avatar avatarTeacher1 = Avatar.builder()
                     .publicId("g2/avatar/teacher1")
                     .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
@@ -302,8 +353,11 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .lastName("Nguyen")
                     .description("Teacher Account")
                     .avatar(avatarTeacher1)
+                    .address(address3)
                     .build();
             userRepository.saveAndFlush(teacher1);
+            address3.setUser(teacher1);
+            addressRepository.saveAndFlush(address3);
 
             Avatar avatarTeacher2 = Avatar.builder()
                     .publicId("g2/avatar/teacher2")
@@ -312,6 +366,20 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .build();
             avatarRepository.saveAndFlush(avatarTeacher2);
 
+            Address address4 = Address.builder()
+                    .phoneNumber("")
+                    .country("")
+                    .city("")
+                    .province("")
+                    .district("")
+                    .ward("")
+                    .address("")
+                    .addressType("")
+                    .isDefault(true)
+                    .createdAt(Instant.now())
+                    .updatedAt(Instant.now())
+                    .build();
+            addressRepository.saveAndFlush(address4);
             User teacher2 = User.builder()
                     .email("teacher2@gmail.com")
                     .password(passwordEncoder.encode("teacher2"))
@@ -325,9 +393,26 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .lastName("Nguyen")
                     .description("Teacher Account")
                     .avatar(avatarTeacher2)
+                    .address(address4)
                     .build();
             userRepository.saveAndFlush(teacher2);
+            address4.setUser(teacher2);
+            addressRepository.saveAndFlush(address4);
 
+            Address address5 = Address.builder()
+                    .phoneNumber("")
+                    .country("")
+                    .city("")
+                    .province("")
+                    .district("")
+                    .ward("")
+                    .address("")
+                    .addressType("")
+                    .isDefault(true)
+                    .createdAt(Instant.now())
+                    .updatedAt(Instant.now())
+                    .build();
+            addressRepository.saveAndFlush(address5);
             Avatar avatarStudent1 = Avatar.builder()
                     .publicId("g2/avatar/student1")
                     .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
@@ -348,9 +433,26 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .lastName("Nguyen")
                     .description("Student Account")
                     .avatar(avatarStudent1)
+                    .address(address5)
                     .build();
             userRepository.saveAndFlush(student1);
+            address5.setUser(student1);
+            addressRepository.saveAndFlush(address5);
 
+            Address address6 = Address.builder()
+                    .phoneNumber("")
+                    .country("")
+                    .city("")
+                    .province("")
+                    .district("")
+                    .ward("")
+                    .address("")
+                    .addressType("")
+                    .isDefault(true)
+                    .createdAt(Instant.now())
+                    .updatedAt(Instant.now())
+                    .build();
+            addressRepository.saveAndFlush(address6);
             Avatar avatarStudent2 = Avatar.builder()
                     .publicId("g2/avatar/student2")
                     .imageUrl("https://res.cloudinary.com/ds9macgdo/image/upload/v1719592662/g2/avatar/default.png")
@@ -371,9 +473,11 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .lastName("Nguyen")
                     .description("Student Account")
                     .avatar(avatarStudent2)
+                    .address(address6)
                     .build();
-
             userRepository.saveAndFlush(student2);
+            address6.setUser(student2);
+            addressRepository.saveAndFlush(address6);
 
             Course course1 = Course.builder()
                     .thumbnail(thumbnail)

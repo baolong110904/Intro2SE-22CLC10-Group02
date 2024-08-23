@@ -1,13 +1,16 @@
 package com.g2.lls.services.impl;
 
 import com.g2.lls.configs.security.user.CustomUserDetails;
+import com.g2.lls.domains.Address;
 import com.g2.lls.domains.Role;
+import com.g2.lls.dtos.AddressDTO;
 import com.g2.lls.dtos.LoginDTO;
 import com.g2.lls.dtos.UserDTO;
 import com.g2.lls.dtos.UserUpdateDTO;
 import com.g2.lls.dtos.response.*;
 import com.g2.lls.domains.User;
 import com.g2.lls.enums.RoleType;
+import com.g2.lls.repositories.AddressRepository;
 import com.g2.lls.repositories.RoleRepository;
 import com.g2.lls.repositories.UserRepository;
 import com.g2.lls.services.CloudinaryService;
@@ -42,7 +45,7 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    // private final AddressRepository addressRepository;
+    private final AddressRepository addressRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenUtil jwtTokenUtil;
@@ -119,6 +122,7 @@ public class UserServiceImpl implements UserService {
         //         .map(role -> role.getName().name())
         //         .collect(Collectors.toList()));
         userResponse.setRole(user.getRoles());
+        userResponse.setAddress(modelMapper.map(user.getAddress(), AddressDTO.class));
         return userResponse;
     }
 
@@ -248,5 +252,33 @@ public class UserServiceImpl implements UserService {
     public AvatarResponse getProfilePicture(String email) throws Exception {
         User user = fetchUserByEmail(email);
         return cloudinaryService.getAvatar(user.getId());
+    }
+
+    @Override
+    public AddressDTO updateUserAddress(String email, AddressDTO addressDTO) throws Exception {
+        User user = fetchUserByEmail(email);
+        Address address = user.getAddress();
+        
+        if (address == null) {
+            address = new Address();
+            user.setAddress(address);
+        }
+        
+        // Update address fields
+        address.setPhoneNumber(addressDTO.getPhoneNumber());
+        address.setCountry(addressDTO.getCountry());
+        address.setCity(addressDTO.getCity());
+        address.setProvince(addressDTO.getProvince());
+        address.setDistrict(addressDTO.getDistrict());
+        address.setWard(addressDTO.getWard());
+        address.setAddress(addressDTO.getAddress());
+        address.setAddressType(addressDTO.getAddressType());
+        address.setIsDefault(addressDTO.getIsDefault());
+        
+        // Save the address and user
+        addressRepository.save(address);
+        userRepository.save(user);
+        
+        return addressDTO;
     }
 }

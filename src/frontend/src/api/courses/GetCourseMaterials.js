@@ -1,15 +1,15 @@
 import axiosInstance from "../axios/customAxios"
 
 const GetCourseMaterials = async (courseId) => {
-  const email = localStorage.getItem("email");
-  const token = localStorage.getItem('token');
+  const email = localStorage.getItem("email")
+  const token = localStorage.getItem("token")
   console.log(token)
   try {
     const res = await axiosInstance.get("/courses/" + courseId + "/materials", {
       headers: {
-        'Authorization': `Bearer ${token}`,
-        'X-Auth-User-Email': email,
-      }
+        Authorization: `Bearer ${token}`,
+        "X-Auth-User-Email": email,
+      },
     })
     return res.data
   } catch (err) {

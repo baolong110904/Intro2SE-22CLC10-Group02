@@ -2,6 +2,7 @@ package com.g2.lls.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.g2.lls.domains.Role;
+import com.g2.lls.dtos.AddressDTO;
 import com.g2.lls.enums.GenderType;
 import lombok.*;
 
@@ -34,6 +35,8 @@ public class UserResponse {
     private GenderType gender;
 
     private String description;
+
+    private AddressDTO address;
 
     private String avatar;
 

@@ -13,9 +13,11 @@ import {
 import SexInput from "./SexInput"
 import { Typography, Box } from "@mui/material"
 
-const UserTitle = () =>{
+const UserTitle = () => {
   const record = useRecordContext()
-  return <span>User {record ? `"${record.first_name} ${record.last_name}"` : ""}</span>
+  return (
+    <span>User {record ? `"${record.first_name} ${record.last_name}"` : ""}</span>
+  )
 }
 
 export const UserEdit = () => (
@@ -25,23 +27,23 @@ export const UserEdit = () => (
         Personal Information
       </Typography>
       <TextInput source="id" disabled />
-      <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
-        <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-        <TextInput source="email" disabled />
+      <Box display={{ xs: "block", sm: "flex", width: "100%" }}>
+        <Box flex={1} mr={{ xs: 0, sm: "0.5em" }}>
+          <TextInput source="email" disabled />
         </Box>
-        <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
-        <TextInput source="username" isRequired />
+        <Box flex={1} ml={{ xs: 0, sm: "0.5em" }}>
+          <TextInput source="username" isRequired />
         </Box>
       </Box>
-      <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
-        <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+      <Box display={{ xs: "block", sm: "flex", width: "100%" }}>
+        <Box flex={1} mr={{ xs: 0, sm: "0.5em" }}>
           <TextInput source="first_name" isRequired />
         </Box>
-        <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
+        <Box flex={1} ml={{ xs: 0, sm: "0.5em" }}>
           <TextInput source="last_name" isRequired />
         </Box>
       </Box>
-      
+
       <DateInput source="date_of_birth" />
       <SexInput source="gender" />
       <Box mb={2} />

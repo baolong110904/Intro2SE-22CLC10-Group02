@@ -3,6 +3,13 @@ spring:
     name: lls
   profiles:
     active: dev # @spring.profiles.active@
+  # cloud:
+  #   gcp:
+  #     sql:
+  #       instance-connection-name: high-triode-423401-q3:asia-southeast1:lls
+  #       database-name: lls
+  #       credentials:
+  #         location: ${GOOGLE_APPLICATION_CREDENTIALS}
   datasource:
     url: ${DATABASE_URL}
     username: ${DATABASE_USERNAME}
@@ -14,6 +21,7 @@ spring:
   #    init:
   #      schema-locations: database.sql
   jpa:
+    database: mysql
     show-sql: false
     hibernate:
       ddl-auto: create-drop
@@ -50,17 +58,27 @@ spring:
 
 logging:
   level:
+    com:
+      google:
+        cloud:
+          sql: debug
+      zaxxer: 
+        hikari: debug
     root: info
     org:
-      springframework.security: debug
+      springframework:
+        security: debug
       hibernate:
         stat: debug
-        type.descriptor.sql: trace
+        type:
+          descriptor:
+            sql: trace
 
 server:
   error:
     include-message: always
   port: 8080
+  address: 0.0.0.0
 
 management:
   endpoints:

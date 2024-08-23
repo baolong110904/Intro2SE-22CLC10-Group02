@@ -1,11 +1,13 @@
 package com.g2.lls.services.impl;
 
+import com.g2.lls.domains.Address;
 import com.g2.lls.domains.Avatar;
 import com.g2.lls.domains.Role;
 import com.g2.lls.domains.User;
 import com.g2.lls.domains.VerificationToken;
 import com.g2.lls.dtos.SignUpDTO;
 import com.g2.lls.enums.RoleType;
+import com.g2.lls.repositories.AddressRepository;
 import com.g2.lls.repositories.AvatarRepository;
 import com.g2.lls.repositories.RoleRepository;
 import com.g2.lls.repositories.UserRepository;
@@ -30,6 +32,7 @@ import java.util.Set;
 public class RegistrationServiceImpl implements RegistrationService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final AddressRepository addressRepository;
     private final AvatarRepository avatarRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final PasswordEncoder passwordEncoder;
@@ -64,6 +67,24 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .isEnabled(false)
                 .isMfaEnabled(false)
                 .build();
+
+        Address address = Address.builder()
+            .phoneNumber("")
+            .country("")
+            .city("")
+            .province("")
+            .district("")
+            .ward("")
+            .address("")
+            .addressType("")
+            .isDefault(true)
+            .createdAt(Instant.now())
+            .updatedAt(Instant.now())
+            .build();
+        address.setUser(existingUser);
+        addressRepository.save(address);
+
+        existingUser.setAddress(address);
 
         Optional<Avatar> existingAvatar = avatarRepository.findById(1L);
 

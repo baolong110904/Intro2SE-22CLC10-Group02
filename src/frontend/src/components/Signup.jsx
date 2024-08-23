@@ -28,7 +28,16 @@ const SignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault()
     try {
-      const response = await SignupService(email, password, username, gender, firstName, lastName, dateOfBirth, role)
+      const response = await SignupService(
+        email,
+        password,
+        username,
+        gender,
+        firstName,
+        lastName,
+        dateOfBirth,
+        role,
+      )
       navigate("/check-email")
     } catch (error) {
       console.error(error)
@@ -65,7 +74,9 @@ const SignUp = () => {
       return
     }
     if (!isPasswordValid(password)) {
-      setErrorMessage("Password must contain at least 8 characters, including uppercase, lowercase, and numbers!")
+      setErrorMessage(
+        "Password must contain at least 8 characters, including uppercase, lowercase, and numbers!",
+      )
       console.log("Invalid password")
       return
     }
@@ -76,7 +87,7 @@ const SignUp = () => {
     setPasswordMatch(true)
     setCurrentStep(2)
     setErrorMessage("")
-    console.log("Moving to step 2");
+    console.log("Moving to step 2")
   }
 
   const handleSubmit = (e) => {
@@ -90,11 +101,15 @@ const SignUp = () => {
       return
     }
     if (!isPasswordValid(password)) {
-      setErrorMessage("Password must contain at least 8 characters, including uppercase, lowercase, and numbers!")
+      setErrorMessage(
+        "Password must contain at least 8 characters, including uppercase, lowercase, and numbers!",
+      )
       return
     }
     if (!isUsernameValid(username)) {
-      setErrorMessage("Username must be alphanumeric and have at least 2 characters and maximum 50 characters allow underscore, dot!")
+      setErrorMessage(
+        "Username must be alphanumeric and have at least 2 characters and maximum 50 characters allow underscore, dot!",
+      )
       return
     }
     if (!firstName) {
@@ -118,7 +133,16 @@ const SignUp = () => {
       return
     }
     setErrorMessage("")
-    console.log({ email, password, username, firstName, lastName, dateOfBirth, gender, role })
+    console.log({
+      email,
+      password,
+      username,
+      firstName,
+      lastName,
+      dateOfBirth,
+      gender,
+      role,
+    })
     setPasswordMatch(true)
     navigate("/")
   }
@@ -143,10 +167,13 @@ const SignUp = () => {
             onBlur={(e) => setEmail(e.target.value)}
           />
         </div>
-  
+
         {/* Password input */}
         <div className="relative mb-6">
-          <label htmlFor="signUpPassword" className="block mb-2 text-neutral-500 dark:text-neutral-400">
+          <label
+            htmlFor="signUpPassword"
+            className="block mb-2 text-neutral-500 dark:text-neutral-400"
+          >
             Password
           </label>
           <input
@@ -167,10 +194,13 @@ const SignUp = () => {
             {showPassword ? <FiEyeOff /> : <FiEye />}
           </button>
         </div>
-  
+
         {/* Confirm Password input */}
         <div className="relative mb-6">
-          <label htmlFor="confirmPassword" className="block mb-2 text-neutral-500 dark:text-neutral-400">
+          <label
+            htmlFor="confirmPassword"
+            className="block mb-2 text-neutral-500 dark:text-neutral-400"
+          >
             Confirm Password
           </label>
           <input
@@ -198,12 +228,10 @@ const SignUp = () => {
         </div>
 
         {/* Error message */}
-        {errorMessage && (
-          <div className="mb-4 text-red-500">{errorMessage}</div>
-        )}
+        {errorMessage && <div className="mb-4 text-red-500">{errorMessage}</div>}
       </form>
-    );
-  };
+    )
+  }
   const Step2 = () => {
     return (
       <div className="space-y-6">
@@ -246,7 +274,7 @@ const SignUp = () => {
         {/* Last name input */}
         <div className="relative mb-6">
           <label
-            htmlFor="lastName"  
+            htmlFor="lastName"
             className="block mb-2 text-neutral-500 dark:text-neutral-400"
           >
             Last Name
@@ -278,10 +306,13 @@ const SignUp = () => {
             onBlur={(e) => setDateOfBirth(e.target.value)}
           />
         </div>
-  
+
         {/* Gender selection */}
         <div className="relative mb-6">
-          <label htmlFor="gender" className="block mb-2 text-neutral-500 dark:text-neutral-400">
+          <label
+            htmlFor="gender"
+            className="block mb-2 text-neutral-500 dark:text-neutral-400"
+          >
             Gender
           </label>
           <select
@@ -295,11 +326,13 @@ const SignUp = () => {
             <option value="Female">Female</option>
           </select>
         </div>
-      
 
         {/* Role selection */}
         <div className="relative mb-6">
-          <label htmlFor="role" className="block mb-2 text-neutral-500 dark:text-neutral-400">
+          <label
+            htmlFor="role"
+            className="block mb-2 text-neutral-500 dark:text-neutral-400"
+          >
             Role
           </label>
           <select
@@ -315,12 +348,10 @@ const SignUp = () => {
         </div>
 
         {/* Error message */}
-        {errorMessage && (
-          <div className="mb-4 text-red-500">{errorMessage}</div>
-        )}
+        {errorMessage && <div className="mb-4 text-red-500">{errorMessage}</div>}
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div
@@ -372,9 +403,7 @@ const SignUp = () => {
 
                     <div className="lg:w-7/12 px-4 md:px-0">
                       <div className="md:p-12 md:mx-6">
-                        <div 
-                          className="text-center mb-10 sm:mt-20 logo-space"
-                        >
+                        <div className="text-center mb-10 sm:mt-20 logo-space">
                           <img
                             className="mx-auto w-36 transition-transform duration-300 ease-in-out hover:scale-110 active:scale-95 cursor-pointer"
                             src={logo}
@@ -391,7 +420,7 @@ const SignUp = () => {
                             Create your account
                           </p>
                         </form>
-                        
+
                         {currentStep === 1 ? (
                           <>
                             <Step1 />
@@ -417,7 +446,7 @@ const SignUp = () => {
                             </div>
                           </>
                         )}
-                        
+
                         <div className="flex items-center justify-between pb-6">
                           <p
                             className="mb-0 mr-2 text-black dark:text-neutral-200 account-link"

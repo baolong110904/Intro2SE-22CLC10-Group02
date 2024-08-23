@@ -1,5 +1,6 @@
 package com.g2.lls.domains;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.g2.lls.utils.security.SecurityUtil;
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,7 +10,8 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "addresses")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -45,8 +47,11 @@ public class Address {
     @Column(name = "is_default")
     private Boolean isDefault;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "user_id", nullable = false)
+    // private User user;
+    @OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
+    @JsonIgnore
     private User user;
 
     @Column(name = "created_at")

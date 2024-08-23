@@ -1,40 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { Box, Grid, Button, Typography, List, ListItem, ListItemText } from "@mui/material";
-import SchoolIcon from "@mui/icons-material/School";
-import GetUserCourses from "../api/courses/GetUserCourse";
-import DocumentCard from "./DocumentCard"; // Import DocumentCard
-import GetCourseMaterials from "../api/courses/GetCourseMaterials";
+import React, { useState, useEffect } from "react"
+import {
+  Box,
+  Grid,
+  Button,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material"
+import SchoolIcon from "@mui/icons-material/School"
+import GetUserCourses from "../api/courses/GetUserCourse"
+import DocumentCard from "./DocumentCard" // Import DocumentCard
+import GetCourseMaterials from "../api/courses/GetCourseMaterials"
 
 const CourseGrid = () => {
-  const [languageCourses, setLanguageCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const [documents, setDocuments] = useState([]);
+  const [languageCourses, setLanguageCourses] = useState([])
+  const [selectedCourse, setSelectedCourse] = useState(null)
+  const [documents, setDocuments] = useState([])
 
-  const email = localStorage.getItem("email");
-  const role = localStorage.getItem("role");
+  const email = localStorage.getItem("email")
+  const role = localStorage.getItem("role")
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        let currentCourses = await GetUserCourses(email, role);
-        setLanguageCourses(currentCourses.data.data);
+        let currentCourses = await GetUserCourses(email, role)
+        setLanguageCourses(currentCourses.data.data)
       } catch (error) {
-        console.error("Error fetching courses:", error);
+        console.error("Error fetching courses:", error)
       }
-    };
-    fetchCourses();
-  }, [email, role]);
+    }
+    fetchCourses()
+  }, [email, role])
 
   const handleViewDocuments = async (course) => {
     try {
-      setSelectedCourse(course);
-      const courseDocuments = await GetCourseMaterials(course.id);
+      setSelectedCourse(course)
+      const courseDocuments = await GetCourseMaterials(course.id)
       console.log(courseDocuments)
-      setDocuments(courseDocuments.data);
+      setDocuments(courseDocuments.data)
     } catch (error) {
-      console.error("Error fetching documents:", error);
+      console.error("Error fetching documents:", error)
     }
-  };
+  }
 
   return (
     <Box id="my-course">
@@ -49,14 +57,20 @@ const CourseGrid = () => {
           </Typography>
           <Box sx={{ mt: 2 }}>
             {documents.map((doc) => (
-              <DocumentCard key={doc.publicId} title={doc.title} link={doc.documentUrl} />
+              <DocumentCard
+                key={doc.publicId}
+                title={doc.title}
+                link={doc.documentUrl}
+              />
             ))}
           </Box>
         </Box>
       ) : (
         // Hiển thị danh sách các khóa học
         <div>
-          <h2 class="text-3xl font-bold text-gray-800 dark:text-white">My courses</h2>
+          <h2 class="text-3xl font-bold text-gray-800 dark:text-white">
+            My courses
+          </h2>
           <Grid container spacing={5} marginTop={1}>
             {languageCourses.map((course) => (
               <Grid item xs={12} sm={6} lg={4} key={course.id}>
@@ -137,9 +151,7 @@ const CourseGrid = () => {
                         color: "#ffffff",
                         "&:hover": {
                           backgroundColor: (theme) =>
-                            theme.palette.mode === "dark"
-                              ? "#2c5282"
-                              : "#3182ce",
+                            theme.palette.mode === "dark" ? "#2c5282" : "#3182ce",
                         },
                       }}
                     >
@@ -153,7 +165,7 @@ const CourseGrid = () => {
         </div>
       )}
     </Box>
-  );
-};
+  )
+}
 
-export default CourseGrid;
+export default CourseGrid

@@ -1,5 +1,6 @@
 package com.g2.lls.domains;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.g2.lls.enums.GenderType;
 import com.g2.lls.utils.security.SecurityUtil;
@@ -9,7 +10,6 @@ import org.hibernate.annotations.Nationalized;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -65,14 +65,19 @@ public class User {
     private Set<Role> roles;
 
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Course> courses;
 
-//    @ManyToOne
-//    @JoinColumn(name = "role_id")
-//    private Role role;
+    // @ManyToOne
+    // @JoinColumn(name = "role_id")
+    // private Role role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Address> address = new HashSet<>();
+    // @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    // private Set<Address> address = new HashSet<>();
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
     @Column(name = "refresh_token", columnDefinition = "MEDIUMTEXT")
     private String refreshToken;

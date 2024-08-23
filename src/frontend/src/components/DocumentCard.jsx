@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const DocumentCard = ({ title, link }) => {
   return (
@@ -14,8 +14,8 @@ const DocumentCard = ({ title, link }) => {
         </a>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const styles = {
   cardContainer: {
@@ -47,6 +47,6 @@ const styles = {
     fontWeight: "bold",
     transition: "color 0.3s ease",
   },
-};
+}
 
-export default DocumentCard;
+export default DocumentCard

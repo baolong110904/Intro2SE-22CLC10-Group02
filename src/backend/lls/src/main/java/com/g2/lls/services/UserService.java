@@ -1,6 +1,7 @@
 package com.g2.lls.services;
 
 import com.g2.lls.domains.User;
+import com.g2.lls.dtos.AddressDTO;
 import com.g2.lls.dtos.LoginDTO;
 import com.g2.lls.dtos.UserDTO;
 import com.g2.lls.dtos.UserUpdateDTO;
@@ -48,4 +49,6 @@ public interface UserService {
     User getUserByRefreshTokenAndEmail(String token, String email);
 
     AvatarResponse getProfilePicture(String email) throws Exception;
+
+    AddressDTO updateUserAddress(String email, AddressDTO addressDTO) throws Exception;
 }

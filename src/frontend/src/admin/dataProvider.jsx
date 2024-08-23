@@ -23,44 +23,57 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
     }
     switch (type) {
       case GET_LIST: {
-        const { page, perPage } = params.pagination;
-        const { field, order } = params.sort;
-        url = `${apiUrl}/${resource}?page=${page}&size=${perPage}&sort=${field},${order}`;
+        const { page, perPage } = params.pagination
+        const { field, order } = params.sort
+        url = `${apiUrl}/${resource}?page=${page}&size=${perPage}&sort=${field},${order}`
 
-        let filterParts = [];
+        let filterParts = []
 
-        let hasEnabledFilter = false;
-        let hasGenderFilter = false;
-        let hasRoleFilter = false;
+        let hasEnabledFilter = false
+        let hasGenderFilter = false
+        let hasRoleFilter = false
 
         if (params.filter) {
-          if (params.filter.isEnabled !== undefined && !hasEnabledFilter 
-              && (params.filter.isEnabled === true || params.filter.isEnabled === false)) {
-            hasEnabledFilter = true;
-            filterParts.push(`isEnabled:${params.filter.isEnabled}`);
+          if (
+            params.filter.isEnabled !== undefined &&
+            !hasEnabledFilter &&
+            (params.filter.isEnabled === true || params.filter.isEnabled === false)
+          ) {
+            hasEnabledFilter = true
+            filterParts.push(`isEnabled:${params.filter.isEnabled}`)
           }
 
-          if (params.filter.gender !== undefined && !hasGenderFilter
-              && (params.filter.gender === 'Male' || params.filter.gender === 'Female' || params.filter.gender === 'Other')) {
-            hasGenderFilter = true;
-            filterParts.push(`gender:'${params.filter.gender}'`);
+          if (
+            params.filter.gender !== undefined &&
+            !hasGenderFilter &&
+            (params.filter.gender === "Male" ||
+              params.filter.gender === "Female" ||
+              params.filter.gender === "Other")
+          ) {
+            hasGenderFilter = true
+            filterParts.push(`gender:'${params.filter.gender}'`)
           }
 
-          if (params.filter.roles?.name !== undefined && !hasRoleFilter
-              && (params.filter.roles.name === 'ADMIN' || params.filter.roles.name === 'STUDENT' || params.filter.roles.name === 'TEACHER')) {
-            hasRoleFilter = true;
-            filterParts.push(`roles.name:'${params.filter.roles.name}'`);
+          if (
+            params.filter.roles?.name !== undefined &&
+            !hasRoleFilter &&
+            (params.filter.roles.name === "ADMIN" ||
+              params.filter.roles.name === "STUDENT" ||
+              params.filter.roles.name === "TEACHER")
+          ) {
+            hasRoleFilter = true
+            filterParts.push(`roles.name:'${params.filter.roles.name}'`)
           }
         }
 
-        console.log("Filter parts:", filterParts);
+        console.log("Filter parts:", filterParts)
 
         if (filterParts.length > 0) {
-          url += `&filter=${filterParts.join(' and ')}`;
+          url += `&filter=${filterParts.join(" and ")}`
         }
 
-        console.log("Final URL:", url);
-        break;
+        console.log("Final URL:", url)
+        break
       }
       case GET_ONE:
         url = `${apiUrl}/${resource}/${params.id}`
@@ -79,39 +92,52 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
         const { field, order } = params.sort
         url = `${apiUrl}/${resource}?page=${page}&size=${perPage}&sort=${field},${order}`
 
-        let filterParts = [];
+        let filterParts = []
 
-        let hasEnabledFilter = false;
-        let hasGenderFilter = false;
-        let hasRoleFilter = false;
+        let hasEnabledFilter = false
+        let hasGenderFilter = false
+        let hasRoleFilter = false
 
         if (params.filter) {
-          if (params.filter.isEnabled !== undefined && !hasEnabledFilter 
-              && (params.filter.isEnabled === true || params.filter.isEnabled === false)) {
-            hasEnabledFilter = true;
-            filterParts.push(`isEnabled:${params.filter.isEnabled}`);
+          if (
+            params.filter.isEnabled !== undefined &&
+            !hasEnabledFilter &&
+            (params.filter.isEnabled === true || params.filter.isEnabled === false)
+          ) {
+            hasEnabledFilter = true
+            filterParts.push(`isEnabled:${params.filter.isEnabled}`)
           }
 
-          if (params.filter.gender !== undefined && !hasGenderFilter
-              && (params.filter.gender === 'Male' || params.filter.gender === 'Female' || params.filter.gender === 'Other')) {
-            hasGenderFilter = true;
-            filterParts.push(`gender:'${params.filter.gender}'`);
+          if (
+            params.filter.gender !== undefined &&
+            !hasGenderFilter &&
+            (params.filter.gender === "Male" ||
+              params.filter.gender === "Female" ||
+              params.filter.gender === "Other")
+          ) {
+            hasGenderFilter = true
+            filterParts.push(`gender:'${params.filter.gender}'`)
           }
 
-          if (params.filter.roles.name !== undefined && !hasRoleFilter
-              && (params.filter.roles.name === 'ADMIN' || params.filter.roles.name === 'STUDENT' || params.filter.roles.name === 'TEACHER')) {
-            hasRoleFilter = true;
-            filterParts.push(`roles.name:'${params.filter.roles.name}'`);
+          if (
+            params.filter.roles.name !== undefined &&
+            !hasRoleFilter &&
+            (params.filter.roles.name === "ADMIN" ||
+              params.filter.roles.name === "STUDENT" ||
+              params.filter.roles.name === "TEACHER")
+          ) {
+            hasRoleFilter = true
+            filterParts.push(`roles.name:'${params.filter.roles.name}'`)
           }
         }
 
-        console.log("Filter parts:", filterParts);
+        console.log("Filter parts:", filterParts)
 
         if (filterParts.length > 0) {
-          url += `&filter=${filterParts.join(' and ')}`;
+          url += `&filter=${filterParts.join(" and ")}`
         }
 
-        console.log("Final URL:", url);
+        console.log("Final URL:", url)
         break
       }
       case UPDATE:

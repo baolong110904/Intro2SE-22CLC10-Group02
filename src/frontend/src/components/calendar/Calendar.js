@@ -1,32 +1,32 @@
-import React, {useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react"
 import Sidebar from "./Sidebar"
 import Month from "./Month"
 import CalendarHeader from "./CalendarHeader"
-import {getMonth} from "./util"
+import { getMonth } from "./util"
 import GlobalContext from "./GlobalContext"
 import EventModal from "./EventModal"
 
-export default function Calendar(){
-    const [currenMonth, setCurrentMonth] = useState(getMonth());
-    const { monthIndex, showEventModal } = useContext(GlobalContext);
-    
-    useEffect(() => {
-        setCurrentMonth(getMonth(monthIndex));
-      }, [monthIndex]);
-    
-    return (
-        <React.Fragment>
-          {showEventModal && <EventModal />}
-    
-          <div className="h-screen flex flex-col">
-            <CalendarHeader />
-            <div className="flex flex-1">
-              <Sidebar />
-              <Month month={currenMonth} />
-            </div>
-          </div>
-        </React.Fragment>
-    );
+export default function Calendar() {
+  const [currenMonth, setCurrentMonth] = useState(getMonth())
+  const { monthIndex, showEventModal } = useContext(GlobalContext)
+
+  useEffect(() => {
+    setCurrentMonth(getMonth(monthIndex))
+  }, [monthIndex])
+
+  return (
+    <React.Fragment>
+      {showEventModal && <EventModal />}
+
+      <div className="h-screen flex flex-col">
+        <CalendarHeader />
+        <div className="flex flex-1">
+          <Sidebar />
+          <Month month={currenMonth} />
+        </div>
+      </div>
+    </React.Fragment>
+  )
 }
 
 // If you want to start measuring performance in your app, pass a function

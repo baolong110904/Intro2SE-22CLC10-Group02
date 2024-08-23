@@ -19,6 +19,7 @@ import { UserList } from "./user/UserList"
 import jsonServerProvider from "ra-data-json-server"
 import { Layout } from "./Layout"
 import { UserEdit } from "./user/UserEdit"
+import { UserShow } from "./user/UserShow"
 import PeopleIcon from "@mui/icons-material/People"
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser"
 import SecurityIcon from "@mui/icons-material/Security"
@@ -40,24 +41,24 @@ export const AdminPage = () => (
     <Resource
       name="users"
       list={UserList}
-      show={ShowGuesser}
+      show={UserShow}
       edit={UserEdit}
       create={EditGuesser}
       icon={PeopleIcon}
     />
 
-    <Resource 
-      name="roles" 
-      list={ListGuesser} 
+    <Resource
+      name="roles"
+      list={ListGuesser}
       edit={EditGuesser}
-      icon={VerifiedUserIcon} 
+      icon={VerifiedUserIcon}
     />
 
-    <Resource 
-      name="permissions" 
-      list={ListGuesser} 
+    <Resource
+      name="permissions"
+      list={ListGuesser}
       edit={EditGuesser}
-      icon={SecurityIcon} 
+      icon={SecurityIcon}
     />
   </Admin>
 )

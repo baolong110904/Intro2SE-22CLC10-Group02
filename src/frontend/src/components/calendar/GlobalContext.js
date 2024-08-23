@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const GlobalContext = React.createContext({
   monthIndex: 0,
@@ -17,6 +17,6 @@ const GlobalContext = React.createContext({
   labels: [],
   updateLabel: () => {},
   filteredEvents: [],
-});
+})
 
-export default GlobalContext;
+export default GlobalContext

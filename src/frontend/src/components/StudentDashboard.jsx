@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
-import ContextWrapper from "./calendar/ContextWrapper.js";
+import React, { useState, useEffect, useContext } from "react"
+import ContextWrapper from "./calendar/ContextWrapper.js"
 import GlobalContext from "./calendar/GlobalContext.js"
 import Calendar from "./calendar/Calendar.js"
-import {getMonth} from "./calendar/util.js"
+import { getMonth } from "./calendar/util.js"
 import CourseGrid from "./CourseBox.jsx"
 
 const posts = [
@@ -24,23 +24,23 @@ const posts = [
     },
   },
   // More posts...
-];
+]
 
 const Dashboard = () => {
-  const [activeSection, setActiveSection] = useState("timetable");
-  const [currenMonth, setCurrentMonth] = useState(getMonth());
-  const { monthIndex, showEventModal } = useContext(GlobalContext);
+  const [activeSection, setActiveSection] = useState("timetable")
+  const [currenMonth, setCurrentMonth] = useState(getMonth())
+  const { monthIndex, showEventModal } = useContext(GlobalContext)
 
   const renderActiveSection = () => {
     switch (activeSection) {
       case "timetable":
-      return (
+        return (
           <React.StrictMode>
-          <ContextWrapper>
-          <Calendar/>
-          </ContextWrapper>
+            <ContextWrapper>
+              <Calendar />
+            </ContextWrapper>
           </React.StrictMode>
-      );
+        )
       case "studyingSessions":
         return (
           <div className="bg-white py-24 sm:py-32">
@@ -52,22 +52,22 @@ const Dashboard = () => {
               </div>
               <div>
                 <React.StrictMode>
-                  <CourseGrid/>
+                  <CourseGrid />
                 </React.StrictMode>
               </div>
             </div>
           </div>
-        );
+        )
       case "lessonSupport":
-        return <div>My Lesson Support sessions</div>;
+        return <div>My Lesson Support sessions</div>
       case "teachingSupport":
-        return <div>My Teaching Support sessions</div>;
+        return <div>My Teaching Support sessions</div>
       case "ea":
-        return <div>EA</div>;
+        return <div>EA</div>
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <div
@@ -136,7 +136,7 @@ const Dashboard = () => {
         {renderActiveSection()}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

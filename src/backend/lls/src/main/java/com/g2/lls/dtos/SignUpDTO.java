@@ -31,9 +31,9 @@ public class SignUpDTO {
 
     private GenderType gender;
 
-//    @NotBlank(message = "Address ID can not be blank")
-    @JsonProperty("address_id")
-    private Long addressId;
+    // @NotBlank(message = "Address ID can not be blank")
+    // @JsonProperty("address_id")
+    // private Long addressId;
 
     @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;

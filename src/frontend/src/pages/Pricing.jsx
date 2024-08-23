@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import green from "../assets/green.png";
-import red from "../assets/red.png";
+import green from "../assets/green.png"
+import red from "../assets/red.png"
 
 const Pricing = () => {
   const [isYearly, setIsYearly] = useState(false)

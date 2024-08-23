@@ -1,10 +1,10 @@
-import React from "react";
-import Day from "./Day";
+import React from "react"
+import Day from "./Day"
 
 export default function Month({ month = [] }) {
   // Ensure month is defined and is an array
   if (!Array.isArray(month) || month.length === 0) {
-    return <div>No data available for this month</div>;
+    return <div>No data available for this month</div>
   }
   console.log(month)
   return (
@@ -17,5 +17,5 @@ export default function Month({ month = [] }) {
         </React.Fragment>
       ))}
     </div>
-  );
+  )
 }

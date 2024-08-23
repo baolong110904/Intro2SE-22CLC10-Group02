@@ -1,13 +1,9 @@
 import axiosInstance from "../axios/customAxios"
 
-const addStudentToCourses = async (courseIds, orderId) => {
+const GetAllCountries = async () => {
   try {
-    const res = await axiosInstance.post("/courses/add-student", {
-      courseIds: courseIds,
-      email: localStorage.getItem("email"),
-      orderId: orderId,
-    })
-    return res
+    const res = await axiosInstance.get("countries/cache")
+    return res.data
   } catch (err) {
     let error = ""
     if (err.response) {
@@ -21,4 +17,4 @@ const addStudentToCourses = async (courseIds, orderId) => {
   }
 }
 
-export default addStudentToCourses
+export default GetAllCountries

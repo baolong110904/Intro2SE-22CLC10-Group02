@@ -21,16 +21,15 @@ const RequestResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setMessage("") 
-    setErrorMessage("") 
+    setMessage("")
+    setErrorMessage("")
     try {
       const response = await ResetPasswordService.requestResetPassword(email)
       setMessage(response.data || "Request successful!")
     } catch (error) {
       const errorResponse = error.response?.data || {}
       setErrorMessage(
-        errorResponse.message || 
-        "An error occurred. Please try again later!"
+        errorResponse.message || "An error occurred. Please try again later!",
       )
     }
   }
@@ -88,9 +87,7 @@ const RequestResetPassword = () => {
                     )}
 
                     {/* Success message */}
-                    {message && (
-                      <div className="mb-4 text-green-500">{message}</div>
-                    )}
+                    {message && <div className="mb-4 text-green-500">{message}</div>}
 
                     {/* Submit button */}
                     <div className="mb-4 pb-1 pt-1 text-center">

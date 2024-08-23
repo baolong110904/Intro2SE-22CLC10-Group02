@@ -86,7 +86,10 @@ const Login = () => {
 
                 {/* Email input */}
                 <div>
-                  <label htmlFor="email" className="block mb-2 text-neutral-500 dark:text-neutral-400">
+                  <label
+                    htmlFor="email"
+                    className="block mb-2 text-neutral-500 dark:text-neutral-400"
+                  >
                     Email
                   </label>
                   <input
@@ -101,7 +104,10 @@ const Login = () => {
 
                 {/* Password input */}
                 <div className="relative">
-                  <label htmlFor="password" className="block mb-2 text-neutral-500 dark:text-neutral-400">
+                  <label
+                    htmlFor="password"
+                    className="block mb-2 text-neutral-500 dark:text-neutral-400"
+                  >
                     Password
                   </label>
                   <div className="relative">
@@ -124,16 +130,15 @@ const Login = () => {
                 </div>
 
                 {/* Error message */}
-                {errorMessage && (
-                  <div className="text-red-500">{errorMessage}</div>
-                )}
+                {errorMessage && <div className="text-red-500">{errorMessage}</div>}
 
                 {/* Submit button */}
                 <button
                   className="w-full py-2 text-white rounded-lg font-medium"
                   type="submit"
                   style={{
-                    background: "linear-gradient(to right, #54D9D1, #2B75E1, #5EA8E7, #1C41CD)",
+                    background:
+                      "linear-gradient(to right, #54D9D1, #2B75E1, #5EA8E7, #1C41CD)",
                   }}
                 >
                   Log in
@@ -141,10 +146,16 @@ const Login = () => {
 
                 {/* Links */}
                 <div className="flex flex-col sm:flex-row justify-between space-y-2 sm:space-y-0">
-                  <p className="text-cyan-950 dark:text-neutral-200 cursor-pointer" onClick={() => navigate("/request-reset-password")}>
+                  <p
+                    className="text-cyan-950 dark:text-neutral-200 cursor-pointer"
+                    onClick={() => navigate("/request-reset-password")}
+                  >
                     Forgot password?
                   </p>
-                  <p className="text-cyan-950 dark:text-neutral-200 cursor-pointer" onClick={() => navigate("/signup")}>
+                  <p
+                    className="text-cyan-950 dark:text-neutral-200 cursor-pointer"
+                    onClick={() => navigate("/signup")}
+                  >
                     Don't have an account?
                   </p>
                 </div>
@@ -155,7 +166,8 @@ const Login = () => {
             <div
               className="hidden lg:flex lg:w-4/12 flex-col"
               style={{
-                background: "linear-gradient(to right, #54D9D1, #2B75E1, #5EA8E7, #1C41CD)",
+                background:
+                  "linear-gradient(to right, #54D9D1, #2B75E1, #5EA8E7, #1C41CD)",
               }}
             >
               <div className="p-8 text-white flex-grow">
@@ -163,10 +175,9 @@ const Login = () => {
                   We are more than a learning language website
                 </h4>
                 <p className="text-sm">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                  sed do eiusmod tempor incididunt ut labore et dolore magna
-                  aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                  ullamco laboris
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                  ad minim veniam, quis nostrud exercitation ullamco laboris
                 </p>
               </div>
               <div className="mt-auto">

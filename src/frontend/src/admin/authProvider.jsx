@@ -55,16 +55,12 @@ const authProvider = {
 
   checkAuth: () => {
     console.log("Checking auth...")
-    return localStorage.getItem("token")
-      ? Promise.resolve()
-      : Promise.reject()
+    return localStorage.getItem("token") ? Promise.resolve() : Promise.reject()
   },
 
   getPermissions: () => {
     console.log("Getting permissions...")
-    return localStorage.getItem("token")
-      ? Promise.resolve()
-      : Promise.reject()
+    return localStorage.getItem("token") ? Promise.resolve() : Promise.reject()
     // return localStorage.getItem('role') ? Promise.resolve(localStorage.getItem('role')) : Promise.reject();
   },
 
@@ -93,12 +89,12 @@ const authProvider = {
     }
 
     const data = await response.json()
-    const user = data.data 
+    const user = data.data
 
     return Promise.resolve({
       id: user.email,
       fullName: `${user.first_name} ${user.last_name}`,
-      avatar: user.avatar || '',
+      avatar: user.avatar || "",
     })
   },
 }
