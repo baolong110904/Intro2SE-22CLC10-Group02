@@ -1,5 +1,6 @@
 .env
 src/main/resources/certs/
+src/main/resources/high-triode-423401-q3-e795be440b2f.json
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

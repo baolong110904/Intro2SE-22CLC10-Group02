@@ -211,9 +211,9 @@ public class DatabaseInitializer implements CommandLineRunner {
             List<Permission> teacherPermissions = new ArrayList<>();
             teacherPermissions.add(permissions.get("User").get("Get a user"));
             teacherPermissions.add(permissions.get("User").get("Update a user"));
-            studentPermissions.add(permissions.get("User").get("Get profile"));
-            studentPermissions.add(permissions.get("User").get("Upload avatar"));
-            studentPermissions.add(permissions.get("User").get("Get avatar"));
+            teacherPermissions.add(permissions.get("User").get("Get profile"));
+            teacherPermissions.add(permissions.get("User").get("Upload avatar"));
+            teacherPermissions.add(permissions.get("User").get("Get avatar"));
             teacherPermissions.add(permissions.get("Role").get("Verify a role"));
             teacherPermissions.addAll(coursePermissions);
             teacherPermissions.addAll(vnPayPermissions);

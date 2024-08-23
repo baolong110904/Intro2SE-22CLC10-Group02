@@ -114,6 +114,5 @@ public class User {
     private String secret;
 
     @Column(name = "is_enabled", columnDefinition = "BIT(1) DEFAULT FALSE")
-    @JsonProperty("is_enabled")
     private Boolean isEnabled;
 }

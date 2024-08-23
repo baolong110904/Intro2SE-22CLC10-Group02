@@ -64,6 +64,5 @@ public class UserDTO {
 
     private RoleType role;
 
-    @JsonProperty("is_enabled")
     private Boolean isEnabled;
 }

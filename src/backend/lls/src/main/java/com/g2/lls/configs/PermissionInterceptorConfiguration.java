@@ -29,6 +29,7 @@ public class PermissionInterceptorConfiguration implements WebMvcConfigurer {
                 String.format("/%s/hello-world", apiPrefix),
                 String.format("/%s/auth/**", apiPrefix),
                 String.format("/%s/users/avatar", apiPrefix),
+                String.format("/%s/users/users/profile", apiPrefix),
                 String.format("/%s/countries/**", apiPrefix),
                 String.format("/%s/payments/vn-pay/**", apiPrefix),
         };

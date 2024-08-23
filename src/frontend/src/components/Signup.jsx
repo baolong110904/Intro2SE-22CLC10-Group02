@@ -153,7 +153,7 @@ const SignUp = () => {
             type={showPassword ? "text" : "password"}
             className="block min-h-[auto] w-full rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
             id="signUpPassword"
-            placeholder="Password"
+            placeholder="Enter your password"
             defaultValue={password}
             onBlur={(e) => setPassword(e.target.value)}
             required
@@ -177,7 +177,7 @@ const SignUp = () => {
             type={showConfirmPassword ? "text" : "password"}
             className="block min-h-[auto] w-full rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
             id="confirmPassword"
-            placeholder="Confirm Password"
+            placeholder="Enter your password again"
             defaultValue={confirmPassword}
             onBlur={(e) => setConfirmPassword(e.target.value)}
             required
@@ -372,7 +372,9 @@ const SignUp = () => {
 
                     <div className="lg:w-7/12 px-4 md:px-0">
                       <div className="md:p-12 md:mx-6">
-                        <div className="text-center mb-10">
+                        <div 
+                          className="text-center mb-10 sm:mt-20 logo-space"
+                        >
                           <img
                             className="mx-auto w-36 transition-transform duration-300 ease-in-out hover:scale-110 active:scale-95 cursor-pointer"
                             src={logo}

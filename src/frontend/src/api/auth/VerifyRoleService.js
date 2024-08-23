@@ -3,6 +3,8 @@ import axiosInstance from "../axios/customAxios"
 const VerifyRoleService = async (email) => {
   try {
     const token = localStorage.getItem("token")
+    console.log("VerifyRoleService -> email", email)
+    console.log("VerifyRoleService -> token", token)
     const res = await axiosInstance.post(
       "/roles/verify",
       {},

@@ -54,7 +54,6 @@ public class UserResponse {
     @JsonProperty("updated_by")
     private String updatedBy;
 
-    @JsonProperty("is_enabled")
     private Boolean isEnabled;
 
     private Set<Role> role;

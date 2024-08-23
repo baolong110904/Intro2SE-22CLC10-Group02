@@ -36,7 +36,7 @@ public class RegistrationController {
         User user = registrationService.registerUser(signUpDTO);
         log.info("Url: {}", AppUtil.applicationUrl(request));
         publisher.publishEvent(new RegistrationCompleteEvent(user, AppUtil.applicationUrl(request)));
-        return "Success!  Please, check your email for to complete your registration";
+        return "Success. Please, check your email for to complete your registration!";
     }
 
     @GetMapping("/registrationConfirm")
@@ -44,19 +44,19 @@ public class RegistrationController {
         Optional<VerificationToken> existingToken = tokenRepository.findByToken(token);
 
         if (existingToken.isEmpty()){
-            return "Invalid verification token";
+            return "Invalid verification token!";
         }
 
         if (existingToken.get().getUser().getIsEnabled()){
-            return "This account has already been verified, please, login.";
+            return "This account has already been verified, please, login!";
         }
         Boolean result = registrationService.validateToken(token);
 //        registrationService.deleteVerificationToken(token);
 
         if (result) {
-            return "Email verified successfully. Now you can login to your account";
+            return "Email verified successfully. Now you can login to your account!";
         }
         log.error("Invalid verification token");
-        return "Invalid verification token";
+        return "Invalid verification token!";
     }
 }

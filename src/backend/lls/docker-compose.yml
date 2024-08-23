@@ -1,16 +1,15 @@
 services:
   web:
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: lls
     image: lls:v1
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
     restart: always
     ports:
       - "8080:8080"
     depends_on:
       - redis
-      - mysql
     networks:
       - lls-network
     env_file:
@@ -24,19 +23,6 @@ services:
       - "6379:6379"
     volumes:
       - data:/var/lib/redis
-    networks:
-      - lls-network
-    env_file:
-      - .env
-
-  mysql:
-    container_name: mysql
-    image: mysql:latest
-    restart: always
-    ports:
-      - "3306:3306"
-    volumes:
-      - data:/var/lib/mysql
     networks:
       - lls-network
     env_file:
