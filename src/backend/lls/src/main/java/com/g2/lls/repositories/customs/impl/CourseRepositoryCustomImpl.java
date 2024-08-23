@@ -31,15 +31,15 @@ public class CourseRepositoryCustomImpl implements CourseRepositoryCustom {
 
     public void sqlCourse(CourseFilterDTO course, StringBuilder sql) {
         if (course.getMinPrice() != null)
-            sql.append(" AND C.price" + " >= " + course.getMinPrice() + " ");
+            sql.append(" AND C.price" + " >= ").append(course.getMinPrice()).append(" ");
         if (course.getMaxPrice() != null)
-            sql.append(" AND C.price" + " <= " + course.getMaxPrice() + " ");
-        if (course.getCourseName() != "")
-            sql.append(" AND C.name" + " LIKE '%" + course.getCourseName() + "%' ");
-        if (course.getLanguage() != "")
-            sql.append(" AND C.description" + " LIKE '%" + course.getLanguage() + "%' ");
-        if (course.getFirstName() != "")
-            sql.append(" AND U.first_name" + " LIKE '%" + course.getFirstName() + "%' ");
+            sql.append(" AND C.price" + " <= ").append(course.getMaxPrice()).append(" ");
+        if (!Objects.equals(course.getCourseName(), "") && course.getCourseName() != null)
+            sql.append(" AND C.name" + " LIKE '%").append(course.getCourseName()).append("%' ");
+        if (!Objects.equals(course.getLanguage(), "") && course.getLanguage() != null)
+            sql.append(" AND C.description" + " LIKE '%").append(course.getLanguage()).append("%' ");
+        if (!Objects.equals(course.getFirstName(), "") && course.getFirstName() != null)
+            sql.append(" AND U.first_name" + " LIKE '%").append(course.getFirstName()).append("%' ");
     }
 
 

@@ -53,6 +53,4 @@ public class CourseResponse {
     private int numStudent = 0;
 
     private Long price;
-
-    private String email;
 }

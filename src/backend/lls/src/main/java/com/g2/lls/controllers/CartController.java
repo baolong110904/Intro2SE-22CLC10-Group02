@@ -4,6 +4,7 @@ import com.g2.lls.dtos.response.ApiResponse;
 import com.g2.lls.dtos.response.CourseResponse;
 import com.g2.lls.services.RedisService;
 import com.g2.lls.services.CourseService;
+import com.g2.lls.utils.CustomHeaders;
 import com.g2.lls.utils.TimeUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,9 @@ public class CartController {
 
     @PostMapping()
     public ResponseEntity<ApiResponse<CourseResponse>> addCourseCart(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
             @RequestBody CourseResponse course) throws Exception {
-        CourseResponse coursesResponse = courseRedisService.addCourseToCart(course);
+        CourseResponse coursesResponse = courseRedisService.addCourseToCart(course, email);
 
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
                 coursesResponse, TimeUtil.getTime()));
@@ -33,7 +35,7 @@ public class CartController {
 
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<CourseResponse>>> getCourseCartAll(
-            @RequestParam String email
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email
     ) throws Exception {
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
                 courseRedisService.getCart(email), TimeUtil.getTime()));
@@ -41,8 +43,8 @@ public class CartController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<List<CourseResponse>>> removeCourseFromCart(
-            @PathVariable Long id,
-            @RequestParam String email) throws Exception {
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @PathVariable Long id) throws Exception {
         List<CourseResponse> courseResponses = courseRedisService.removeCourseFromCart(id, email);
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
                 courseResponses, TimeUtil.getTime()));

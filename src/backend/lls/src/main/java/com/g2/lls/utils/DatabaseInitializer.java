@@ -145,22 +145,26 @@ public class DatabaseInitializer implements CommandLineRunner {
                             "PUT", "Course")),
                     Map.entry("Delete a course", new Permission("Delete a course", String.format("/%s/courses/{id}", apiPrefix),
                             "DELETE", "Course")),
-//                    Map.entry("Add student to course", new Permission("Add student to course", String.format("/%s/courses/{courseId}/{studentId}", apiPrefix),
-//                            "POST", "Course")),
                     Map.entry("Remove student from course", new Permission("Remove student from course", String.format("/%s/courses/{courseId}/{studentId}", apiPrefix),
                             "PUT", "Course")),
                     Map.entry("Upload material", new Permission("Upload material to course", String.format("/%s/courses/{id}/uploads/materials", apiPrefix),
                             "POST", "Course")),
                     Map.entry("Update thumbnail", new Permission("Update thumbnail", String.format("/%s/courses/{id}/uploads/thumbnail", apiPrefix),
+                            "POST", "Course")),
+                    Map.entry("Get User's courses", new Permission("Get User's courses", String.format("/%s/courses", apiPrefix),
+                            "GET", "Course")),
+                    Map.entry("Get all courses", new Permission("Get all courses", String.format("/%s/courses/all", apiPrefix),
                             "POST", "Course"))
-//                    Map.entry("Get User's courses", new Permission("Get User's courses", String.format("/%s/courses", apiPrefix),
-//                            "GET", "Course"))
-//                    Map.entry("Get all courses", new Permission("Get all courses", String.format("/%s/courses/all", apiPrefix),
-//                            "POST", "Course")),
-//                    Map.entry("Add course to cart", new Permission("Add course to cart", String.format("/%s/courses/cart", apiPrefix),
-//                            "POST", "Course")),
-//                    Map.entry("Remove course from cart", new Permission("Remove course from cart", String.format("/%s/courses/cart/{id}", apiPrefix),
-//                            "DELETE", "Course"))
+            )));
+
+            // Cart permissions
+            permissions.put("Cart", new HashMap<>(Map.of(
+                    "Get Courses From Cart", new Permission("Get Courses From Cart", String.format("/%s/cart/all", apiPrefix),
+                            "GET", "Cart"),
+                    "Add Courses To Cart", new Permission("Add Courses To Cart", String.format("/%s/cart", apiPrefix),
+                            "POST", "Cart"),
+                    "Remove Courses From Cart", new Permission("Remove Courses From Cart", String.format("/%s/cart/{id}", apiPrefix),
+                            "DELETE", "Cart")
             )));
 
             permissions.values().forEach(permissionMap -> permissionRepository.saveAllAndFlush(permissionMap.values()));
@@ -175,6 +179,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             List<Permission> vnPayPermissions = permissionRepository.findByModule("VNPay");
             List<Permission> videoSDKPermissions = permissionRepository.findByModule("VideoSDK");
             List<Permission> coursePermissions = permissionRepository.findByModule("Course");
+            List<Permission> cartPermissions = permissionRepository.findByModule("Cart");
 
             List<Permission> adminPermissions = permissionRepository.findAll();
 
@@ -192,11 +197,12 @@ public class DatabaseInitializer implements CommandLineRunner {
             studentPermissions.add(permissions.get("Role").get("Verify a role"));
             studentPermissions.add(permissions.get("Course").get("Get a course"));
             studentPermissions.add(permissions.get("Course").get("Get course's details"));
-//            studentPermissions.add(permissions.get("Course").get("Get User's courses"));
-//            studentPermissions.add(permissions.get("Course").get("Get all courses"));
+            studentPermissions.add(permissions.get("Course").get("Get User's courses"));
+            studentPermissions.add(permissions.get("Course").get("Get all courses"));
 //            studentPermissions.add(permissions.get("Course").get("Add course to cart"));
 //            studentPermissions.add(permissions.get("Course").get("Remove course from cart"));
             studentPermissions.addAll(vnPayPermissions);
+            studentPermissions.addAll(cartPermissions);
             Role roleStudent = Role.builder()
                     .name(RoleType.STUDENT)
                     .permissions(studentPermissions)

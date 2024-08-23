@@ -8,8 +8,10 @@ import addToCart from '../api/courses/AddCourseToCart'
 import removeFromCart from "../api/courses/RemoveCourseFromCart";
 import { FaBars, FaTimes, FaShoppingCart } from "react-icons/fa"
 import payMent from "../api/VN_Pay/Payment";
+import { useNavigate } from 'react-router-dom';
 
 const Courses = () => {
+    const navigate = useNavigate();
     const [firstName, setFirstName] = useState('');
     const [language, setLanguage] = useState('');
     const [minPrice, setMinPrice] = useState('');
@@ -113,8 +115,10 @@ const Courses = () => {
                     };
 
                     const result = await GetAllCoursesService(data);
+                    console.log(result)
                     if (result.success === false) {
-                        throw new Error(result.message);
+                        // throw new Error(result.message);
+                        navigate('/')
                     }
                     setProducts(result.data);
                 } catch (error) {

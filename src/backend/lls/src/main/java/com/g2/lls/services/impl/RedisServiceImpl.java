@@ -84,8 +84,8 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
-    public CourseResponse addCourseToCart(CourseResponse courseResponse) throws Exception {
-        User user = userServiceImpl.fetchUserByEmail(courseResponse.getEmail());
+    public CourseResponse addCourseToCart(CourseResponse courseResponse, String email) throws Exception {
+        User user = userServiceImpl.fetchUserByEmail(email);
         String cartKey = "cart:" + user.getId();
         String cartJson = (String) redisTemplate.opsForValue().get(cartKey);
 

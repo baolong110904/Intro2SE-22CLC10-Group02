@@ -9,7 +9,7 @@ public interface RedisService {
     void clear();
     List<CourseResponse> getAllCourses(CourseFilterDTO courseFilterDTO) throws JsonProcessingException;
     void saveAllCourses(List<CourseResponse> courses, CourseFilterDTO courseFilterDTO) throws JsonProcessingException;
-    CourseResponse addCourseToCart(CourseResponse courseResponse) throws Exception;
+    CourseResponse addCourseToCart(CourseResponse courseResponse, String email) throws Exception;
     List<CourseResponse> getCart(String email) throws Exception;
     List<CourseResponse> removeCourseFromCart(Long courseId, String email) throws Exception;
     void deleteCart(Long studentId);

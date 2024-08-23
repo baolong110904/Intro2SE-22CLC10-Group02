@@ -1,11 +1,15 @@
 package com.g2.lls.controllers;
 
+import com.g2.lls.domains.Role;
 import com.g2.lls.dtos.CourseDTO;
 import com.g2.lls.dtos.CourseFilterDTO;
 import com.g2.lls.dtos.CourseStudentRequestDTO;
 import com.g2.lls.dtos.response.*;
+import com.g2.lls.enums.RoleType;
 import com.g2.lls.services.RedisService;
 import com.g2.lls.services.CourseService;
+import com.g2.lls.services.impl.UserServiceImpl;
+import com.g2.lls.utils.CustomHeaders;
 import com.g2.lls.utils.TimeUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("${api.v1}/courses")
@@ -25,54 +29,97 @@ import java.util.List;
 public class CourseController {
     private final CourseService courseService;
     private final RedisService courseRedisService;
+    private final UserServiceImpl userServiceImpl;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<CourseResponse>> createCourse(@RequestBody CourseDTO courseDTO) throws Exception {
+    public ResponseEntity<?> createCourse(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @RequestBody CourseDTO courseDTO) throws Exception {
+        Set<Role> roles = userServiceImpl.fetchUserByEmail(email).getRoles();
+        List<String> roleTypes = roles.stream().map(role -> role.getName().toString()).toList();
+        if (!roleTypes.contains(RoleType.TEACHER.toString()) && !roleTypes.contains(RoleType.ADMIN.toString())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(HttpStatus.FORBIDDEN.value(), false, "Access denied", null));
+        }
+
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.CREATED.value(), true,
                 courseService.createCourse(courseDTO), TimeUtil.getTime()));
     }
 
     @PostMapping(value = "{id}/uploads/thumbnail", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ThumbnailResponse uploadAvatar(
+    public ResponseEntity<?> uploadThumbnail(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
             @PathVariable Long id,
             @ModelAttribute("file") MultipartFile file) throws Exception {
-        return courseService.uploadThumbnailForCourse(id,file);
+        return ResponseEntity.ok(new ApiResponse<>(
+                HttpStatus.OK.value(),
+                true,
+                courseService.uploadThumbnailForCourse(id,file, email),
+                TimeUtil.getTime()
+        ));
     }
 
     @PostMapping("/all")
     public ResponseEntity<?> getAllCourses(
-            @Valid @RequestBody CourseFilterDTO courseFilterDTO) throws Exception {
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @Valid @RequestBody CourseFilterDTO courseFilterDTO) {
 
-        List<CourseResponse> coursesResponses = courseRedisService.getAllCourses(courseFilterDTO);
+        try {
+            Set<Role> roles = userServiceImpl.fetchUserByEmail(email).getRoles();
+            List<String> roleTypes = roles.stream().map(role -> role.getName().toString()).toList();
+            if (!roleTypes.contains(RoleType.STUDENT.toString()) && !roleTypes.contains(RoleType.ADMIN.toString()) && !roleTypes.contains(RoleType.TEACHER.toString())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body(new ApiResponse<>(HttpStatus.FORBIDDEN.value(), false, "Access denied", null));
+            }
 
-        if(coursesResponses == null) {
-            coursesResponses = courseService.getAllCourses(courseFilterDTO);
-            courseRedisService.saveAllCourses(
-                coursesResponses,
-                courseFilterDTO
-            );
+            List<CourseResponse> coursesResponses = courseRedisService.getAllCourses(courseFilterDTO);
+            if (coursesResponses == null || coursesResponses.isEmpty()) {
+                coursesResponses = courseService.getAllCourses(courseFilterDTO);
+                courseRedisService.saveAllCourses(coursesResponses, courseFilterDTO);
+            }
+
+            return ResponseEntity.ok(new ApiResponse<>(
+                    HttpStatus.OK.value(),
+                    true,
+                    coursesResponses,
+                    TimeUtil.getTime()
+            ));
+        } catch (Exception e) {
+            log.error("Error while fetching courses", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), false, "An error occurred", null));
         }
-        return ResponseEntity.ok().body(coursesResponses);
-//        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
-//                courseService.getAllCourses(courseFilterDTO)  , TimeUtil.getTime()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<CourseResponse>> getCourseById(@PathVariable Long id) throws Exception {
+    public ResponseEntity<?> getCourseById(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @PathVariable Long id) throws Exception {
+
+        Set<Role> roles = userServiceImpl.fetchUserByEmail(email).getRoles();
+        List<String> roleTypes = roles.stream().map(role -> role.getName().toString()).toList();
+        if (!roleTypes.contains(RoleType.STUDENT.toString()) && !roleTypes.contains(RoleType.ADMIN.toString()) && !roleTypes.contains(RoleType.TEACHER.toString())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body(new ApiResponse<>(HttpStatus.FORBIDDEN.value(), false, "Access denied", null));
+        }
+
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
                 courseService.getCourseById(id), TimeUtil.getTime()));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<CourseResponse>> updateCourse(@PathVariable Long id, @RequestBody CourseDTO courseDTO) throws Exception {
+    public ResponseEntity<?> updateCourse(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @PathVariable Long id, @RequestBody CourseDTO courseDTO) throws Exception {
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
-                courseService.updateCourse(id, courseDTO), TimeUtil.getTime()));
+                courseService.updateCourse(id, courseDTO, email), TimeUtil.getTime()));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<String>> deleteCourse(
+            @RequestHeader (CustomHeaders.X_AUTH_USER_EMAIL) String email,
             @PathVariable Long id) throws Exception {
-        courseService.deleteCourse(id);
+        courseService.deleteCourse(id, email);
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
                 "Course deleted", TimeUtil.getTime()));
     }
@@ -87,7 +134,7 @@ public class CourseController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<CourseResponse>>> getUserCourses(
-            @RequestParam String email,
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
             @RequestParam String role
     ) throws Exception {
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
@@ -103,12 +150,17 @@ public class CourseController {
     }
 
     @PostMapping(value = "{id}/uploads/materials", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public MaterialResponse uploadMaterial(
+    public ResponseEntity<?> uploadMaterial(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
             @PathVariable Long id,
             @ModelAttribute("file") MultipartFile file) throws Exception {
-        return courseService.uploadMaterial(id, file);
+        return ResponseEntity.ok(new ApiResponse<>(
+                HttpStatus.OK.value(),
+                true,
+                courseService.uploadMaterial(id, file, email),
+                TimeUtil.getTime()
+        ));
     }
-
 }
 
 

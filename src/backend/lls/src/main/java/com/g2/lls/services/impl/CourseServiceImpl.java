@@ -1,6 +1,7 @@
 package com.g2.lls.services.impl;
 
 import com.g2.lls.domains.Course;
+import com.g2.lls.domains.Role;
 import com.g2.lls.domains.User;
 import com.g2.lls.dtos.CourseDTO;
 import com.g2.lls.dtos.CourseFilterDTO;
@@ -24,6 +25,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @AllArgsConstructor
 @Service
@@ -87,8 +89,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void deleteCourse(Long id) throws Exception {
+    public void deleteCourse(Long id, String email) throws Exception {
         Optional<Course> course = courseRepository.findById(id);
+        User user = userService.fetchUserByEmail(email);
+        if(course.isPresent()) {
+            Set<Role> roles = userServiceImpl.fetchUserByEmail(email).getRoles();
+            List<String> roleTypes = roles.stream().map(role -> role.getName().toString()).toList();
+            if (course.get().getTeacherId().equals(user.getId()) || !roleTypes.contains(RoleType.ADMIN.toString())) {
+                throw new Exception("You don't have permission to delete this course");
+            }
+        }
+
         if (course.isPresent()) {
             Course updatedCourse = course.get();
             updatedCourse.setIsEnabled(false);
@@ -100,8 +111,17 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseResponse updateCourse(Long id, CourseDTO courseDTO) throws Exception {
+    public CourseResponse updateCourse(Long id, CourseDTO courseDTO, String email) throws Exception {
         Optional<Course> course = courseRepository.findById(id);
+        User user = userService.fetchUserByEmail(email);
+        if(course.isPresent()) {
+            Set<Role> roles = userServiceImpl.fetchUserByEmail(email).getRoles();
+            List<String> roleTypes = roles.stream().map(role -> role.getName().toString()).toList();
+            if (course.get().getTeacherId().equals(user.getId()) || !roleTypes.contains(RoleType.ADMIN.toString())) {
+                throw new Exception("You don't have permission to delete this course");
+            }
+        }
+
         if (course.isPresent()) {
              Course currenCourse = course.get();
 
@@ -178,12 +198,24 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public MaterialResponse uploadMaterial(Long id, MultipartFile file) throws Exception {
+    public MaterialResponse uploadMaterial(Long id, MultipartFile file, String email) throws Exception {
+        Optional<Course> course = courseRepository.findById(id);
+        User user = userServiceImpl.fetchUserByEmail(email);
+        if(course.isPresent() && !course.get().getTeacherId().equals(user.getId())) {
+            throw new Exception("You don't have permission to access this course.");
+        }
+
         return cloudinaryServiceImpl.uploadMaterial(id, file);
     }
 
     @Override
-    public ThumbnailResponse uploadThumbnailForCourse(Long id, MultipartFile file) throws Exception {
+    public ThumbnailResponse uploadThumbnailForCourse(Long id, MultipartFile file, String email) throws Exception {
+        Optional<Course> course = courseRepository.findById(id);
+        User user = userServiceImpl.fetchUserByEmail(email);
+        if(course.isPresent() && !course.get().getTeacherId().equals(user.getId())) {
+            throw new Exception("You don't have permission to access this course.");
+        }
+
         return cloudinaryServiceImpl.updateThumbnail(id, file);
     }
 

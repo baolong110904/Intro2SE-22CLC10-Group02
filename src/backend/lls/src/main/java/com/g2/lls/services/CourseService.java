@@ -13,11 +13,11 @@ public interface CourseService {
     CourseResponse createCourse(CourseDTO courseDTO) throws Exception;
     List<CourseResponse> getAllCourses(CourseFilterDTO courseFilterDTO) throws Exception;
     CourseResponse getCourseById(Long id) throws Exception;
-    void deleteCourse(Long id) throws Exception;
-    CourseResponse updateCourse(Long id, CourseDTO courseDTO) throws Exception;
+    void deleteCourse(Long id, String email) throws Exception;
+    CourseResponse updateCourse(Long id, CourseDTO courseDTO, String email) throws Exception;
     List<CourseResponse> addStudent(List<Long> courseIds, String email, Long orderId) throws Exception;
     CourseResponse removeStudent(Long id, Long studentId) throws Exception;
-    MaterialResponse uploadMaterial(Long id, MultipartFile file) throws Exception;
-    ThumbnailResponse uploadThumbnailForCourse(Long id, MultipartFile file) throws Exception;
+    MaterialResponse uploadMaterial(Long id, MultipartFile file, String email) throws Exception;
+    ThumbnailResponse uploadThumbnailForCourse(Long id, MultipartFile file, String email) throws Exception;
     List<CourseResponse> getUserCourses(String email, String role) throws Exception;
 }
