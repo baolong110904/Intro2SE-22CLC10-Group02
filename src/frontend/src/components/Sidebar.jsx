@@ -5,6 +5,7 @@ import { LiaToolsSolid } from "react-icons/lia"
 import { IoSettingsSharp } from "react-icons/io5"
 import { motion } from "framer-motion"
 import { FaArrowRight } from "react-icons/fa"
+import SchoolIcon from "@mui/icons-material/School";
 
 const variants = {
   expanded: { width: "20%" },
@@ -13,6 +14,7 @@ const variants = {
 
 const navItems = [
   { name: "Dashboard", icon: MdDashboard, path: "dashboard" },
+  { name: "My courses", icon: SchoolIcon, path: "my-course" },
   { name: "Analytics", icon: SiSimpleanalytics, path: "analytics" },
   { name: "Message", icon: MdOutlineMessage, path: "message" },
   { name: "Tools", icon: LiaToolsSolid, path: "tools" },
