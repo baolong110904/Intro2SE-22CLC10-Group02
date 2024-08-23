@@ -2,7 +2,7 @@ import axiosInstance from "../axios/customAxios"
 
 const GetAllCountries = async () => {
   try {
-    const res = await axiosInstance.get("countries/cache")
+    const res = await axiosInstance.get("countries/all")
     return res.data
   } catch (err) {
     let error = ""

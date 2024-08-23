@@ -3,7 +3,6 @@ package com.g2.lls.controllers;
 import com.g2.lls.domains.User;
 import com.g2.lls.dtos.AddressDTO;
 import com.g2.lls.dtos.UserDTO;
-import com.g2.lls.dtos.UserUpdateDTO;
 import com.g2.lls.dtos.response.ApiResponse;
 import com.g2.lls.dtos.response.AvatarResponse;
 import com.g2.lls.dtos.response.PaginationDTO;

@@ -75,7 +75,7 @@ const SignUp = () => {
     }
     if (!isPasswordValid(password)) {
       setErrorMessage(
-        "Password must contain at least 8 characters, including uppercase, lowercase, and numbers!",
+        "Password must contain at least 8 characters, including uppercase, lowercase, and numbers.",
       )
       console.log("Invalid password")
       return
@@ -102,13 +102,13 @@ const SignUp = () => {
     }
     if (!isPasswordValid(password)) {
       setErrorMessage(
-        "Password must contain at least 8 characters, including uppercase, lowercase, and numbers!",
+        "Password must contain at least 8 characters, including uppercase, lowercase, and numbers.",
       )
       return
     }
     if (!isUsernameValid(username)) {
       setErrorMessage(
-        "Username must be alphanumeric and have at least 2 characters and maximum 50 characters allow underscore, dot!",
+        "Username must be alphanumeric and have at least 2 characters and maximum 50 characters allow underscore, dot.",
       )
       return
     }

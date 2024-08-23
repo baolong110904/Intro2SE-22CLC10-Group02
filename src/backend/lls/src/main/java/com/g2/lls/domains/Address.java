@@ -50,7 +50,7 @@ public class Address {
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "user_id", nullable = false)
     // private User user;
-    @OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "address", fetch = FetchType.EAGER)
     @JsonIgnore
     private User user;
 

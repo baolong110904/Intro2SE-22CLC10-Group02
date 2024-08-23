@@ -33,6 +33,7 @@ import { useNavigate } from "react-router-dom"
 import UpdateAddress from "../api/auth/UpdateAddress"
 import { MuiTelInput } from "mui-tel-input"
 import GetAllCountries from "../api/country/GetAllCountries"
+import ChangePassword from "../api/auth/ChangePassword"
 
 const ProfileInformation = ({ profileData }) => (
   <Box>
@@ -226,11 +227,61 @@ const PasswordChange = () => {
   const [oldPassword, setOldPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
 
-  const handleSubmit = (e) => {
+  const validatePassword = (password) => {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?]).{8,}$/
+    if (!regex.test(password)) {
+      return "Password must contain at least 8 characters, including uppercase, lowercase, and numbers."
+    }
+    return null
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Here you would typically call an API to change the password
-    console.log("Password change submitted")
+    setError("")
+    setSuccess("")
+
+    const email = localStorage.getItem("email")
+
+    if (!email) {
+      setError("User email not found. Please log in again!")
+      return
+    }
+
+    const passwordError = validatePassword(newPassword)
+    if (passwordError) {
+      setError(passwordError)
+      return
+    }
+
+    if (newPassword !== confirmPassword) {
+      setError("New password and confirm password do not match!")
+      return
+    }
+
+    try {
+      const result = await ChangePassword(
+        email,
+        oldPassword,
+        newPassword,
+        confirmPassword,
+      )
+
+      if (result.success) {
+        setSuccess(result.data)
+        setOldPassword("")
+        setNewPassword("")
+        setConfirmPassword("")
+      } else {
+        setError(result.data.error || "Failed to change password!")
+      }
+    } catch (error) {
+      setError("Wrong current password. Please try again!")
+      console.error("Error changing password:", error)
+    }
   }
 
   return (
@@ -258,6 +309,7 @@ const PasswordChange = () => {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
+              helperText="Password must contain at least 8 characters, including uppercase, lowercase, and numbers."
             />
           </Grid>
           <Grid item xs={12}>
@@ -271,6 +323,16 @@ const PasswordChange = () => {
             />
           </Grid>
           <Grid item xs={12}>
+            {error && (
+              <Typography color="error" gutterBottom>
+                {error}
+              </Typography>
+            )}
+            {success && (
+              <Typography color="success.main" gutterBottom>
+                {success}
+              </Typography>
+            )}
             <Button type="submit" variant="contained" color="primary">
               Change Password
             </Button>
@@ -481,6 +543,7 @@ export default function Profile() {
                     marginBottom: "1rem",
                     width: { xs: "100%", sm: "100%", md: "100%" },
                   }}
+                  onClick={() => setSelectedSection("Password")}
                 >
                   Change Password
                 </Button>

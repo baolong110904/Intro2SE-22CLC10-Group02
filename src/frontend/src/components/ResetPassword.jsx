@@ -71,7 +71,7 @@ const ResetPassword = () => {
     }
     if (!isPasswordValid(newPassword)) {
       setErrorMessage(
-        "Password must contain at least 8 characters, including uppercase, lowercase, and numbers!",
+        "Password must contain at least 8 characters, including uppercase, lowercase, and numbers.",
       )
       return
     }

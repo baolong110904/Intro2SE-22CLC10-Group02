@@ -4,6 +4,7 @@ import com.g2.lls.configs.security.user.CustomUserDetails;
 import com.g2.lls.domains.Address;
 import com.g2.lls.domains.Role;
 import com.g2.lls.dtos.AddressDTO;
+import com.g2.lls.dtos.ChangePasswordDTO;
 import com.g2.lls.dtos.LoginDTO;
 import com.g2.lls.dtos.UserDTO;
 import com.g2.lls.dtos.UserUpdateDTO;
@@ -264,7 +265,6 @@ public class UserServiceImpl implements UserService {
             user.setAddress(address);
         }
         
-        // Update address fields
         address.setPhoneNumber(addressDTO.getPhoneNumber());
         address.setCountry(addressDTO.getCountry());
         address.setCity(addressDTO.getCity());
@@ -275,10 +275,24 @@ public class UserServiceImpl implements UserService {
         address.setAddressType(addressDTO.getAddressType());
         address.setIsDefault(addressDTO.getIsDefault());
         
-        // Save the address and user
         addressRepository.save(address);
         userRepository.save(user);
         
         return addressDTO;
+    }
+
+    @Override
+    public void changePassword(String email, ChangePasswordDTO changePasswordDTO) throws Exception {
+        User user = fetchUserByEmail(email);
+        if (!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
+            log.error("Wrong old password");
+            throw new BadCredentialsException("Wrong old password");
+        }
+        if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfirmPassword())) {
+            log.error("New password and confirm password do not match!");
+            throw new BadCredentialsException("New password and confirm password do not match!");
+        }
+        user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+        userRepository.save(user);
     }
 }

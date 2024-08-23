@@ -2,9 +2,9 @@ package com.g2.lls.services;
 
 import com.g2.lls.domains.User;
 import com.g2.lls.dtos.AddressDTO;
+import com.g2.lls.dtos.ChangePasswordDTO;
 import com.g2.lls.dtos.LoginDTO;
 import com.g2.lls.dtos.UserDTO;
-import com.g2.lls.dtos.UserUpdateDTO;
 import com.g2.lls.dtos.response.*;
 import com.g2.lls.enums.RoleType;
 import com.g2.lls.utils.exception.DataNotFoundException;
@@ -51,4 +51,6 @@ public interface UserService {
     AvatarResponse getProfilePicture(String email) throws Exception;
 
     AddressDTO updateUserAddress(String email, AddressDTO addressDTO) throws Exception;
+
+    void changePassword(String email, ChangePasswordDTO changePasswordDTO) throws Exception;
 }

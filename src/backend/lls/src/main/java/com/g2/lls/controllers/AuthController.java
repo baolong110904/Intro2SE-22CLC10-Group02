@@ -2,11 +2,13 @@ package com.g2.lls.controllers;
 
 import com.g2.lls.configs.security.user.CustomUserDetails;
 import com.g2.lls.domains.User;
+import com.g2.lls.dtos.ChangePasswordDTO;
 import com.g2.lls.dtos.LoginDTO;
 import com.g2.lls.dtos.LogoutDTO;
 import com.g2.lls.dtos.response.ApiResponse;
 import com.g2.lls.dtos.response.TokenResponse;
 import com.g2.lls.services.UserService;
+import com.g2.lls.utils.CustomHeaders;
 import com.g2.lls.utils.TimeUtil;
 import com.g2.lls.utils.exception.DataNotFoundException;
 import com.g2.lls.utils.security.JwtTokenUtil;
@@ -125,7 +127,8 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<String>> logout(@Valid @RequestBody LogoutDTO logoutDTO) throws Exception {
+    public ResponseEntity<ApiResponse<String>> logout(
+			@Valid @RequestBody LogoutDTO logoutDTO) throws Exception {
         userService.updateUserRefreshToken(logoutDTO.getEmail(), null);
 
         ResponseCookie deleteSpringCookie = ResponseCookie
@@ -141,4 +144,14 @@ public class AuthController {
                 .body(new ApiResponse<>(HttpStatus.OK.value(), true,
                         "Logout successfully", TimeUtil.getTime()));
     }
+
+    @PutMapping("/change-password")
+	public ResponseEntity<ApiResponse<String>> changePassword(
+			@RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+			@Valid @RequestBody ChangePasswordDTO changePasswordDTO) throws Exception {
+		userService.changePassword(email, changePasswordDTO);
+		return ResponseEntity.ok()
+				.body(new ApiResponse<>(HttpStatus.OK.value(), true,
+						"Password changed successfully!", TimeUtil.getTime()));
+	}
 }

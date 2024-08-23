@@ -77,7 +77,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             .ward("")
             .address("")
             .addressType("")
-            .isDefault(true)
+            .isDefault(false)
             .createdAt(Instant.now())
             .updatedAt(Instant.now())
             .build();
