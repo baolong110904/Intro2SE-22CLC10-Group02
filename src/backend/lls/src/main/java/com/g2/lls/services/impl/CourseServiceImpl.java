@@ -1,6 +1,7 @@
 package com.g2.lls.services.impl;
 
 import com.g2.lls.domains.Course;
+import com.g2.lls.domains.Material;
 import com.g2.lls.domains.Role;
 import com.g2.lls.domains.User;
 import com.g2.lls.dtos.CourseDTO;
@@ -244,5 +245,27 @@ public class CourseServiceImpl implements CourseService {
         }
 
         return null;
+    }
+
+    @Override
+    public List<MaterialResponse> getMaterials(Long courseId, String email) throws Exception {
+        Optional<Course> course = courseRepository.findById(courseId);
+        User user = userServiceImpl.fetchUserByEmail(email);
+        if(!course.isPresent()) {
+            throw new Exception("This course no longer exist.");
+        }
+
+        List<User> studentList = course.get().getUsers();
+        if(studentList.contains(user) || course.get().getTeacherId().equals(user.getId())) {
+            List<Material> materials = course.get().getMaterials();
+            List<MaterialResponse> materialResponses = new ArrayList<>();
+            for (Material material : materials) {
+                materialResponses.add(modelMapper.map(material, MaterialResponse.class));
+            }
+            return materialResponses;
+        }
+        else {
+            throw new Exception("You don't have permission to access this course.");
+        }
     }
 }

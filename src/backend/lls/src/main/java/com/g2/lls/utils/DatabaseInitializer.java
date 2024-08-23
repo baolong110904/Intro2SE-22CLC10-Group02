@@ -23,6 +23,7 @@ import java.util.*;
 public class DatabaseInitializer implements CommandLineRunner {
     private final CourseRepository courseRepository;
     private final ThumbnailRepository thumbnailRepository;
+    private final MaterialRepository materialRepository;
     @Value("${api.v1}")
     private String apiPrefix;
 
@@ -154,7 +155,9 @@ public class DatabaseInitializer implements CommandLineRunner {
                     Map.entry("Get User's courses", new Permission("Get User's courses", String.format("/%s/courses", apiPrefix),
                             "GET", "Course")),
                     Map.entry("Get all courses", new Permission("Get all courses", String.format("/%s/courses/all", apiPrefix),
-                            "POST", "Course"))
+                            "POST", "Course")),
+                    Map.entry("Get materials", new Permission("Get materials", String.format("/%s/courses/{courseId}/materials", apiPrefix),
+                            "GET", "Course"))
             )));
 
             // Cart permissions
@@ -199,8 +202,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             studentPermissions.add(permissions.get("Course").get("Get course's details"));
             studentPermissions.add(permissions.get("Course").get("Get User's courses"));
             studentPermissions.add(permissions.get("Course").get("Get all courses"));
-//            studentPermissions.add(permissions.get("Course").get("Add course to cart"));
-//            studentPermissions.add(permissions.get("Course").get("Remove course from cart"));
+            studentPermissions.add(permissions.get("Course").get("Get materials"));
             studentPermissions.addAll(vnPayPermissions);
             studentPermissions.addAll(cartPermissions);
             Role roleStudent = Role.builder()
@@ -384,6 +386,23 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .build();
 
             courseRepository.saveAndFlush(course1);
+
+            Material material1 = Material.builder()
+                    .publicId("g2/material/file_znrlid")
+                    .documentUrl("http://res.cloudinary.com/ds9macgdo/image/upload/v1724387544/g2/material/file_znrlid.pdf")
+                    .title("Grammar")
+                    .course(course1)
+                    .build();
+
+            Material material2 = Material.builder()
+                    .publicId("g2/material/file_n2r9pi")
+                    .documentUrl("http://res.cloudinary.com/ds9macgdo/image/upload/v1724401026/g2/material/file_n2r9pi.pdf")
+                    .course(course1)
+                    .title("Vocabulary")
+                    .build();
+
+            materialRepository.saveAndFlush(material1);
+            materialRepository.saveAndFlush(material2);
 
             Course course2 = Course.builder()
                     .thumbnail(thumbnail)

@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class MaterialResponse {
     private String publicId;
     private String documentUrl;
+    private String title;
 }

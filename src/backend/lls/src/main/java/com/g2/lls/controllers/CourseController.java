@@ -161,6 +161,17 @@ public class CourseController {
                 TimeUtil.getTime()
         ));
     }
+
+    @GetMapping("/{courseId}/materials")
+    public ResponseEntity<ApiResponse<List<MaterialResponse>>> getMaterials(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @PathVariable Long courseId
+    ) throws Exception {
+        return ResponseEntity.ok(new ApiResponse<>(
+                HttpStatus.OK.value(),
+                true,
+                courseService.getMaterials(courseId, email),
+                TimeUtil.getTime()
+        ));
+    }
 }
-
-

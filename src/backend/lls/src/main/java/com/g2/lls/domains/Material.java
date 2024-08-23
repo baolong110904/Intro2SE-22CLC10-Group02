@@ -20,7 +20,7 @@ public class Material {
     private Long id;
 
     @Column(columnDefinition = "TEXT")
-    private String description;
+    private String title;
 
     @Column(name = "public_id")
     private String publicId;
