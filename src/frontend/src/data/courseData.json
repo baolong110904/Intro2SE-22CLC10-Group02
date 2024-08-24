@@ -1,0 +1,69 @@
+[
+    
+    {
+      "id": 1,
+      "title": "Phonetics",
+      "category": "Language",
+      "subcategory": "Pronunciation",
+      "teachers": ["Doraemon", "Nobita"],
+      "duration": "3-4-days",
+      "rating": 4.5,
+      "language": "english",
+      "image": "phonetics.png"
+    },
+    {
+      "id": 2,
+      "title": "Vocabulary",
+      "category": "Language",
+      "subcategory": "Words",
+      "teachers": ["Shizuka", "Degisughi"],
+      "duration": "6-7-days",
+      "rating": 3.8,
+      "language": "spanish",
+      "image": "vocabulary.png"
+    },
+    {
+      "id": 3,
+      "title": "Writing",
+      "category": "Language",
+      "subcategory": "Composition",
+      "teachers": ["John Biden", "D.Trump"],
+      "duration": "3-4-weeks",
+      "rating": 3.2,
+      "language": "spanish",
+      "image": "writing.png"
+    },
+    {
+        "id": 4,
+        "title": "Speaking",
+        "category": "Language",
+        "subcategory": "Composition",
+        "teachers": ["Putin", "Kim Jong Un"],
+        "duration": "1-2-weeks",
+        "rating": 4.8,
+        "language": "english",
+        "image": "phonetics.png"
+      },
+      {
+        "id": 5,
+        "title": "Advanced Grammar",
+        "category": "Language",
+        "subcategory": "Composition",
+        "teachers": ["E.Halland", "K.Mbappe"],
+        "duration": "3-4-days",
+        "rating": 2.5,
+        "language": "spanish",
+        "image": "writing.png"
+      },
+      {
+        "id": 6,
+        "title": "Phonetics",
+        "category": "Language",
+        "subcategory": "Composition",
+        "teachers": ["Pele", "Maradona"],
+        "duration": "7-8-weeks",
+        "rating": 1.0,
+        "language": "english",
+        "image": "phonetics.png"
+    }
+  ]

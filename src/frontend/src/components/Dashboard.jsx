@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react"
-import { useNavigate } from "react-router-dom" // Step 1: Import useNavigate
+import React, { useState, useRef, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import ContextWrapper from "./calendar/ContextWrapper.js"
 import ava1 from "../assets/ava1.png"
 import ava2 from "../assets/ava2.png"
@@ -7,19 +7,90 @@ import recording from "../assets/recording.png"
 import screensharing from "../assets/screensharing.png"
 import virtualbg from "../assets/virtualbg.png"
 import shareexperience from "../assets/shareexperience.png"
-import phonetics from "../assets/phonetics.png"
-import vocabulary from "../assets/vocabulary.png"
-import writing from "../assets/writing.png"
 import Calendar from "./calendar/Calendar.js"
 import { IoFilterOutline } from "react-icons/io5"
 import { FaSortAmountDown } from "react-icons/fa"
 import CourseGrid from "./CourseBox.jsx"
+import courseData from '../data/courseData.json';
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("timetable")
   const navigate = useNavigate()
   const [showMore, setShowMore] = useState(false)
   const showMoreRef = useRef(null)
+  const [courses, setCourses] = useState([]);
+  const [filteredCourses, setFilteredCourses] = useState(courseData);
+  const [filters, setFilters] = useState({
+    rating: null,
+    duration: [],
+    topic: "all",
+    subcategory: "all",
+    language: "all"
+  });
+
+  useEffect(() => {
+    setCourses(courseData);
+    setFilteredCourses(courseData);
+  }, []);
+
+  useEffect(() => {
+    applyFilters();
+  }, [filters]);
+
+  const applyFilters = () => {
+    let result = courseData;
+  
+    if (filters.rating) {
+      result = result.filter(course => course.rating >= filters.rating);
+    }
+  
+    if (filters.duration.length > 0) {
+      result = result.filter(course => filters.duration.includes(course.duration));
+    }
+  
+    if (filters.topic !== "all") {
+      result = result.filter(course => course.category === filters.topic);
+    }
+  
+    if (filters.subcategory !== "all") {
+      result = result.filter(course => course.subcategory === filters.subcategory);
+    }
+  
+    if (filters.language !== "all") {
+      result = result.filter(course => course.language === filters.language);
+    }
+  
+    setCourses(result);
+  };
+  
+  const handleFilterChange = (filterType, value) => {
+    setFilters(prevFilters => {
+      let updatedFilters;
+      if (filterType === 'duration') {
+        // Toggle duration filter
+        const updatedDuration = prevFilters.duration.includes(value)
+          ? prevFilters.duration.filter(item => item !== value)
+          : [...prevFilters.duration, value];
+        updatedFilters = { ...prevFilters, duration: updatedDuration };
+      } else if (filterType === 'rating') {
+        // Reset rating if the same value is selected
+        updatedFilters = { 
+          ...prevFilters, 
+          [filterType]: prevFilters[filterType] === value ? null : value 
+        };
+      } else {
+        // For other filters, update the value or reset to default if "all" is selected
+        updatedFilters = { 
+          ...prevFilters, 
+          [filterType]: value === "all" ? "all" : value 
+        };
+      }
+      
+      // Apply filters immediately
+      applyFilters(updatedFilters);
+      return updatedFilters;
+    });
+  };
 
   const handleShowMoreClick = () => {
     setShowMore(!showMore)
@@ -45,7 +116,7 @@ const Dashboard = () => {
           <div className="course-section p-8 bg-gray-50">
             {/* Title Section */}
             <h2 className="text-3xl font-bold text-gray-800 mb-6">
-              Language Courses
+              My Courses
             </h2>
 
             {/* Teaching Sessions and Filters/Sorting Section */}
@@ -59,7 +130,7 @@ const Dashboard = () => {
                       <IoFilterOutline className="mr-2 text-blue-600" /> Filter
                     </span>
                     <span className="text-gray-800 font-medium flex items-center">
-                      <FaSortAmountDown className="fas fa-filter mr-2 text-blue-600" />{" "}
+                      <FaSortAmountDown className="fas fa-filter mr-2 text-blue-600" />
                       Sort by
                     </span>
                   </div>
@@ -67,25 +138,25 @@ const Dashboard = () => {
                     <h3 className="text-lg font-semibold text-gray-800">Ratings</h3>
                     <div className="space-y-2">
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="rating" value="4.0" />
+                        <input type="radio" name="rating" value="4.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))}/>
                         <span className="text-yellow-500">★★★★☆</span>
                         <span className="text-gray-600">4.0 & up</span>
                         <span className="text-gray-400 ml-auto">(4,472)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="rating" value="3.0" />
+                        <input type="radio" name="rating" value="3.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))}/>
                         <span className="text-yellow-500">★★★☆☆</span>
                         <span className="text-gray-600">3.0 & up</span>
                         <span className="text-gray-400 ml-auto">(3,347)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="rating" value="2.0" />
+                        <input type="radio" name="rating" value="2.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))}/>
                         <span className="text-yellow-500">★★☆☆☆</span>
                         <span className="text-gray-600">2.0 & up</span>
                         <span className="text-gray-400 ml-auto">(2,214)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="rating" value="1.0" />
+                        <input type="radio" name="rating" value="1.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))}/>
                         <span className="text-yellow-500">★☆☆☆☆</span>
                         <span className="text-gray-600">1.0 & up</span>
                         <span className="text-gray-400 ml-auto">(115)</span>
@@ -98,22 +169,22 @@ const Dashboard = () => {
                     <h3 className="text-lg font-semibold text-gray-800">Duration</h3>
                     <div className="space-y-2">
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="duration" value="3-4-days" />
+                        <input type="checkbox" name="duration" value="3-4-days" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}/>
                         <span className="text-gray-600">3-4 days</span>
                         <span className="text-gray-400 ml-auto">(1,234)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="duration" value="6-7-days" />
+                        <input type="checkbox" name="duration" value="6-7-days" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}/>
                         <span className="text-gray-600">6-7 days</span>
                         <span className="text-gray-400 ml-auto">(2,345)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="duration" value="1-2-weeks" />
+                        <input type="checkbox" name="duration" value="1-2-weeks" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}/>
                         <span className="text-gray-600">1-2 weeks</span>
                         <span className="text-gray-400 ml-auto">(3,456)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="duration" value="3-4-weeks" />
+                        <input type="checkbox" name="duration" value="3-4-weeks" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}/>
                         <span className="text-gray-600">3-4 weeks</span>
                         <span className="text-gray-400 ml-auto">(4,567)</span>
                       </label>
@@ -123,7 +194,8 @@ const Dashboard = () => {
                             <input
                               type="checkbox"
                               name="duration"
-                              value="3-4-weeks"
+                              value="5-6-weeks"
+                              onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}
                             />
                             <span className="text-gray-600">5-6 weeks</span>
                             <span className="text-gray-400 ml-auto">(4,567)</span>
@@ -132,7 +204,8 @@ const Dashboard = () => {
                             <input
                               type="checkbox"
                               name="duration"
-                              value="3-4-weeks"
+                              value="7-8-weeks"
+                              onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}
                             />
                             <span className="text-gray-600">7-8 weeks</span>
                             <span className="text-gray-400 ml-auto">(234)</span>
@@ -141,7 +214,8 @@ const Dashboard = () => {
                             <input
                               type="checkbox"
                               name="duration"
-                              value="3-4-weeks"
+                              value="9-10-weeks"
+                              onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}
                             />
                             <span className="text-gray-600">9-10 weeks</span>
                             <span className="text-gray-400 ml-auto">(1,213)</span>
@@ -150,7 +224,8 @@ const Dashboard = () => {
                             <input
                               type="checkbox"
                               name="duration"
-                              value="3-4-weeks"
+                              value="11-12-weeks"
+                              onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}
                             />
                             <span className="text-gray-600">11-12 weeks</span>
                             <span className="text-gray-400 ml-auto">(4,421)</span>
@@ -171,27 +246,37 @@ const Dashboard = () => {
                 <div className="border border-gray-300 rounded-lg p-4 shadow-sm space-y-4">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">Topic</h3>
-                    <select className="w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-3 mt-2">
+                    <select 
+                      className="w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-3 mt-2"
+                      onChange={(e) => handleFilterChange("topic", e.target.value)}
+                    >
                       <option value="all">All Topics</option>
-                      <option value="phonetics">Phonetics</option>
-                      <option value="vocabulary">Vocabulary</option>
+                      <option value="Language">Language</option>
+                      {/* Add more options based on your course categories */}
                     </select>
                   </div>
 
+                  {/* Subcategory Filter */}
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      Subcategory
-                    </h3>
-                    <select className="w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-3 mt-2">
+                    <h3 className="text-lg font-semibold text-gray-800">Subcategory</h3>
+                    <select 
+                      className="w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-3 mt-2"
+                      onChange={(e) => handleFilterChange("subcategory", e.target.value)}
+                    >
                       <option value="all">All Subcategories</option>
-                      <option value="basic">Basic</option>
-                      <option value="intermediate">Intermediate</option>
+                      <option value="Pronunciation">Pronunciation</option>
+                      <option value="Words">Words</option>
+                      <option value="Composition">Composition</option>
+                      {/* Add more options based on your course subcategories */}
                     </select>
                   </div>
 
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">Language</h3>
-                    <select className="w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-3 mt-2">
+                    <select 
+                      className="w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-3 mt-2"
+                      onChange={(e) => handleFilterChange("language", e.target.value)}
+                    >
                       <option value="all">All Languages</option>
                       <option value="english">English</option>
                       <option value="spanish">Spanish</option>
@@ -201,150 +286,52 @@ const Dashboard = () => {
               </div>
 
               {/* Teaching Sessions Grid (3/4 of the width on large screens) */}
-              <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 md:grid-cols-3 gap-6">
-                {/* Teaching Session Cards */}
-                <div className="bg-white shadow-lg rounded-lg p-4 overflow-hidden space-y-4 transition-transform transform hover:scale-105">
-                  <div className="relative">
-                    <img
-                      src={phonetics}
-                      alt="Phonetics"
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute bottom-2 right-2 bg-white bg-opacity-80 rounded-full p-2">
-                      <span className="text-gray-700 text-sm">Phonetics</span>
+              <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
+                {courses.length > 0 ? (
+                  courses.map(course => (
+                    <div key={course.id} className="bg-white shadow-lg rounded-lg p-4 overflow-hidden space-y-4 transition-transform transform hover:scale-105">
+                      <div className="relative">
+                        <img src={course.image} alt={course.title} className="w-full h-48 object-cover" />
+                        <div className="absolute bottom-2 right-2 bg-white bg-opacity-80 rounded-full p-2">
+                          <span className="text-gray-700 text-sm">{course.category}</span>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2">{course.title}</h3>
+                        {course.teachers.map((teacher, index) => (
+                          <p key={index} className="text-gray-600 mb-4">Teacher: {teacher}</p>
+                        ))}
+                        <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-lg text-xs font-medium">
+                          See more
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                      Phonetics
-                    </h3>
-                    <p className="text-gray-600 mb-4">Teacher: Doraemon</p>
-                    <p className="text-gray-600 mb-4">Teacher: Nobita</p>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-lg text-xs font-medium">
-                      See more
+                  ))
+                ) : (
+                  <div className="col-span-full text-center py-8">
+                    <p className="text-xl text-gray-600">No courses available with the selected filters.</p>
+                    <button 
+                      className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
+                      onClick={() => {
+                        setFilters({
+                          rating: null,
+                          duration: [],
+                          topic: "all",
+                          subcategory: "all",
+                          language: "all"
+                        });
+                        setCourses(courseData);
+                      }}
+                    >
+                      Reset Filters
                     </button>
                   </div>
-                </div>
-
-                <div className="bg-white shadow-lg rounded-lg p-4 overflow-hidden space-y-4 transition-transform transform hover:scale-105">
-                  <div className="relative">
-                    <img
-                      src={vocabulary}
-                      alt="Vocabulary"
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute bottom-2 right-2 bg-white bg-opacity-80 rounded-full p-2">
-                      <span className="text-gray-700 text-sm">Vocabulary</span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                      Vocabulary
-                    </h3>
-                    <p className="text-gray-600 mb-4">Teacher: Shizuka</p>
-                    <p className="text-gray-600 mb-4">Teacher: Degisughi</p>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-lg text-xs font-medium">
-                      See more
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-white shadow-lg rounded-lg p-4 overflow-hidden space-y-4 transition-transform transform hover:scale-105">
-                  <div className="relative">
-                    <img
-                      src={writing}
-                      alt="Phonetics"
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute bottom-2 right-2 bg-white bg-opacity-80 rounded-full p-2">
-                      <span className="text-gray-700 text-sm">Writing</span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                      Writing
-                    </h3>
-                    <p className="text-gray-600 mb-4">Teacher: C.Ronaldo</p>
-                    <p className="text-gray-600 mb-4">Teacher: L.Messi</p>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-lg text-xs font-medium">
-                      See more
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-white shadow-lg rounded-lg p-4 overflow-hidden space-y-4 transition-transform transform hover:scale-105">
-                  <div className="relative">
-                    <img
-                      src={writing}
-                      alt="Phonetics"
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute bottom-2 right-2 bg-white bg-opacity-80 rounded-full p-2">
-                      <span className="text-gray-700 text-sm">Phonetics</span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                      Phonetics
-                    </h3>
-                    <p className="text-gray-600 mb-4">Teacher: Doraemon</p>
-                    <p className="text-gray-600 mb-4">Teacher: Nobita</p>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-lg text-xs font-medium">
-                      See more
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-white shadow-lg rounded-lg p-4 overflow-hidden space-y-4 transition-transform transform hover:scale-105">
-                  <div className="relative">
-                    <img
-                      src={vocabulary}
-                      alt="Phonetics"
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute bottom-2 right-2 bg-white bg-opacity-80 rounded-full p-2">
-                      <span className="text-gray-700 text-sm">Phonetics</span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                      Phonetics
-                    </h3>
-                    <p className="text-gray-600 mb-4">Teacher: Doraemon</p>
-                    <p className="text-gray-600 mb-4">Teacher: Nobita</p>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-lg text-xs font-medium">
-                      See more
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-white shadow-lg rounded-lg p-4 overflow-hidden space-y-4 transition-transform transform hover:scale-105">
-                  <div className="relative">
-                    <img
-                      src={phonetics}
-                      alt="Phonetics"
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="absolute bottom-2 right-2 bg-white bg-opacity-80 rounded-full p-2">
-                      <span className="text-gray-700 text-sm">Phonetics</span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                      Phonetics
-                    </h3>
-                    <p className="text-gray-600 mb-4">Teacher: Doraemon</p>
-                    <p className="text-gray-600 mb-4">Teacher: Nobita</p>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-lg text-xs font-medium">
-                      See more
-                    </button>
-                  </div>
-                </div>
-                {/* Repeat similar div structure for each course card with corresponding information */}
+                )}
               </div>
             </div>
           </div>
-        )
+        );
+
 
       case "materials":
         return (
