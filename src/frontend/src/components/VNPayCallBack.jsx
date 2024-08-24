@@ -5,6 +5,7 @@ import SchoolIcon from "@mui/icons-material/School"
 import { useNavigate } from "react-router-dom"
 import GetUserCourses from "../api/courses/GetUserCourse"
 import addStudentToCourses from "../api/courses/AddStudentToCourse"
+import getCart from "../api/courses/GetCoursesFromCart"
 
 const PaymentCallBack = () => {
   const [openSuccessModal, setOpenSuccessModal] = useState(false)
@@ -18,13 +19,10 @@ const PaymentCallBack = () => {
 
   const handleSuccessfulPayment = async (orderId) => {
     try {
-      const email = localStorage.getItem("email")
-      const role = localStorage.getItem("role")
       const searchParams = new URLSearchParams(location.search)
-      const status = searchParams.get("status")
       const orderId = searchParams.get("orderId")
 
-      const courses = await GetUserCourses(email, role)
+      const courses = await getCart()
       console.log(courses.data.data)
       const courseIds = courses.data.data.map((course) => course.id)
       console.log(courseIds)

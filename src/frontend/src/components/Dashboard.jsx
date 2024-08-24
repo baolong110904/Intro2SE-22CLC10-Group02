@@ -13,6 +13,7 @@ import writing from "../assets/writing.png"
 import Calendar from "./calendar/Calendar.js"
 import { IoFilterOutline } from "react-icons/io5"
 import { FaSortAmountDown } from "react-icons/fa"
+import CourseGrid from "./CourseBox.jsx"
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("timetable")
@@ -346,7 +347,16 @@ const Dashboard = () => {
         )
 
       case "materials":
-        return <div>Materials</div>
+        return (
+          <div className="course-section p-8 bg-gray-50">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">My Courses</h2>
+            <div>
+              <React.StrictMode>
+                <CourseGrid />
+              </React.StrictMode>
+            </div>
+          </div >
+        );
       case "onlineMeeting":
         return (
           <div className="p-8 bg-white rounded-lg shadow-lg">

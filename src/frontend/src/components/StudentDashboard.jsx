@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react"
-import ContextWrapper from "./calendar/ContextWrapper.js"
+import React, { useState, useEffect, useContext } from "react";
+import ContextWrapper from "./calendar/ContextWrapper.js";
 import GlobalContext from "./calendar/GlobalContext.js"
 import Calendar from "./calendar/Calendar.js"
 import { getMonth } from "./calendar/util.js"
@@ -24,12 +24,12 @@ const posts = [
     },
   },
   // More posts...
-]
+];
 
 const Dashboard = () => {
-  const [activeSection, setActiveSection] = useState("timetable")
-  const [currenMonth, setCurrentMonth] = useState(getMonth())
-  const { monthIndex, showEventModal } = useContext(GlobalContext)
+  const [activeSection, setActiveSection] = useState("timetable");
+  const [currenMonth, setCurrentMonth] = useState(getMonth());
+  const { monthIndex, showEventModal } = useContext(GlobalContext);
 
   const renderActiveSection = () => {
     switch (activeSection) {
@@ -40,34 +40,28 @@ const Dashboard = () => {
               <Calendar />
             </ContextWrapper>
           </React.StrictMode>
-        )
+        );
       case "studyingSessions":
         return (
-          <div className="bg-white py-24 sm:py-32">
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-              <div className="mx-auto max-w-2xl lg:mx-0">
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                  YOUR CLASSES
-                </h2>
-              </div>
-              <div>
-                <React.StrictMode>
-                  <CourseGrid />
-                </React.StrictMode>
-              </div>
+          <div className="course-section p-8 bg-gray-50">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">My Courses</h2>
+            <div>
+              <React.StrictMode>
+                <CourseGrid />
+              </React.StrictMode>
             </div>
-          </div>
-        )
+          </div >
+        );
       case "lessonSupport":
-        return <div>My Lesson Support sessions</div>
+        return <div>My Lesson Support sessions</div>;
       case "teachingSupport":
-        return <div>My Teaching Support sessions</div>
+        return <div>My Teaching Support sessions</div>;
       case "ea":
-        return <div>EA</div>
+        return <div>EA</div>;
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <div
@@ -82,51 +76,46 @@ const Dashboard = () => {
       </div>
       <div className="mb-6 flex flex-wrap space-x-4">
         <button
-          className={`px-4 py-2 ${
-            activeSection === "timetable"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-          } rounded-md`}
+          className={`px-4 py-2 ${activeSection === "timetable"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+            } rounded-md`}
           onClick={() => setActiveSection("timetable")}
         >
           Timetable
         </button>
         <button
-          className={`px-4 py-2 ${
-            activeSection === "studyingSessions"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-          } rounded-md`}
+          className={`px-4 py-2 ${activeSection === "studyingSessions"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+            } rounded-md`}
           onClick={() => setActiveSection("studyingSessions")}
         >
           My Studying Sessions
         </button>
         <button
-          className={`px-4 py-2 ${
-            activeSection === "lessonSupport"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-          } rounded-md`}
+          className={`px-4 py-2 ${activeSection === "lessonSupport"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+            } rounded-md`}
           onClick={() => setActiveSection("lessonSupport")}
         >
           My Lesson Support sessions
         </button>
         <button
-          className={`px-4 py-2 ${
-            activeSection === "teachingSupport"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-          } rounded-md`}
+          className={`px-4 py-2 ${activeSection === "teachingSupport"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+            } rounded-md`}
           onClick={() => setActiveSection("teachingSupport")}
         >
           My Teaching Support sessions
         </button>
         <button
-          className={`px-4 py-2 ${
-            activeSection === "ea"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-          } rounded-md`}
+          className={`px-4 py-2 ${activeSection === "ea"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+            } rounded-md`}
           onClick={() => setActiveSection("ea")}
         >
           EA
@@ -136,7 +125,7 @@ const Dashboard = () => {
         {renderActiveSection()}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

@@ -3,8 +3,8 @@ import axiosInstance from "../axios/customAxios"
 const addToCart = async (course) => {
   const email = localStorage.getItem("email")
   const token = localStorage.getItem("token")
+  console.log(course)
   try {
-    course.email = localStorage.getItem("email")
     const res = await axiosInstance.post("/cart", course, {
       headers: {
         Authorization: `Bearer ${token}`,
