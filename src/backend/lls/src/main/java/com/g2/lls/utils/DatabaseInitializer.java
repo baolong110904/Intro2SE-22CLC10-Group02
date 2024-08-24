@@ -151,7 +151,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                             "DELETE", "Course")),
                     Map.entry("Remove student from course", new Permission("Remove student from course", String.format("/%s/courses/{courseId}/{studentId}", apiPrefix),
                             "PUT", "Course")),
-                    Map.entry("Upload material", new Permission("Upload material to course", String.format("/%s/courses/{id}/uploads/materials", apiPrefix),
+                    Map.entry("Upload material", new Permission("Upload material", String.format("/%s/courses/uploads/materials", apiPrefix),
                             "POST", "Course")),
                     Map.entry("Update thumbnail", new Permission("Update thumbnail", String.format("/%s/courses/{id}/uploads/thumbnail", apiPrefix),
                             "POST", "Course")),
@@ -160,6 +160,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                     Map.entry("Get all courses", new Permission("Get all courses", String.format("/%s/courses/all", apiPrefix),
                             "POST", "Course")),
                     Map.entry("Get materials", new Permission("Get materials", String.format("/%s/courses/{courseId}/materials", apiPrefix),
+                            "GET", "Course")),
+                    Map.entry("Get participants", new Permission("Get participants", String.format("/%s/courses/{courseId}/participants", apiPrefix),
                             "GET", "Course"))
             )));
 
@@ -206,6 +208,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             studentPermissions.add(permissions.get("Course").get("Get User's courses"));
             studentPermissions.add(permissions.get("Course").get("Get all courses"));
             studentPermissions.add(permissions.get("Course").get("Get materials"));
+            studentPermissions.add(permissions.get("Course").get("Get participants"));
             studentPermissions.addAll(vnPayPermissions);
             studentPermissions.addAll(cartPermissions);
             Role roleStudent = Role.builder()
@@ -492,8 +495,8 @@ public class DatabaseInitializer implements CommandLineRunner {
             courseRepository.saveAndFlush(course1);
 
             Material material1 = Material.builder()
-                    .publicId("g2/material/file_znrlid")
-                    .documentUrl("http://res.cloudinary.com/ds9macgdo/image/upload/v1724387544/g2/material/file_znrlid.pdf")
+                    .publicId("g2/material/file_xcxtci")
+                    .documentUrl("http://res.cloudinary.com/ds9macgdo/image/upload/v1724473888/g2/material/file_xcxtci.pdf")
                     .title("Grammar")
                     .course(course1)
                     .build();
@@ -505,8 +508,24 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .title("Vocabulary")
                     .build();
 
+            Material material3 = Material.builder()
+                    .publicId("g2/material/file_hjexci")
+                    .documentUrl("http://res.cloudinary.com/ds9macgdo/image/upload/v1724476597/g2/material/file_hjexci.pdf")
+                    .course(course1)
+                    .title("Listening")
+                    .build();
+
+            Material material4 = Material.builder()
+                    .publicId("g2/material/file_qemmr7")
+                    .documentUrl("http://res.cloudinary.com/ds9macgdo/image/upload/v1724477518/g2/material/file_qemmr7.pdf")
+                    .course(course1)
+                    .title("Writing")
+                    .build();
+
             materialRepository.saveAndFlush(material1);
             materialRepository.saveAndFlush(material2);
+            materialRepository.saveAndFlush(material3);
+            materialRepository.saveAndFlush(material4);
 
             Course course2 = Course.builder()
                     .thumbnail(thumbnail)

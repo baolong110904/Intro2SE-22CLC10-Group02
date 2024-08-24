@@ -12,7 +12,7 @@ public interface CloudinaryService {
 
     void deleteFile(String publicId) throws Exception;
 
-    MaterialResponse uploadMaterial(Long courseId, MultipartFile file) throws Exception;
+    MaterialResponse uploadMaterial(Long courseId, String title, MultipartFile file) throws Exception;
 
     ThumbnailResponse updateThumbnail(Long courseId, MultipartFile file) throws Exception;
 }

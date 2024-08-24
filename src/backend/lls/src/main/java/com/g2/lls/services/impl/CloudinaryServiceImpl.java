@@ -98,7 +98,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
     }
 
     @Override
-    public MaterialResponse uploadMaterial(Long courseId, MultipartFile file) throws Exception {
+    public MaterialResponse uploadMaterial(Long courseId, String title, MultipartFile file) throws Exception {
         Course course = courseRepository.findById(courseId).
                 orElseThrow(() -> new DataNotFoundException("Course not found"));
         if (course.getIsEnabled() == null || !course.getIsEnabled()) {
@@ -116,6 +116,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 .publicId(uploadResult.get("public_id").toString())
                 .documentUrl(uploadResult.get("url").toString())
                 .course(course)
+                .title(title)
                 .build();
 
         materialRepository.save(material);

@@ -1,9 +1,11 @@
 package com.g2.lls.controllers;
 
+import com.g2.lls.domains.Material;
 import com.g2.lls.domains.Role;
 import com.g2.lls.dtos.CourseDTO;
 import com.g2.lls.dtos.CourseFilterDTO;
 import com.g2.lls.dtos.CourseStudentRequestDTO;
+import com.g2.lls.dtos.MaterialRequestDTO;
 import com.g2.lls.dtos.response.*;
 import com.g2.lls.enums.RoleType;
 import com.g2.lls.services.RedisService;
@@ -149,15 +151,19 @@ public class CourseController {
                 courseService.removeStudent(courseId, studentId), TimeUtil.getTime()));
     }
 
-    @PostMapping(value = "{id}/uploads/materials", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/uploads/materials", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadMaterial(
             @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
-            @PathVariable Long id,
-            @ModelAttribute("file") MultipartFile file) throws Exception {
+            @ModelAttribute("file") MultipartFile file,
+            @RequestPart("metadata") MaterialRequestDTO material) throws Exception {
+        System.out.println("Received file: " + file.getOriginalFilename());
+        System.out.println("File size: " + file.getSize());
+        System.out.println("Content type: " + file.getContentType());
+
         return ResponseEntity.ok(new ApiResponse<>(
                 HttpStatus.OK.value(),
                 true,
-                courseService.uploadMaterial(id, file, email),
+                courseService.uploadMaterial(material.getCourseId(), material.getTitle(), file, email),
                 TimeUtil.getTime()
         ));
     }
@@ -171,6 +177,19 @@ public class CourseController {
                 HttpStatus.OK.value(),
                 true,
                 courseService.getMaterials(courseId, email),
+                TimeUtil.getTime()
+        ));
+    }
+
+    @GetMapping("/{courseId}/participants")
+    public ResponseEntity<ApiResponse<List<UserResponse>>> getParticipants(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @PathVariable Long courseId
+    ) throws Exception {
+        return ResponseEntity.ok(new ApiResponse<>(
+                HttpStatus.OK.value(),
+                true,
+                courseService.getParticipants(courseId, email),
                 TimeUtil.getTime()
         ));
     }

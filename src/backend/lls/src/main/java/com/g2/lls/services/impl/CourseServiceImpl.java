@@ -9,6 +9,7 @@ import com.g2.lls.dtos.CourseFilterDTO;
 import com.g2.lls.dtos.response.CourseResponse;
 import com.g2.lls.dtos.response.MaterialResponse;
 import com.g2.lls.dtos.response.ThumbnailResponse;
+import com.g2.lls.dtos.response.UserResponse;
 import com.g2.lls.enums.RoleType;
 import com.g2.lls.repositories.CourseRepository;
 import com.g2.lls.repositories.UserRepository;
@@ -199,14 +200,14 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public MaterialResponse uploadMaterial(Long id, MultipartFile file, String email) throws Exception {
+    public MaterialResponse uploadMaterial(Long id, String title, MultipartFile file, String email) throws Exception {
         Optional<Course> course = courseRepository.findById(id);
         User user = userServiceImpl.fetchUserByEmail(email);
         if(course.isPresent() && !course.get().getTeacherId().equals(user.getId())) {
             throw new Exception("You don't have permission to access this course.");
         }
 
-        return cloudinaryServiceImpl.uploadMaterial(id, file);
+        return cloudinaryServiceImpl.uploadMaterial(id, title, file);
     }
 
     @Override
@@ -267,5 +268,31 @@ public class CourseServiceImpl implements CourseService {
         else {
             throw new Exception("You don't have permission to access this course.");
         }
+    }
+
+    @Override
+    public List<UserResponse> getParticipants(Long courseId, String email) throws Exception {
+        User user = userServiceImpl.fetchUserByEmail(email);
+        Optional<Course> course = courseRepository.findById(courseId);
+        if(!course.isPresent()) {
+            throw new Exception("This course no longer exist.");
+        }
+        else if(!course.get().getTeacherId().equals(user.getId()) && !course.get().getUsers().contains(user)) {
+            throw new Exception("You don't have permission to access this course.");
+        }
+
+        List<User> studentList = course.get().getUsers();
+        User teacher = userServiceImpl.fetchUserById(course.get().getTeacherId());
+        List<UserResponse> userResponses = new ArrayList<>();
+        for (User student : studentList) {
+            UserResponse userResponse = modelMapper.map(student, UserResponse.class);
+            userResponse.setRole(student.getRoles());
+            userResponses.add(userResponse);
+        }
+        UserResponse userResponse = modelMapper.map(teacher, UserResponse.class);
+        userResponse.setRole(teacher.getRoles());
+        userResponses.add(userResponse);
+
+        return userResponses;
     }
 }
