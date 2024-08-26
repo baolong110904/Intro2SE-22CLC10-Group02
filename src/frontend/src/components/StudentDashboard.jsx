@@ -4,6 +4,7 @@ import GlobalContext from "./calendar/GlobalContext.js"
 import Calendar from "./calendar/Calendar.js"
 import { getMonth } from "./calendar/util.js"
 import CourseGrid from "./CourseBox.jsx"
+import Forum from "./Forum.jsx";
 
 const posts = [
   {
@@ -54,8 +55,15 @@ const Dashboard = () => {
         );
       case "lessonSupport":
         return <div>My Lesson Support sessions</div>;
-      case "teachingSupport":
-        return <div>My Teaching Support sessions</div>;
+      case "forum":
+        return (
+          <div className="course-section p-8 bg-gray-50">
+            <div>
+              <React.StrictMode>
+                <Forum/>
+              </React.StrictMode>
+            </div>
+          </div >)
       case "ea":
         return <div>EA</div>;
       default:
@@ -103,13 +111,13 @@ const Dashboard = () => {
           My Lesson Support sessions
         </button>
         <button
-          className={`px-4 py-2 ${activeSection === "teachingSupport"
+          className={`px-4 py-2 ${activeSection === "forum"
             ? "bg-blue-500 text-white"
             : "bg-gray-200 dark:bg-gray-700 dark:text-white"
             } rounded-md`}
-          onClick={() => setActiveSection("teachingSupport")}
+          onClick={() => setActiveSection("forum")}
         >
-          My Teaching Support sessions
+          Forum
         </button>
         <button
           className={`px-4 py-2 ${activeSection === "ea"

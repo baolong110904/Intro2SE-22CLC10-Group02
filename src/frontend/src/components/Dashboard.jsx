@@ -12,6 +12,7 @@ import { IoFilterOutline } from "react-icons/io5"
 import { FaSortAmountDown } from "react-icons/fa"
 import CourseGrid from "./CourseBox.jsx"
 import courseData from '../data/courseData.json';
+import Forum from "./Forum.jsx"
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("timetable")
@@ -39,30 +40,30 @@ const Dashboard = () => {
 
   const applyFilters = () => {
     let result = courseData;
-  
+
     if (filters.rating) {
       result = result.filter(course => course.rating >= filters.rating);
     }
-  
+
     if (filters.duration.length > 0) {
       result = result.filter(course => filters.duration.includes(course.duration));
     }
-  
+
     if (filters.topic !== "all") {
       result = result.filter(course => course.category === filters.topic);
     }
-  
+
     if (filters.subcategory !== "all") {
       result = result.filter(course => course.subcategory === filters.subcategory);
     }
-  
+
     if (filters.language !== "all") {
       result = result.filter(course => course.language === filters.language);
     }
-  
+
     setCourses(result);
   };
-  
+
   const handleFilterChange = (filterType, value) => {
     setFilters(prevFilters => {
       let updatedFilters;
@@ -74,18 +75,18 @@ const Dashboard = () => {
         updatedFilters = { ...prevFilters, duration: updatedDuration };
       } else if (filterType === 'rating') {
         // Reset rating if the same value is selected
-        updatedFilters = { 
-          ...prevFilters, 
-          [filterType]: prevFilters[filterType] === value ? null : value 
+        updatedFilters = {
+          ...prevFilters,
+          [filterType]: prevFilters[filterType] === value ? null : value
         };
       } else {
         // For other filters, update the value or reset to default if "all" is selected
-        updatedFilters = { 
-          ...prevFilters, 
-          [filterType]: value === "all" ? "all" : value 
+        updatedFilters = {
+          ...prevFilters,
+          [filterType]: value === "all" ? "all" : value
         };
       }
-      
+
       // Apply filters immediately
       applyFilters(updatedFilters);
       return updatedFilters;
@@ -138,25 +139,25 @@ const Dashboard = () => {
                     <h3 className="text-lg font-semibold text-gray-800">Ratings</h3>
                     <div className="space-y-2">
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="rating" value="4.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))}/>
+                        <input type="radio" name="rating" value="4.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))} />
                         <span className="text-yellow-500">★★★★☆</span>
                         <span className="text-gray-600">4.0 & up</span>
                         <span className="text-gray-400 ml-auto">(4,472)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="rating" value="3.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))}/>
+                        <input type="radio" name="rating" value="3.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))} />
                         <span className="text-yellow-500">★★★☆☆</span>
                         <span className="text-gray-600">3.0 & up</span>
                         <span className="text-gray-400 ml-auto">(3,347)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="rating" value="2.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))}/>
+                        <input type="radio" name="rating" value="2.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))} />
                         <span className="text-yellow-500">★★☆☆☆</span>
                         <span className="text-gray-600">2.0 & up</span>
                         <span className="text-gray-400 ml-auto">(2,214)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="radio" name="rating" value="1.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))}/>
+                        <input type="radio" name="rating" value="1.0" onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))} />
                         <span className="text-yellow-500">★☆☆☆☆</span>
                         <span className="text-gray-600">1.0 & up</span>
                         <span className="text-gray-400 ml-auto">(115)</span>
@@ -169,22 +170,22 @@ const Dashboard = () => {
                     <h3 className="text-lg font-semibold text-gray-800">Duration</h3>
                     <div className="space-y-2">
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="duration" value="3-4-days" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}/>
+                        <input type="checkbox" name="duration" value="3-4-days" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])} />
                         <span className="text-gray-600">3-4 days</span>
                         <span className="text-gray-400 ml-auto">(1,234)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="duration" value="6-7-days" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}/>
+                        <input type="checkbox" name="duration" value="6-7-days" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])} />
                         <span className="text-gray-600">6-7 days</span>
                         <span className="text-gray-400 ml-auto">(2,345)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="duration" value="1-2-weeks" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}/>
+                        <input type="checkbox" name="duration" value="1-2-weeks" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])} />
                         <span className="text-gray-600">1-2 weeks</span>
                         <span className="text-gray-400 ml-auto">(3,456)</span>
                       </label>
                       <label className="flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" name="duration" value="3-4-weeks" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])}/>
+                        <input type="checkbox" name="duration" value="3-4-weeks" onChange={(e) => handleFilterChange("duration", [...filters.duration, e.target.value])} />
                         <span className="text-gray-600">3-4 weeks</span>
                         <span className="text-gray-400 ml-auto">(4,567)</span>
                       </label>
@@ -246,7 +247,7 @@ const Dashboard = () => {
                 <div className="border border-gray-300 rounded-lg p-4 shadow-sm space-y-4">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">Topic</h3>
-                    <select 
+                    <select
                       className="w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-3 mt-2"
                       onChange={(e) => handleFilterChange("topic", e.target.value)}
                     >
@@ -259,7 +260,7 @@ const Dashboard = () => {
                   {/* Subcategory Filter */}
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">Subcategory</h3>
-                    <select 
+                    <select
                       className="w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-3 mt-2"
                       onChange={(e) => handleFilterChange("subcategory", e.target.value)}
                     >
@@ -273,7 +274,7 @@ const Dashboard = () => {
 
                   <div>
                     <h3 className="text-lg font-semibold text-gray-800">Language</h3>
-                    <select 
+                    <select
                       className="w-full bg-gray-50 border border-gray-300 rounded-lg py-2 px-3 mt-2"
                       onChange={(e) => handleFilterChange("language", e.target.value)}
                     >
@@ -310,7 +311,7 @@ const Dashboard = () => {
                 ) : (
                   <div className="col-span-full text-center py-8">
                     <p className="text-xl text-gray-600">No courses available with the selected filters.</p>
-                    <button 
+                    <button
                       className="mt-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
                       onClick={() => {
                         setFilters({
@@ -469,7 +470,14 @@ const Dashboard = () => {
         )
 
       case "forum":
-        return <div>Forum</div>
+        return (
+          <div className="course-section p-8 bg-gray-50">
+            <div>
+              <React.StrictMode>
+                <Forum/>
+              </React.StrictMode>
+            </div>
+          </div >)
       default:
         return null
     }
@@ -488,51 +496,46 @@ const Dashboard = () => {
       </div>
       <div className="mb-6 flex flex-wrap space-x-4">
         <button
-          className={`px-4 py-2 ${
-            activeSection === "timetable"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-          } rounded-md`}
+          className={`px-4 py-2 ${activeSection === "timetable"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+            } rounded-md`}
           onClick={() => setActiveSection("timetable")}
         >
           Timetable
         </button>
         <button
-          className={`px-4 py-2 ${
-            activeSection === "teachingSessions"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-          } rounded-md`}
+          className={`px-4 py-2 ${activeSection === "teachingSessions"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+            } rounded-md`}
           onClick={() => setActiveSection("teachingSessions")}
         >
           My Teaching Sessions
         </button>
         <button
-          className={`px-4 py-2 ${
-            activeSection === "materials"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-          } rounded-md`}
+          className={`px-4 py-2 ${activeSection === "materials"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+            } rounded-md`}
           onClick={() => setActiveSection("materials")}
         >
           Materials
         </button>
         <button
-          className={`px-4 py-2 ${
-            activeSection === "onlineMeeting"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-          } rounded-md`}
+          className={`px-4 py-2 ${activeSection === "onlineMeeting"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+            } rounded-md`}
           onClick={() => setActiveSection("onlineMeeting")}
         >
           Online Meeting
         </button>
         <button
-          className={`px-4 py-2 ${
-            activeSection === "forum"
-              ? "bg-blue-500 text-white"
-              : "bg-gray-200 dark:bg-gray-700 dark:text-white"
-          } rounded-md`}
+          className={`px-4 py-2 ${activeSection === "forum"
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 dark:bg-gray-700 dark:text-white"
+            } rounded-md`}
           onClick={() => setActiveSection("forum")}
         >
           Forum
