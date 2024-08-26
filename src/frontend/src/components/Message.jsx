@@ -1,14 +1,12 @@
-import React from "react";
+import React from "react"
 
 const Message = () => {
   return (
-  <div class="flex h-screen antialiased text-gray-800">
+    <div class="flex h-screen antialiased text-gray-800">
       <div class="flex flex-row h-full w-full overflow-x-hidden">
         <div class="flex flex-col py-8 pl-6 pr-2 w-64 bg-white flex-shrink-0">
           <div class="flex flex-row items-center justify-center h-12 w-full">
-            <div
-              class="flex items-center justify-center rounded-2xl text-indigo-700 bg-indigo-100 h-10 w-10"
-            >
+            <div class="flex items-center justify-center rounded-2xl text-indigo-700 bg-indigo-100 h-10 w-10">
               <svg
                 class="w-6 h-6"
                 fill="none"
@@ -26,9 +24,7 @@ const Message = () => {
             </div>
             <div class="ml-2 font-bold text-2xl">Chat</div>
           </div>
-          <div
-            class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg"
-          >
+          <div class="flex flex-col items-center bg-indigo-100 border border-gray-200 mt-4 w-full py-6 px-4 rounded-lg">
             <div class="h-20 w-20 rounded-full border overflow-hidden">
               <img
                 src="https://i.imgur.com/AFD0DlX.jpeg"
@@ -39,9 +35,7 @@ const Message = () => {
             <div class="text-sm font-semibold mt-2">Bao Long</div>
             <div class="text-xs text-gray-500">Engrisk Titchor</div>
             <div class="flex flex-row items-center mt-3">
-              <div
-                class="flex flex-col justify-center h-4 w-8 bg-indigo-500 rounded-full"
-              >
+              <div class="flex flex-col justify-center h-4 w-8 bg-indigo-500 rounded-full">
                 <div class="h-3 w-3 bg-white rounded-full self-end mr-1"></div>
               </div>
               <div class="leading-none ml-1 text-xs">Active</div>
@@ -50,63 +44,40 @@ const Message = () => {
           <div class="flex flex-col mt-8">
             <div class="flex flex-row items-center justify-between text-xs">
               <span class="font-bold">Active Conversations</span>
-              <span
-                class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full"
-                >4</span
-              >
+              <span class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full">
+                4
+              </span>
             </div>
             <div class="flex flex-col space-y-1 mt-4 -mx-2 h-48 overflow-y-auto">
-              <button
-                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-              >
-                <div
-                  class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full"
-                >
+              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+                <div class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
                   H
                 </div>
                 <div class="ml-2 text-sm font-semibold">Bui Minh Quan</div>
               </button>
-              <button
-                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-              >
-                <div
-                  class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full"
-                >
+              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+                <div class="flex items-center justify-center h-8 w-8 bg-gray-200 rounded-full">
                   M
                 </div>
                 <div class="ml-2 text-sm font-semibold">Nguyen Thanh Nam</div>
-                <div
-                  class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none"
-                >
+                <div class="flex items-center justify-center ml-auto text-xs text-white bg-red-500 h-4 w-4 rounded leading-none">
                   2
                 </div>
               </button>
-              <button
-                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-              >
-                <div
-                  class="flex items-center justify-center h-8 w-8 bg-orange-200 rounded-full"
-                >
+              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+                <div class="flex items-center justify-center h-8 w-8 bg-orange-200 rounded-full">
                   P
                 </div>
                 <div class="ml-2 text-sm font-semibold">Do Minh Huy</div>
               </button>
-              <button
-                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-              >
-                <div
-                  class="flex items-center justify-center h-8 w-8 bg-pink-200 rounded-full"
-                >
+              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+                <div class="flex items-center justify-center h-8 w-8 bg-pink-200 rounded-full">
                   C
                 </div>
                 <div class="ml-2 text-sm font-semibold">Dinh Duy Triet</div>
               </button>
-              <button
-                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-              >
-                <div
-                  class="flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full"
-                >
+              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+                <div class="flex items-center justify-center h-8 w-8 bg-purple-200 rounded-full">
                   J
                 </div>
                 <div class="ml-2 text-sm font-semibold">Christiano Ronaldo</div>
@@ -114,18 +85,13 @@ const Message = () => {
             </div>
             <div class="flex flex-row items-center justify-between text-xs mt-6">
               <span class="font-bold">Archivied</span>
-              <span
-                class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full"
-                >7</span
-              >
+              <span class="flex items-center justify-center bg-gray-300 h-4 w-4 rounded-full">
+                7
+              </span>
             </div>
             <div class="flex flex-col space-y-1 mt-4 -mx-2">
-              <button
-                class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2"
-              >
-                <div
-                  class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full"
-                >
+              <button class="flex flex-row items-center hover:bg-gray-100 rounded-xl p-2">
+                <div class="flex items-center justify-center h-8 w-8 bg-indigo-200 rounded-full">
                   H
                 </div>
                 <div class="ml-2 text-sm font-semibold">Lionel Messiu</div>
@@ -134,68 +100,50 @@ const Message = () => {
           </div>
         </div>
         <div class="flex flex-col flex-auto h-full p-6">
-          <div
-            class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4"
-          >
+          <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-gray-100 h-full p-4">
             <div class="flex flex-col h-full overflow-x-auto mb-4">
               <div class="flex flex-col h-full">
                 <div class="grid grid-cols-12 gap-y-2">
                   <div class="col-start-1 col-end-8 p-3 rounded-lg">
                     <div class="flex flex-row items-center">
-                      <div
-                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                      >
+                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                         A
                       </div>
-                      <div
-                        class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                      >
+                      <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                         <div>Hey How are you today?</div>
                       </div>
                     </div>
                   </div>
                   <div class="col-start-1 col-end-8 p-3 rounded-lg">
                     <div class="flex flex-row items-center">
-                      <div
-                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                      >
+                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                         A
                       </div>
-                      <div
-                        class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                      >
+                      <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                         <div>
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Vel ipsa commodi illum saepe numquam maxime
-                          asperiores voluptate sit, minima perspiciatis.
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                          Vel ipsa commodi illum saepe numquam maxime asperiores
+                          voluptate sit, minima perspiciatis.
                         </div>
                       </div>
                     </div>
                   </div>
                   <div class="col-start-6 col-end-13 p-3 rounded-lg">
                     <div class="flex items-center justify-start flex-row-reverse">
-                      <div
-                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                      >
+                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                         A
                       </div>
-                      <div
-                        class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
-                      >
+                      <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
                         <div>I'm ok what about you?</div>
                       </div>
                     </div>
                   </div>
                   <div class="col-start-6 col-end-13 p-3 rounded-lg">
                     <div class="flex items-center justify-start flex-row-reverse">
-                      <div
-                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                      >
+                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                         A
                       </div>
-                      <div
-                        class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
-                      >
+                      <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
                         <div>
                           Lorem ipsum dolor sit, amet consectetur adipisicing. ?
                         </div>
@@ -204,34 +152,24 @@ const Message = () => {
                   </div>
                   <div class="col-start-1 col-end-8 p-3 rounded-lg">
                     <div class="flex flex-row items-center">
-                      <div
-                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                      >
+                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                         A
                       </div>
-                      <div
-                        class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                      >
+                      <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                         <div>Lorem ipsum dolor sit amet !</div>
                       </div>
                     </div>
                   </div>
                   <div class="col-start-6 col-end-13 p-3 rounded-lg">
                     <div class="flex items-center justify-start flex-row-reverse">
-                      <div
-                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                      >
+                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                         A
                       </div>
-                      <div
-                        class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
-                      >
+                      <div class="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
                         <div>
                           Lorem ipsum dolor sit, amet consectetur adipisicing. ?
                         </div>
-                        <div
-                          class="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500"
-                        >
+                        <div class="absolute text-xs bottom-0 right-0 -mb-5 mr-2 text-gray-500">
                           Seen
                         </div>
                       </div>
@@ -239,14 +177,10 @@ const Message = () => {
                   </div>
                   <div class="col-start-1 col-end-8 p-3 rounded-lg">
                     <div class="flex flex-row items-center">
-                      <div
-                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                      >
+                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                         A
                       </div>
-                      <div
-                        class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                      >
+                      <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                         <div>
                           Lorem ipsum dolor sit amet consectetur adipisicing elit.
                           Perspiciatis, in.
@@ -256,18 +190,12 @@ const Message = () => {
                   </div>
                   <div class="col-start-1 col-end-8 p-3 rounded-lg">
                     <div class="flex flex-row items-center">
-                      <div
-                        class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                      >
+                      <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0">
                         A
                       </div>
-                      <div
-                        class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                      >
+                      <div class="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
                         <div class="flex flex-row items-center">
-                          <button
-                            class="flex items-center justify-center bg-indigo-600 hover:bg-indigo-800 rounded-full h-8 w-10"
-                          >
+                          <button class="flex items-center justify-center bg-indigo-600 hover:bg-indigo-800 rounded-full h-8 w-10">
                             <svg
                               class="w-6 h-6 text-white"
                               fill="none"
@@ -329,13 +257,9 @@ const Message = () => {
                 </div>
               </div>
             </div>
-            <div
-              class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4"
-            >
+            <div class="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4">
               <div>
-                <button
-                  class="flex items-center justify-center text-gray-400 hover:text-gray-600"
-                >
+                <button class="flex items-center justify-center text-gray-400 hover:text-gray-600">
                   <svg
                     class="w-5 h-5"
                     fill="none"
@@ -358,9 +282,7 @@ const Message = () => {
                     type="text"
                     class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
                   />
-                  <button
-                    class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600"
-                  >
+                  <button class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
                     <svg
                       class="w-6 h-6"
                       fill="none"
@@ -379,9 +301,7 @@ const Message = () => {
                 </div>
               </div>
               <div class="ml-4">
-                <button
-                  class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0"
-                >
+                <button class="flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 rounded-xl text-white px-4 py-1 flex-shrink-0">
                   <span>Send</span>
                   <span class="ml-2">
                     <svg
@@ -406,7 +326,7 @@ const Message = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Message;
+export default Message

@@ -81,7 +81,6 @@ public class RegistrationServiceImpl implements RegistrationService {
             .createdAt(Instant.now())
             .updatedAt(Instant.now())
             .build();
-        address.setUser(existingUser);
         addressRepository.save(address);
 
         existingUser.setAddress(address);

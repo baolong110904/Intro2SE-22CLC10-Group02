@@ -43,9 +43,6 @@ public class SecurityConfig {
 //                String.format("/%s/cart/**", apiPrefix),
                 String.format("/%s/hello-world", apiPrefix),
                 String.format("/%s/auth/**", apiPrefix),
-                String.format("/%s/users/profile", apiPrefix),
-                String.format("/%s/users/address", apiPrefix),
-                String.format("/%s/users/avatar", apiPrefix),
                 String.format("/%s/countries/**", apiPrefix),
                 String.format("/%s/payments/vn-pay/**", apiPrefix),
         };

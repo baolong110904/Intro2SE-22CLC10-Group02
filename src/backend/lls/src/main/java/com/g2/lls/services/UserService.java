@@ -5,6 +5,7 @@ import com.g2.lls.dtos.AddressDTO;
 import com.g2.lls.dtos.ChangePasswordDTO;
 import com.g2.lls.dtos.LoginDTO;
 import com.g2.lls.dtos.UserDTO;
+import com.g2.lls.dtos.UserUpdateDTO;
 import com.g2.lls.dtos.response.*;
 import com.g2.lls.enums.RoleType;
 import com.g2.lls.utils.exception.DataNotFoundException;
@@ -53,4 +54,6 @@ public interface UserService {
     AddressDTO updateUserAddress(String email, AddressDTO addressDTO) throws Exception;
 
     void changePassword(String email, ChangePasswordDTO changePasswordDTO) throws Exception;
+
+    UserUpdateDTO updateUserProfile(String email, UserUpdateDTO userUpdateDTO) throws Exception;
 }

@@ -64,11 +64,11 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             throw new UserNotActivatedException("User is not active");
         }
 
-        Optional<Avatar> existingAvatar = avatarRepository.findByUserId(userId);
-        if (existingAvatar.isPresent()) {
-            deleteFile(existingAvatar.get().getPublicId());
-            avatarRepository.delete(existingAvatar.get());
-        }
+        // Optional<Avatar> existingAvatar = avatarRepository.findByUserId(userId);
+        // if (existingAvatar.isPresent()) {
+        //     deleteFile(existingAvatar.get().getPublicId());
+        //     avatarRepository.delete(existingAvatar.get());
+        // }
 
         Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap(
                 "folder", avatarFolder,

@@ -84,15 +84,17 @@ public class DatabaseInitializer implements CommandLineRunner {
                     "Get profile", new Permission("Get profile", String.format("/%s/users/profile", apiPrefix),
                             "GET", "User"),
                     "Update address", new Permission("Update address", String.format("/%s/users/address", apiPrefix),
-                        "PUT", "User"),
+                            "PUT", "User"),
                     "Update a user", new Permission("Update a user", String.format("/%s/users/{id}", apiPrefix),
+                            "PUT", "User"),
+                    "Update profile", new Permission("Update profile", String.format("/%s/users/profile", apiPrefix),
                             "PUT", "User"),
                     "Delete a user", new Permission("Delete a user", String.format("/%s/users/{id}", apiPrefix),
                             "DELETE", "User"),
                     "Upload avatar", new Permission("Upload avatar", String.format("/%s/users/uploads/avatar", apiPrefix),
                             "POST", "User"),
                     "Get avatar", new Permission("Get avatar", String.format("/%s/users/avatar", apiPrefix),
-                        "GET", "User")
+                            "GET", "User")
             )));
 
             // Role permissions
@@ -211,10 +213,11 @@ public class DatabaseInitializer implements CommandLineRunner {
 
             List<Permission> studentPermissions = new ArrayList<>();
             studentPermissions.add(permissions.get("User").get("Get a user"));
-            studentPermissions.add(permissions.get("User").get("Update a user"));
             studentPermissions.add(permissions.get("User").get("Get profile"));
             studentPermissions.add(permissions.get("User").get("Upload avatar"));
             studentPermissions.add(permissions.get("User").get("Get avatar"));
+            studentPermissions.add(permissions.get("User").get("Update address"));
+            studentPermissions.add(permissions.get("User").get("Update profile"));
             studentPermissions.add(permissions.get("Role").get("Verify a role"));
             studentPermissions.add(permissions.get("Course").get("Get a course"));
             studentPermissions.add(permissions.get("Course").get("Get course's details"));
@@ -232,10 +235,11 @@ public class DatabaseInitializer implements CommandLineRunner {
 
             List<Permission> teacherPermissions = new ArrayList<>();
             teacherPermissions.add(permissions.get("User").get("Get a user"));
-            teacherPermissions.add(permissions.get("User").get("Update a user"));
             teacherPermissions.add(permissions.get("User").get("Get profile"));
             teacherPermissions.add(permissions.get("User").get("Upload avatar"));
             teacherPermissions.add(permissions.get("User").get("Get avatar"));
+            teacherPermissions.add(permissions.get("User").get("Update address"));
+            teacherPermissions.add(permissions.get("User").get("Update profile"));
             teacherPermissions.add(permissions.get("Role").get("Verify a role"));
             teacherPermissions.addAll(postPermissions);
             teacherPermissions.addAll(coursePermissions);

@@ -3,6 +3,7 @@ package com.g2.lls.controllers;
 import com.g2.lls.domains.User;
 import com.g2.lls.dtos.AddressDTO;
 import com.g2.lls.dtos.UserDTO;
+import com.g2.lls.dtos.UserUpdateDTO;
 import com.g2.lls.dtos.response.ApiResponse;
 import com.g2.lls.dtos.response.AvatarResponse;
 import com.g2.lls.dtos.response.PaginationDTO;
@@ -102,5 +103,13 @@ public class UserController {
         
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
             userService.updateUserAddress(email, addressDTO), TimeUtil.getTime()));
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<ApiResponse<UserUpdateDTO>> updateUserProfile(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @Valid @RequestBody UserUpdateDTO userUpdateDTO) throws Exception {
+        return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
+            userService.updateUserProfile(email, userUpdateDTO), TimeUtil.getTime()));
     }
 }

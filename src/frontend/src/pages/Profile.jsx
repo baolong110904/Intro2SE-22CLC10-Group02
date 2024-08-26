@@ -15,8 +15,10 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  Radio,
-  RadioGroup,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material"
 import {
   Timeline,
@@ -34,52 +36,203 @@ import UpdateAddress from "../api/auth/UpdateAddress"
 import { MuiTelInput } from "mui-tel-input"
 import GetAllCountries from "../api/country/GetAllCountries"
 import ChangePassword from "../api/auth/ChangePassword"
+import UpdateProfile from "../api/auth/UpdateProfile"
+import UploadAvatar from "../api/auth/UploadAvatar"
+import TextEditor from "../components/TextEditor"
 
-const ProfileInformation = ({ profileData }) => (
-  <Box>
-    <Typography variant="h6" gutterBottom>
-      User Information
-    </Typography>
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={6}>
-        <Typography>
-          <strong>Username:</strong> {profileData.username}
-        </Typography>
-        <Typography>
-          <strong>Email:</strong> {profileData.email}
-        </Typography>
-        <Typography>
-          <strong>Full Name:</strong> {profileData.first_name}{" "}
-          {profileData.last_name}
-        </Typography>
-        <Typography>
-          <strong>Gender:</strong> {profileData.gender}
-        </Typography>
+const ProfileInformation = ({ profileData, onSave }) => {
+  const [editedProfile, setEditedProfile] = useState({
+    ...profileData,
+    date_of_birth: profileData.date_of_birth || "",
+  })
+  const [errors, setErrors] = useState({})
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
+
+  const validateUsername = (username) => {
+    const regex = /^[a-zA-Z0-9._]{2,50}$/
+    if (!regex.test(username)) {
+      return "Username must be alphanumeric and have at least 2 characters and maximum 50 characters allow underscore, dot."
+    }
+    return null
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setEditedProfile((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: null }))
+    }
+
+    if (name === "username") {
+      const error = validateUsername(value)
+      if (error) {
+        setErrors((prev) => ({ ...prev, username: error }))
+      }
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError("")
+    setSuccess("")
+
+    const usernameError = validateUsername(editedProfile.username)
+    if (usernameError) {
+      setErrors((prev) => ({ ...prev, username: usernameError }))
+      return
+    }
+
+    try {
+      const result = await UpdateProfile(
+        editedProfile.email,
+        editedProfile.username,
+        editedProfile.first_name,
+        editedProfile.last_name,
+        editedProfile.date_of_birth,
+        editedProfile.gender,
+        editedProfile.description,
+      )
+      if (result.success) {
+        onSave(editedProfile)
+        setSuccess("Profile updated successfully!")
+      } else {
+        throw new Error(result.message)
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error)
+      setError(`Failed to update profile: ${error.message}`)
+    }
+  }
+
+  return (
+    <Box component="form" onSubmit={handleSubmit}>
+      <Typography variant="h6" gutterBottom>
+        User Information
+      </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="email"
+            label="Email"
+            value={editedProfile.email}
+            onChange={handleChange}
+            disabled
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="username"
+            label="Username"
+            value={editedProfile.username}
+            onChange={handleChange}
+            error={!!errors.username}
+            helperText={errors.username}
+            required
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="first_name"
+            label="First Name"
+            value={editedProfile.first_name}
+            onChange={handleChange}
+            required
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="last_name"
+            label="Last Name"
+            value={editedProfile.last_name}
+            onChange={handleChange}
+            required
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <TextField
+            fullWidth
+            name="date_of_birth"
+            label="Date of Birth"
+            type="date"
+            value={editedProfile.date_of_birth}
+            onChange={handleChange}
+            required
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <FormControl fullWidth>
+            <InputLabel id="gender-label">Gender</InputLabel>
+            <Select
+              labelId="gender-label"
+              name="gender"
+              value={editedProfile.gender}
+              label="Gender"
+              onChange={handleChange}
+              required
+            >
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            fullWidth
+            name="description"
+            label="Description"
+            multiline
+            rows={5}
+            value={editedProfile.description}
+            onChange={handleChange}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <Typography>
-          <strong>Date of Birth:</strong> {profileData.date_of_birth}
+      {error && (
+        <Typography color="error" gutterBottom>
+          {error}
         </Typography>
-        <Typography>
-          <strong>Description:</strong> {profileData.description}
+      )}
+      {success && (
+        <Typography color="success.main" gutterBottom>
+          {success}
         </Typography>
-        {/* <Typography><strong>MFA Enabled:</strong> {profileData.is_mfa_enabled ? 'Yes' : 'No'}</Typography> */}
-        <Typography>
-          <strong>Account Created:</strong>{" "}
-          {new Date(profileData.created_at).toLocaleString()}
-        </Typography>
-      </Grid>
-    </Grid>
-  </Box>
-)
+      )}
+      <Box mt={2}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={!!errors.username}
+        >
+          Save Profile
+        </Button>
+      </Box>
+    </Box>
+  )
+}
 
 const AddressInformation = ({ address, onSave, email }) => {
   const [editedAddress, setEditedAddress] = useState({
     ...address,
-    phone_number: address.phone_number || "", // Ensure phone_number is a string
+    phone_number: address.phone_number || "",
     address_type: address.address_type || "",
     is_default: address.is_default || false,
   })
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -96,9 +249,35 @@ const AddressInformation = ({ address, onSave, email }) => {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    onSave(editedAddress)
+    setError("")
+    setSuccess("")
+
+    try {
+      const result = await UpdateAddress(
+        email,
+        editedAddress.phone_number,
+        editedAddress.country,
+        editedAddress.city,
+        editedAddress.province,
+        editedAddress.district,
+        editedAddress.ward,
+        editedAddress.address,
+        editedAddress.address_type,
+        editedAddress.is_default,
+      )
+
+      if (result.success) {
+        onSave(editedAddress)
+        setSuccess("Address saved successfully!")
+      } else {
+        throw new Error(result.message)
+      }
+    } catch (error) {
+      console.error("Error saving address:", error)
+      setError(`Failed to save address: ${error.message}`)
+    }
   }
 
   const [countries, setCountries] = useState([])
@@ -108,7 +287,7 @@ const AddressInformation = ({ address, onSave, email }) => {
     const fetchCountries = async () => {
       try {
         const result = await GetAllCountries()
-        console.log("API response:", result) // Log the entire response
+        console.log("API response:", result)
         if (Array.isArray(result)) {
           setCountries(result)
         } else {
@@ -214,6 +393,16 @@ const AddressInformation = ({ address, onSave, email }) => {
           />
         </Grid>
       </Grid>
+      {error && (
+        <Typography color="error" gutterBottom>
+          {error}
+        </Typography>
+      )}
+      {success && (
+        <Typography color="success.main" gutterBottom>
+          {success}
+        </Typography>
+      )}
       <Box mt={2}>
         <Button type="submit" variant="contained" color="primary">
           Save Address
@@ -347,6 +536,7 @@ export default function Profile() {
   const [profileData, setProfileData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [selectedSection, setSelectedSection] = useState("Information")
+  const [isAvatarDialogOpen, setIsAvatarDialogOpen] = useState(false)
   const navigate = useNavigate()
   const token = localStorage.getItem("token")
   const email = localStorage.getItem("email")
@@ -402,40 +592,49 @@ export default function Profile() {
     return null
   }
 
-  const saveAddress = async (newAddress) => {
-    try {
-      const result = await UpdateAddress(
-        email,
-        newAddress.phone_number,
-        newAddress.country,
-        newAddress.city,
-        newAddress.province,
-        newAddress.district,
-        newAddress.ward,
-        newAddress.address,
-        newAddress.address_type,
-        newAddress.is_default,
-      )
+  const saveAddress = (newAddress) => {
+    setProfileData((prevData) => ({
+      ...prevData,
+      address: newAddress,
+    }))
+  }
 
-      if (result.success) {
-        setProfileData((prevData) => ({
-          ...prevData,
-          address: newAddress,
-        }))
-        alert("Address saved successfully!")
-      } else {
-        throw new Error(result.message)
+  const handleProfileUpdate = (updatedProfile) => {
+    setProfileData((prevData) => ({
+      ...prevData,
+      ...updatedProfile,
+    }))
+  }
+
+  const handleAvatarUpload = async (event) => {
+    const file = event.target.files[0]
+    if (file) {
+      try {
+        const result = await UploadAvatar(email, file)
+        if (result.success) {
+          setProfileData((prevData) => ({
+            ...prevData,
+            avatar: result.data.imageUrl,
+          }))
+          setIsAvatarDialogOpen(false)
+        } else {
+          console.error("Failed to upload avatar:", result.message)
+        }
+      } catch (error) {
+        console.error("Error uploading avatar:", error)
       }
-    } catch (error) {
-      console.error("Error saving address:", error)
-      alert(`Failed to save address: ${error.message}`)
     }
   }
 
   const renderSelectedSection = () => {
     switch (selectedSection) {
       case "Information":
-        return <ProfileInformation profileData={profileData} />
+        return (
+          <ProfileInformation
+            profileData={profileData}
+            onSave={handleProfileUpdate}
+          />
+        )
       case "Address":
         return (
           <AddressInformation
@@ -472,7 +671,7 @@ export default function Profile() {
             alignItems="center"
             justifyContent={{ xs: "center", sm: "space-between" }}
             sx={{
-              backgroundColor: "blue",
+              backgroundColor: "rgb(29, 78, 216)",
               padding: "2rem",
               margin: 0,
             }}
@@ -508,7 +707,11 @@ export default function Profile() {
                     mt={1}
                     mb={1}
                   >
-                    <Chip label={profileData.role[0].name} size="small" />
+                    <Chip
+                      label={profileData.role[0].name}
+                      size="small"
+                      color="warning"
+                    />
                     {/* <Chip label="Premium Member" size="small" color="warning" sx={{ marginLeft: '0.5rem' }} /> */}
                   </Box>
                   <Typography variant="body1" color="white">
@@ -553,17 +756,82 @@ export default function Profile() {
                     backgroundColor: "black",
                     width: { xs: "100%", sm: "100%", md: "100%" },
                   }}
+                  onClick={() => setIsAvatarDialogOpen(true)}
                 >
-                  Edit Avatar
+                  Change Avatar
                 </Button>
+
+                {/* Avatar Upload Dialog */}
+                <Dialog
+                  open={isAvatarDialogOpen}
+                  onClose={() => setIsAvatarDialogOpen(false)}
+                  PaperProps={{
+                    style: {
+                      borderRadius: "8px",
+                      padding: "20px",
+                      maxWidth: "400px",
+                      width: "100%",
+                    },
+                  }}
+                >
+                  <DialogTitle
+                    style={{
+                      textAlign: "center",
+                      fontSize: "24px",
+                      fontWeight: "bold",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    Upload New Avatar
+                  </DialogTitle>
+                  <DialogContent style={{ textAlign: "center" }}>
+                    <input
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      id="avatar-upload"
+                      type="file"
+                      onChange={handleAvatarUpload}
+                    />
+                    <label htmlFor="avatar-upload">
+                      <Button
+                        variant="contained"
+                        component="span"
+                        style={{
+                          backgroundColor: "#1976d2",
+                          color: "white",
+                          padding: "10px 20px",
+                          fontSize: "16px",
+                          marginBottom: "20px",
+                        }}
+                      >
+                        Choose Image
+                      </Button>
+                    </label>
+                  </DialogContent>
+                  <DialogActions
+                    style={{ justifyContent: "center", padding: "0 20px 20px" }}
+                  >
+                    <Button
+                      onClick={() => setIsAvatarDialogOpen(false)}
+                      style={{
+                        backgroundColor: "#f44336",
+                        color: "white",
+                        padding: "10px 20px",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </Box>
             </Grid>
           </Grid>
 
           {/* Bottom Section: Timeline and Content */}
-          <Grid container spacing={2} mt={2}>
+          <Grid container spacing={6} mt={2}>
             {/* Timeline on the left */}
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid item xs={12} sm={12} md={4} lg={3}>
               <Box
                 sx={{
                   display: "flex",
@@ -599,7 +867,7 @@ export default function Profile() {
             </Grid>
 
             {/* Content on the right */}
-            <Grid item xs={12} sm={6} md={8} lg={9}>
+            <Grid item xs={12} sm={12} md={8} lg={9}>
               <Box sx={{ padding: 2 }}>{renderSelectedSection()}</Box>
             </Grid>
           </Grid>

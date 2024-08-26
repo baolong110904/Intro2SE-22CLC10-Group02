@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react"
 import {
   Box,
   Grid,
   Button,
   Typography,
-  Tab, Tabs,
+  Tab,
+  Tabs,
   TableContainer,
   Table,
   TableHead,
@@ -13,38 +14,36 @@ import {
   TableBody,
   Avatar,
   Paper,
-  TextField
-} from "@mui/material";
-import SchoolIcon from "@mui/icons-material/School";
-import GetUserCourses from "../api/courses/GetUserCourse";
-import DocumentCard from "./DocumentCard";
-import GetCourseMaterials from "../api/courses/GetCourseMaterials";
-import GetParticipants from "../api/courses/GetParticipants";
-import UploadMaterials from "../api/courses/UploadMaterials";
-import CircularProgress from "@mui/material/CircularProgress";
+  TextField,
+} from "@mui/material"
+import SchoolIcon from "@mui/icons-material/School"
+import GetUserCourses from "../api/courses/GetUserCourse"
+import DocumentCard from "./DocumentCard"
+import GetCourseMaterials from "../api/courses/GetCourseMaterials"
+import GetParticipants from "../api/courses/GetParticipants"
+import UploadMaterials from "../api/courses/UploadMaterials"
+import CircularProgress from "@mui/material/CircularProgress"
 
 const CourseGrid = () => {
-  const [languageCourses, setLanguageCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState(null);
-  const [documents, setDocuments] = useState([]);
-  const [tabIndex, setTabIndex] = useState(0);
-  const email = localStorage.getItem("email");
-  const role = localStorage.getItem("role");
-  const [participants, setParticipants] = useState([]);
-  const fileInputRef = useRef(null);
-  const [documentTitle, setDocumentTitle] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
+  const [languageCourses, setLanguageCourses] = useState([])
+  const [selectedCourse, setSelectedCourse] = useState(null)
+  const [documents, setDocuments] = useState([])
+  const [tabIndex, setTabIndex] = useState(0)
+  const email = localStorage.getItem("email")
+  const role = localStorage.getItem("role")
+  const [participants, setParticipants] = useState([])
+  const fileInputRef = useRef(null)
+  const [documentTitle, setDocumentTitle] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleButtonClick = () => {
-    fileInputRef.current.click();
-  };
+    fileInputRef.current.click()
+  }
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
+    const file = event.target.files[0]
     if (file) {
-
-      handleUploadMaterial(file);
+      handleUploadMaterial(file)
     }
   }
 
@@ -52,69 +51,67 @@ const CourseGrid = () => {
     try {
       console.log(selectedCourse)
       const response = await GetParticipants(selectedCourse)
-      setParticipants(response.data.data);
+      setParticipants(response.data.data)
       console.log(response)
     } catch (error) {
-      console.error("Error fetching participants:", error);
+      console.error("Error fetching participants:", error)
     }
-  };
+  }
 
   const handleUploadMaterial = async (file) => {
     if (!documentTitle.trim()) {
-      alert("Please enter a title for the document.");
-      return;
+      alert("Please enter a title for the document.")
+      return
     }
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
       console.log(file)
       const result = await UploadMaterials(file, selectedCourse, documentTitle)
       if (result && result.success) {
-        await handleViewDocuments(selectedCourse);
+        await handleViewDocuments(selectedCourse)
         setDocumentTitle("")
       }
       console.log(result)
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error!", error)
-    }
-    finally {
+    } finally {
       setIsLoading(false)
     }
-    console.log("Upload Material clicked");
-  };
+    console.log("Upload Material clicked")
+  }
 
   useEffect(() => {
     if (tabIndex === 1 && selectedCourse) {
-      fetchParticipants();
+      fetchParticipants()
     }
-  }, [tabIndex, selectedCourse]);
+  }, [tabIndex, selectedCourse])
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        let currentCourses = await GetUserCourses(email, role);
-        setLanguageCourses(currentCourses.data.data);
+        let currentCourses = await GetUserCourses(email, role)
+        setLanguageCourses(currentCourses.data.data)
       } catch (error) {
-        console.error("Error fetching courses:", error);
+        console.error("Error fetching courses:", error)
       }
-    };
-    fetchCourses();
-  }, [email, role]);
+    }
+    fetchCourses()
+  }, [email, role])
 
   const handleViewDocuments = async (course) => {
     try {
-      setSelectedCourse(course);
-      const courseDocuments = await GetCourseMaterials(course.id);
-      setDocuments(courseDocuments.data);
+      setSelectedCourse(course)
+      const courseDocuments = await GetCourseMaterials(course.id)
+      setDocuments(courseDocuments.data)
     } catch (error) {
-      console.error("Error fetching documents:", error);
+      console.error("Error fetching documents:", error)
     }
-  };
+  }
 
   const handleChangeTab = (event, newValue) => {
-    setTabIndex(newValue);
-  };
+    setTabIndex(newValue)
+  }
 
   return (
     <Box>
@@ -132,10 +129,14 @@ const CourseGrid = () => {
           {tabIndex === 0 && (
             <Box sx={{ mt: 2 }}>
               {documents.map((doc) => (
-                <DocumentCard key={doc.publicId} title={doc.title || ""} link={doc.documentUrl} />
+                <DocumentCard
+                  key={doc.publicId}
+                  title={doc.title || ""}
+                  link={doc.documentUrl}
+                />
               ))}
 
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Button variant="contained" onClick={() => setSelectedCourse(null)}>
                   Back to Courses
                 </Button>
@@ -164,7 +165,11 @@ const CourseGrid = () => {
                       onClick={handleButtonClick}
                       disabled={isLoading || !documentTitle.trim()}
                     >
-                      {isLoading ? <CircularProgress size={24} /> : "Upload Material"}
+                      {isLoading ? (
+                        <CircularProgress size={24} />
+                      ) : (
+                        "Upload Material"
+                      )}
                     </Button>
                   )}
                 </div>
@@ -193,7 +198,9 @@ const CourseGrid = () => {
                             </Typography>
                           </Box>
                         </TableCell>
-                        <TableCell>{participant.role.map(role => role.name).join(", ")}</TableCell>
+                        <TableCell>
+                          {participant.role.map((role) => role.name).join(", ")}
+                        </TableCell>
                         <TableCell>{participant.groups || "No groups"}</TableCell>
                       </TableRow>
                     ))}
@@ -284,9 +291,7 @@ const CourseGrid = () => {
                       color: "#ffffff",
                       "&:hover": {
                         backgroundColor: (theme) =>
-                          theme.palette.mode === "dark"
-                            ? "#2c5282"
-                            : "#3182ce",
+                          theme.palette.mode === "dark" ? "#2c5282" : "#3182ce",
                       },
                     }}
                   >
@@ -299,7 +304,7 @@ const CourseGrid = () => {
         </Grid>
       )}
     </Box>
-  );
-};
+  )
+}
 
-export default CourseGrid;
+export default CourseGrid

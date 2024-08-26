@@ -214,11 +214,6 @@
             <artifactId>mysql-socket-factory-connector-j-8</artifactId>
             <version>1.20.0</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>spring-cloud-gcp-starter-sql-mysql</artifactId>
-            <version>5.5.1</version>
-        </dependency> -->
     </dependencies>
 
     <build>

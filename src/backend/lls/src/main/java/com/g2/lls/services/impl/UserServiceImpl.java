@@ -295,4 +295,17 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
         userRepository.save(user);
     }
+
+    @Override
+    public UserUpdateDTO updateUserProfile(String email, UserUpdateDTO userUpdateDTO) throws Exception {
+        User user = fetchUserByEmail(email);
+        user.setUsername(userUpdateDTO.getUsername());
+        user.setFirstName(userUpdateDTO.getFirstName());
+        user.setLastName(userUpdateDTO.getLastName());
+        user.setDateOfBirth(userUpdateDTO.getDateOfBirth());
+        user.setGender(userUpdateDTO.getGender());
+        user.setDescription(userUpdateDTO.getDescription());
+        userRepository.save(user);
+        return userUpdateDTO;
+    }
 }
