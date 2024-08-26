@@ -13,6 +13,7 @@ import { FaSortAmountDown } from "react-icons/fa"
 import CourseGrid from "./CourseBox.jsx"
 import courseData from '../data/courseData.json';
 import Forum from "./Forum.jsx"
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("timetable")
@@ -286,25 +287,37 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Teaching Sessions Grid (3/4 of the width on large screens) */}
               <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
                 {courses.length > 0 ? (
                   courses.map(course => (
-                    <div key={course.id} className="bg-white shadow-lg rounded-lg p-4 overflow-hidden space-y-4 transition-transform transform hover:scale-105">
+                    <div
+                      key={course.id}
+                      className="bg-white shadow-lg rounded-lg p-4 overflow-hidden space-y-4 transition-transform transform hover:scale-105"
+                    >
                       <div className="relative">
-                        <img src={course.image} alt={course.title} className="w-full h-48 object-cover" />
+                        <img
+                          src={course.image}
+                          alt={course.title}
+                          className="w-full h-48 object-cover"
+                        />
                         <div className="absolute bottom-2 right-2 bg-white bg-opacity-80 rounded-full p-2">
                           <span className="text-gray-700 text-sm">{course.category}</span>
                         </div>
                       </div>
                       <div className="p-4">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-2">{course.title}</h3>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                          {course.title}
+                        </h3>
                         {course.teachers.map((teacher, index) => (
-                          <p key={index} className="text-gray-600 mb-4">Teacher: {teacher}</p>
+                          <p key={index} className="text-gray-600 mb-4">
+                            Teacher: {teacher}
+                          </p>
                         ))}
-                        <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-lg text-xs font-medium">
-                          See more
-                        </button>
+                        <Link to={`/course/${course.id}`}>
+                          <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-lg text-xs font-medium">
+                            Go to course
+                          </button>
+                        </Link>
                       </div>
                     </div>
                   ))

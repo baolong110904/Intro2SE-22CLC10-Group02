@@ -15,6 +15,8 @@ import { AdminPage } from "./admin/AdminPage.jsx"
 import PaymentCallback from "./components/VNPayCallBack.jsx"
 import Courses from "./components/Courses.jsx"
 import Forum from "./components/Forum.jsx"
+import DetailedCourseView from "./components/DetailedCourseView.jsx";
+
 function App() {
   // State to manage whether to show Login or Signup page
   const location = useLocation()
@@ -40,6 +42,7 @@ function App() {
         <Route path="/payment-success" element={<PaymentCallback />} />
         <Route path="/payment-failed" element={<PaymentCallback />} />
         <Route path="/forum" element={<Forum />} />
+        <Route path="/course/:courseId" element={<DetailedCourseView />} />
       </Routes>
     </>
   )
