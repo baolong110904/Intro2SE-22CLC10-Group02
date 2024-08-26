@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import CreatePost from '../api/post/CreatePost';
 import GetAllPosts from '../api/post/GetAllPost';
+import GetAllComments from '../api/post/GetAllComment';
+import CreateComment from '../api/post/CreateComment';
 
 const Forum = () => {
     const [selectedPost, setSelectedPost] = useState(null);
@@ -10,9 +12,7 @@ const Forum = () => {
 
     const handleCreatePost = async () => {
         if (newPost.title.trim() && newPost.content.trim()) {
-            // Create a new post
             const res = await CreatePost(newPost.title, newPost.slug, newPost.content, newPost.description);
-            console.log(res)
             const newPostWithId = { ...newPost, id: res.id, comments: [] }; // Add comments field
             setPosts([...posts, newPostWithId]);
             setNewPost({ title: '', slug: '', description: '', content: '' });
@@ -26,7 +26,6 @@ const Forum = () => {
         const fetchPosts = async () => {
             try {
                 const response = await GetAllPosts();
-                console.log(response)
                 setPosts(response.data);  // Update state with posts data
             } catch (error) {
                 console.error("Error fetching posts:", error);
@@ -35,25 +34,62 @@ const Forum = () => {
         fetchPosts();
     }, []);
 
-    const toggleComments = (postId) => {
-        setSelectedPost(selectedPost === postId ? null : postId);
+    const fetchCommentsForPost = async (postId) => {
+        try {
+            const response = await GetAllComments(postId);
+            const updatedPosts = posts.map(post => 
+                post.id === postId ? { ...post, comments: response.data } : post
+            );
+            setPosts(updatedPosts);
+        } catch (error) {
+            console.error("Error fetching comments:", error);
+        }
     };
 
-    const handleCommentSubmit = (postId, commentText) => {
-        setPosts(posts.map(post => 
-            post.id === postId 
-                ? { ...post, comments: [...post.comments, { id: Date.now(), text: commentText, user: { name: 'User', avatar: 'path/to/avatar' } }], newComment: '' }
-                : post
-        ));
+    const toggleComments = (postId) => {
+        if (selectedPost === postId) {
+            setSelectedPost(null);
+        } else {
+            setSelectedPost(postId);
+            fetchCommentsForPost(postId);
+        }
     };
+
+    const handleCommentSubmit = async (postId, commentText) => {
+        try {
+            const res = await CreateComment(postId, commentText);
+            console.log(res)
+    
+            const newComment = {
+                id: res.data.id, 
+                content: res.data.content,
+                user: {
+                    first_name: res.data.user.first_name, 
+                    last_name: res.data.user.last_name, 
+                    avatar: res.data.user.avatar 
+                }
+            };
+    
+            setPosts(posts.map(post => 
+                post.id === res.data.postId
+                    ? { ...post, comments: [...post.comments, newComment], newComment: '' }
+                    : post
+            ));
+
+            console.log(posts)
+        } catch (error) {
+            console.error("Error submitting comment:", error);
+            // Handle error (e.g., display an error message)
+        }
+    };
+    
+    
 
     const handleCommentChange = (postId, text) => {
-        setPosts(posts.map(post => 
-            post.id === postId 
-                ? { ...post, newComment: text }
-                : post
+        setPosts(prevPosts => prevPosts.map(post =>
+          post.id === postId ? { ...post, newComment: text } : post
         ));
-    };
+      };
 
     return (
         <div className="forum-container">
@@ -129,8 +165,8 @@ const Forum = () => {
                                                     <img src={comment.user.avatar} alt={`${comment.user.name}'s avatar`} />
                                                 </div>
                                                 <div className="comment-content">
-                                                    <p className="comment-user">{comment.user.name}</p>
-                                                    <p className="comment-text">{comment.text}</p>
+                                                    <p className="comment-user">{comment.user.first_name} {comment.user.last_name}</p>
+                                                    <p className="comment-text">{comment.content}</p>
                                                 </div>
                                             </div>
                                         ))

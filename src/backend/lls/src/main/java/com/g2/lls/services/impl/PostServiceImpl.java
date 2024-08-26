@@ -44,7 +44,7 @@ public class PostServiceImpl implements PostService {
         posts.add(post);
         user.setPosts(posts);
         userRepository.save(user);
-        post = user.getPosts().get(user.getPosts().size() - 1);
+        post = user.getPosts().getLast();
         return convertToPostResponseDTO(post, user);
     }
 
@@ -77,6 +77,7 @@ public class PostServiceImpl implements PostService {
         postEntity.setComments(comments);
         postRepository.save(postEntity);
 
+        commentEntity = postEntity.getComments().getLast();
         CommentResponseDTO commentResponseDTO = modelMapper.map(commentEntity, CommentResponseDTO.class);
         UserResponse userResponse = modelMapper.map(user, UserResponse.class);
         commentResponseDTO.setUser(userResponse);
