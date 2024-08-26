@@ -175,6 +175,18 @@ public class DatabaseInitializer implements CommandLineRunner {
                             "DELETE", "Cart")
             )));
 
+            //Post permissions
+            permissions.put("Post", new HashMap<>(Map.of(
+                    "Get All Posts", new Permission("Get All Posts", String.format("/%s/posts", apiPrefix),
+                            "GET", "Post"),
+                    "Get All Comments", new Permission("Get All Comments", String.format("/%s/posts/{postId}/comments", apiPrefix),
+                            "GET", "Post"),
+                    "Create Post", new Permission("Create Post", String.format("/%s/posts", apiPrefix),
+                            "POST", "Post"),
+                    "Create Comment", new Permission("Create Comment", String.format("/%s/posts/{postId}/comments", apiPrefix),
+                            "POST", "Post")
+            )));
+
             permissions.values().forEach(permissionMap -> permissionRepository.saveAllAndFlush(permissionMap.values()));
         }
 
@@ -188,6 +200,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             List<Permission> videoSDKPermissions = permissionRepository.findByModule("VideoSDK");
             List<Permission> coursePermissions = permissionRepository.findByModule("Course");
             List<Permission> cartPermissions = permissionRepository.findByModule("Cart");
+            List<Permission> postPermissions = permissionRepository.findByModule("Post");
 
             List<Permission> adminPermissions = permissionRepository.findAll();
 
@@ -209,6 +222,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             studentPermissions.add(permissions.get("Course").get("Get all courses"));
             studentPermissions.add(permissions.get("Course").get("Get materials"));
             studentPermissions.add(permissions.get("Course").get("Get participants"));
+            studentPermissions.addAll(postPermissions);
             studentPermissions.addAll(vnPayPermissions);
             studentPermissions.addAll(cartPermissions);
             Role roleStudent = Role.builder()
@@ -223,6 +237,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             teacherPermissions.add(permissions.get("User").get("Upload avatar"));
             teacherPermissions.add(permissions.get("User").get("Get avatar"));
             teacherPermissions.add(permissions.get("Role").get("Verify a role"));
+            teacherPermissions.addAll(postPermissions);
             teacherPermissions.addAll(coursePermissions);
             teacherPermissions.addAll(vnPayPermissions);
             teacherPermissions.addAll(videoSDKPermissions);
