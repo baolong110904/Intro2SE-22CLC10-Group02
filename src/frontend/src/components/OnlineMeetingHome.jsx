@@ -1,17 +1,17 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import screensharing from "../assets/screensharing.png";
-import recording from "../assets/recording.png";
-import virtualbg from "../assets/virtualbg.png";
-import shareexperience from "../assets/shareexperience.png";
-import ava1 from "../assets/ava1.png";
-import ava2 from "../assets/ava2.png";
+import React from "react"
+import { useNavigate } from "react-router-dom"
+import screensharing from "../assets/screensharing.png"
+import recording from "../assets/recording.png"
+import virtualbg from "../assets/virtualbg.png"
+import shareexperience from "../assets/shareexperience.png"
+import ava1 from "../assets/ava1.png"
+import ava2 from "../assets/ava2.png"
 
 const OnlineMeetingHome = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
-<div className="p-8 bg-white rounded-lg shadow-lg">
+    <div className="p-8 bg-white rounded-lg shadow-lg">
       {/* Header Section */}
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-2">Welcome to the Meeting</h1>
@@ -79,9 +79,7 @@ const OnlineMeetingHome = () => {
             <h2 className="text-2xl font-semibold mb-4">Meeting Feedback</h2>
             <div className="space-y-4">
               <div className="bg-gray-100 p-4 rounded-lg shadow">
-                <p className="font-semibold">
-                  Great meeting, very informative
-                </p>
+                <p className="font-semibold">Great meeting, very informative</p>
                 <div className="flex items-center mt-2">
                   <span className="text-yellow-500">★★★★★</span>
                   <div className="ml-4 flex items-center">
@@ -95,9 +93,7 @@ const OnlineMeetingHome = () => {
                 </div>
               </div>
               <div className="bg-gray-100 p-4 rounded-lg shadow">
-                <p className="font-semibold">
-                  Enjoyed the interactive session
-                </p>
+                <p className="font-semibold">Enjoyed the interactive session</p>
                 <div className="flex items-center mt-2">
                   <span className="text-yellow-500">★★★★★</span>
                   <div className="ml-4 flex items-center">
@@ -122,16 +118,14 @@ const OnlineMeetingHome = () => {
                 alt="Highlight"
                 className="w-full rounded-lg mb-4 transform transition-transform duration-300 hover:scale-110"
               />
-              <p className="font-semibold">
-                Great collaboration today! #TeamWork
-              </p>
+              <p className="font-semibold">Great collaboration today! #TeamWork</p>
               <p className="text-gray-600">- @grace</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default OnlineMeetingHome;
+export default OnlineMeetingHome

@@ -1,118 +1,117 @@
-import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import ContextWrapper from "./calendar/ContextWrapper.js";
-import ava1 from "../assets/ava1.png";
-import ava2 from "../assets/ava2.png";
-import recording from "../assets/recording.png";
-import screensharing from "../assets/screensharing.png";
-import virtualbg from "../assets/virtualbg.png";
-import shareexperience from "../assets/shareexperience.png";
-import Calendar from "./calendar/Calendar.js";
-import { IoFilterOutline } from "react-icons/io5";
-import { FaSortAmountDown } from "react-icons/fa";
-import CourseGrid from "./CourseBox.jsx";
-import courseData from '../data/courseData.json';
-import Forum from "./Forum.jsx";
-import { Link } from 'react-router-dom';
-import Mycourse from "../components/Mycourse.jsx";
-import OnlineMeetingHome from "./OnlineMeetingHome.jsx"; // Import the OnlineMeetingHome component
-import GetUserCourses from "../api/courses/GetUserCourse.js";
+import React, { useState, useRef, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import ContextWrapper from "./calendar/ContextWrapper.js"
+import ava1 from "../assets/ava1.png"
+import ava2 from "../assets/ava2.png"
+import recording from "../assets/recording.png"
+import screensharing from "../assets/screensharing.png"
+import virtualbg from "../assets/virtualbg.png"
+import shareexperience from "../assets/shareexperience.png"
+import Calendar from "./calendar/Calendar.js"
+import { IoFilterOutline } from "react-icons/io5"
+import { FaSortAmountDown } from "react-icons/fa"
+import CourseGrid from "./CourseBox.jsx"
+import courseData from "../data/courseData.json"
+import Forum from "./Forum.jsx"
+import { Link } from "react-router-dom"
+import Mycourse from "../components/Mycourse.jsx"
+import OnlineMeetingHome from "./OnlineMeetingHome.jsx" // Import the OnlineMeetingHome component
+import GetUserCourses from "../api/courses/GetUserCourse.js"
 
 const Dashboard = () => {
-  const [activeSection, setActiveSection] = useState("timetable");
-  const navigate = useNavigate();
-  const [showMore, setShowMore] = useState(false);
-  const showMoreRef = useRef(null);
-  const [courses, setCourses] = useState([]);
-  const [filteredCourses, setFilteredCourses] = useState(courseData);
+  const [activeSection, setActiveSection] = useState("timetable")
+  const navigate = useNavigate()
+  const [showMore, setShowMore] = useState(false)
+  const showMoreRef = useRef(null)
+  const [courses, setCourses] = useState([])
+  const [filteredCourses, setFilteredCourses] = useState(courseData)
   const [filters, setFilters] = useState({
     rating: null,
     duration: [],
     topic: "all",
     subcategory: "all",
-    language: "all"
-  });
+    language: "all",
+  })
 
   useEffect(() => {
-    setCourses(courseData);
-    setFilteredCourses(courseData);
-  }, []);
+    setCourses(courseData)
+    setFilteredCourses(courseData)
+  }, [])
 
   useEffect(() => {
-    applyFilters();
-  }, [filters]);
+    applyFilters()
+  }, [filters])
 
   const fetchData = async () => {
     const email = localStorage.getItem("email")
     const role = localStorage.getItem("role")
 
     try {
-      const result = await GetUserCourses(email, role);
-      setCourses(result.data);
+      const result = await GetUserCourses(email, role)
+      setCourses(result.data)
     } catch (error) {
-      console.error("Error fetching courses:", error);
+      console.error("Error fetching courses:", error)
     }
-  };
-
+  }
 
   const applyFilters = () => {
-    fetchData();
+    fetchData()
     console.log(courses)
     const result = courses.data
 
     if (filters.rating) {
-      result = result.filter(course => course.rating >= filters.rating);
+      result = result.filter((course) => course.rating >= filters.rating)
     }
 
     if (filters.duration.length > 0) {
-      result = result.filter(course => filters.duration.includes(course.duration));
+      result = result.filter((course) => filters.duration.includes(course.duration))
     }
 
     if (filters.topic !== "all") {
-      result = result.filter(course => course.category === filters.topic);
+      result = result.filter((course) => course.category === filters.topic)
     }
 
     if (filters.subcategory !== "all") {
-      result = result.filter(course => course.subcategory === filters.subcategory);
+      result = result.filter((course) => course.subcategory === filters.subcategory)
     }
 
     if (filters.language !== "all") {
-      result = result.filter(course => course.language === filters.language);
+      result = result.filter((course) => course.language === filters.language)
     }
 
-    setCourses(result);
-  };
+    setCourses(result)
+  }
 
   const handleFilterChange = (filterType, value, prevFilters) => {
-    let updatedFilters;
-    if (filterType === 'duration') {
+    let updatedFilters
+    if (filterType === "duration") {
       const updatedDuration = prevFilters.duration.includes(value)
-        ? prevFilters.duration.filter(item => item !== value)
-        : [...prevFilters.duration, value];
-      updatedFilters = { ...prevFilters, duration: updatedDuration };
-    } else if (filterType === 'rating') {
+        ? prevFilters.duration.filter((item) => item !== value)
+        : [...prevFilters.duration, value]
+      updatedFilters = { ...prevFilters, duration: updatedDuration }
+    } else if (filterType === "rating") {
       updatedFilters = {
         ...prevFilters,
-        [filterType]: prevFilters[filterType] === value ? null : value
-      };
+        [filterType]: prevFilters[filterType] === value ? null : value,
+      }
     } else {
       updatedFilters = {
         ...prevFilters,
-        [filterType]: value === "all" ? "all" : value
-      };
+        [filterType]: value === "all" ? "all" : value,
+      }
     }
-    return updatedFilters;
-  };
+    return updatedFilters
+  }
 
   const handleShowMoreClick = () => {
-    setShowMore(!showMore);
+    setShowMore(!showMore)
     if (!showMore) {
       // Scroll to the newly revealed content
       setTimeout(() => {
-        showMoreRef.current.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+        showMoreRef.current.scrollIntoView({ behavior: "smooth" })
+      }, 100)
     }
-  };
+  }
 
   const renderActiveSection = () => {
     switch (activeSection) {
@@ -123,7 +122,7 @@ const Dashboard = () => {
               <Calendar />
             </ContextWrapper>
           </React.StrictMode>
-        );
+        )
       case "teachingSessions":
         return (
           <div className="p-8 bg-gray-50">
@@ -140,7 +139,7 @@ const Dashboard = () => {
               )}
             </React.StrictMode>
           </div>
-        );
+        )
       case "materials":
         return (
           <div className="course-section p-8 bg-gray-50">
@@ -151,7 +150,7 @@ const Dashboard = () => {
               </React.StrictMode>
             </div>
           </div>
-        );
+        )
       case "onlineMeeting":
         return (
           <div>
@@ -159,7 +158,7 @@ const Dashboard = () => {
               <OnlineMeetingHome />
             </React.StrictMode>
           </div>
-        );
+        )
       case "forum":
         return (
           <div className="course-section p-8 bg-gray-50">
@@ -169,16 +168,21 @@ const Dashboard = () => {
               </React.StrictMode>
             </div>
           </div>
-        );
+        )
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
-    <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md w-full h-full" id="dashboard">
+    <div
+      className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md w-full h-full"
+      id="dashboard"
+    >
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">Dashboard</h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800 dark:text-white">
+          Dashboard
+        </h2>
         <div className="flex space-x-2"></div>
       </div>
       <div className="mb-6 flex flex-wrap space-x-4">
@@ -205,7 +209,7 @@ const Dashboard = () => {
         {renderActiveSection()}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

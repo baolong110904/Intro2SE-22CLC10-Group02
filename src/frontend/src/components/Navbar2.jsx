@@ -1,9 +1,9 @@
-import React from "react";
-import { MdWbSunny, MdNightsStay, MdHome } from "react-icons/md";
-import logo from "../components/G2Learning.svg";
-import { Menu } from "@headlessui/react";
-import { Link } from "react-router-dom";
-import NotificationButton from "../components/Notifications";
+import React from "react"
+import { MdWbSunny, MdNightsStay, MdHome } from "react-icons/md"
+import logo from "../components/G2Learning.svg"
+import { Menu } from "@headlessui/react"
+import { Link } from "react-router-dom"
+import NotificationButton from "../components/Notifications"
 
 const Navbar = ({ userName, isDarkMode, toggleTheme }) => {
   return (
@@ -83,7 +83,7 @@ const Navbar = ({ userName, isDarkMode, toggleTheme }) => {
         </button>
       </nav>
     </header>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

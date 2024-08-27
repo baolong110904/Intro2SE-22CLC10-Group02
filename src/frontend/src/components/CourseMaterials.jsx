@@ -1,43 +1,43 @@
-import React, { useState, useRef } from 'react';
-import { Box, Button, TextField, CircularProgress } from '@mui/material';
-import DocumentCard from './DocumentCard';
-import UploadMaterials from '../api/courses/UploadMaterials';
+import React, { useState, useRef } from "react"
+import { Box, Button, TextField, CircularProgress } from "@mui/material"
+import DocumentCard from "./DocumentCard"
+import UploadMaterials from "../api/courses/UploadMaterials"
 
 const CourseMaterials = ({ documents, courseId, role, onDocumentsChange }) => {
-  const [documentTitle, setDocumentTitle] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const fileInputRef = useRef(null);
+  const [documentTitle, setDocumentTitle] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const fileInputRef = useRef(null)
 
   const handleButtonClick = () => {
-    fileInputRef.current.click();
-  };
+    fileInputRef.current.click()
+  }
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
+    const file = event.target.files[0]
     if (file) {
-      handleUploadMaterial(file);
+      handleUploadMaterial(file)
     }
-  };
+  }
 
   const handleUploadMaterial = async (file) => {
     if (!documentTitle.trim()) {
-      alert('Please enter a title for the document.');
-      return;
+      alert("Please enter a title for the document.")
+      return
     }
 
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const result = await UploadMaterials(file, courseId, documentTitle);
+      const result = await UploadMaterials(file, courseId, documentTitle)
       if (result && result.success) {
-        onDocumentsChange();
-        setDocumentTitle('');
+        onDocumentsChange()
+        setDocumentTitle("")
       }
     } catch (error) {
-      console.error('Error!', error);
+      console.error("Error!", error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <Box sx={{ mt: 2 }}>
@@ -45,7 +45,7 @@ const CourseMaterials = ({ documents, courseId, role, onDocumentsChange }) => {
         documents.map((doc) => (
           <DocumentCard
             key={doc.publicId}
-            title={doc.title || ''}
+            title={doc.title || ""}
             link={doc.documentUrl}
           />
         ))
@@ -53,8 +53,8 @@ const CourseMaterials = ({ documents, courseId, role, onDocumentsChange }) => {
         <p>No documents available.</p> // Display a message when there are no documents
       )}
 
-      <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
-        {role === 'TEACHER' && (
+      <Box sx={{ display: "flex", alignItems: "center", mt: 2 }}>
+        {role === "TEACHER" && (
           <>
             <TextField
               label="Document Title"
@@ -65,7 +65,7 @@ const CourseMaterials = ({ documents, courseId, role, onDocumentsChange }) => {
             <input
               type="file"
               ref={fileInputRef}
-              style={{ display: 'none' }}
+              style={{ display: "none" }}
               onChange={handleFileChange}
             />
             <Button
@@ -74,13 +74,13 @@ const CourseMaterials = ({ documents, courseId, role, onDocumentsChange }) => {
               onClick={handleButtonClick}
               disabled={isLoading || !documentTitle.trim()}
             >
-              {isLoading ? <CircularProgress size={24} /> : 'Upload Material'}
+              {isLoading ? <CircularProgress size={24} /> : "Upload Material"}
             </Button>
           </>
         )}
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default CourseMaterials;
+export default CourseMaterials

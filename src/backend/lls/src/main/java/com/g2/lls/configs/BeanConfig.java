@@ -49,6 +49,9 @@ public class BeanConfig {
     @Value("${spring.data.redis.port}")
     private int redisPort;
 
+    // @Value("${spring.data.redis.password}")
+    // private String redisPassword;
+
     @Bean
     public JavaMailSender mailSender() {
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
@@ -79,6 +82,7 @@ public class BeanConfig {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
         redisStandaloneConfiguration.setHostName(redisHost);
         redisStandaloneConfiguration.setPort(redisPort);
+        // redisStandaloneConfiguration.setPassword(redisPassword);
 
         return new JedisConnectionFactory(redisStandaloneConfiguration);
     }

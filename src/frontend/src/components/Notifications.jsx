@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { MdNotificationsNone } from "react-icons/md";
-import notifications from "../data/notifications.json"; // Adjust this path as needed
+import React, { useState } from "react"
+import { MdNotificationsNone } from "react-icons/md"
+import notifications from "../data/notifications.json" // Adjust this path as needed
 
 const NotificationButton = () => {
-  const [showNotifications, setShowNotifications] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false)
   const toggleNotifications = () => {
-    setShowNotifications(!showNotifications);
-  };
+    setShowNotifications(!showNotifications)
+  }
 
   return (
     <div className="relative">
@@ -23,8 +23,12 @@ const NotificationButton = () => {
                   key={index}
                   className="py-2 border-b border-gray-300 dark:border-gray-700"
                 >
-                  <p><strong>Course name: {notification.courseName}</strong></p>
-                  <p>Announced by: <strong>{notification.author}</strong></p>
+                  <p>
+                    <strong>Course name: {notification.courseName}</strong>
+                  </p>
+                  <p>
+                    Announced by: <strong>{notification.author}</strong>
+                  </p>
                   <p>{notification.announcement}</p>
                 </li>
               ))}
@@ -33,7 +37,7 @@ const NotificationButton = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default NotificationButton;
+export default NotificationButton

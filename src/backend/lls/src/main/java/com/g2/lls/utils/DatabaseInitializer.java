@@ -228,6 +228,7 @@ public class DatabaseInitializer implements CommandLineRunner {
             studentPermissions.addAll(postPermissions);
             studentPermissions.addAll(vnPayPermissions);
             studentPermissions.addAll(cartPermissions);
+            studentPermissions.addAll(videoSDKPermissions);
             Role roleStudent = Role.builder()
                     .name(RoleType.STUDENT)
                     .permissions(studentPermissions)

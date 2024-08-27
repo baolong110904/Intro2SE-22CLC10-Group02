@@ -5,11 +5,12 @@ const CreatePost = async (title, slug, content, description, courseId) => {
   const email = localStorage.getItem("email")
   const token = localStorage.getItem("token")
   console.log(token)
-  let data = {title: title,
+  let data = {
+    title: title,
     slug: slug,
     content: content,
     description: description,
-    courseId: courseId
+    courseId: courseId,
   }
 
   try {

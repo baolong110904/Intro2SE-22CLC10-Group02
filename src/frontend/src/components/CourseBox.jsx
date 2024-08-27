@@ -1,10 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
-import {
-  Box,
-  Grid,
-  Button,
-  Typography,
-} from "@mui/material"
+import { Box, Grid, Button, Typography } from "@mui/material"
 import SchoolIcon from "@mui/icons-material/School"
 import GetUserCourses from "../api/courses/GetUserCourse"
 import { Link } from "react-router-dom"
@@ -28,7 +23,7 @@ const CourseGrid = () => {
 
   return (
     <Box>
-      {(
+      {
         <Grid container spacing={5}>
           {languageCourses.map((course) => (
             <Grid item xs={12} sm={6} lg={4} key={course.id}>
@@ -121,7 +116,7 @@ const CourseGrid = () => {
             </Grid>
           ))}
         </Grid>
-      )}
+      }
     </Box>
   )
 }

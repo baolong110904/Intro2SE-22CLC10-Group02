@@ -1,64 +1,64 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import CourseData from "../data/courseData.json";
-import Participants from "../components/Participants";
-import Navbar2 from "../components/Navbar2.jsx";
-import { Box, Typography } from '@mui/material';
-import CourseMaterials from '../components/CourseMaterials';
-import GetCourseMaterials from '../api/courses/GetCourseMaterials';
-import Forum from "./Forum.jsx";
+import React, { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
+import CourseData from "../data/courseData.json"
+import Participants from "../components/Participants"
+import Navbar2 from "../components/Navbar2.jsx"
+import { Box, Typography } from "@mui/material"
+import CourseMaterials from "../components/CourseMaterials"
+import GetCourseMaterials from "../api/courses/GetCourseMaterials"
+import Forum from "./Forum.jsx"
 
 const DetailedCourseView = () => {
-  const { courseId } = useParams();
-  const course = CourseData.find((course) => course.id.toString() === courseId);
-  const [activeTab, setActiveTab] = useState("course");
-  const [openSection, setOpenSection] = useState(null);
-  const [openSubSection, setOpenSubSection] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [customSections, setCustomSections] = useState([]);
-  const [showCreateSectionModal, setShowCreateSectionModal] = useState(false);
-  const [showEditSectionModal, setShowEditSectionModal] = useState(false);
-  const [sectionToEdit, setSectionToEdit] = useState(null);
+  const { courseId } = useParams()
+  const course = CourseData.find((course) => course.id.toString() === courseId)
+  const [activeTab, setActiveTab] = useState("course")
+  const [openSection, setOpenSection] = useState(null)
+  const [openSubSection, setOpenSubSection] = useState(null)
+  const [isDarkMode, setIsDarkMode] = useState(false)
+  const [customSections, setCustomSections] = useState([])
+  const [showCreateSectionModal, setShowCreateSectionModal] = useState(false)
+  const [showEditSectionModal, setShowEditSectionModal] = useState(false)
+  const [sectionToEdit, setSectionToEdit] = useState(null)
   const [documents, setDocuments] = useState([])
   const role = localStorage.getItem("role")
 
   const fetchDocuments = async () => {
     try {
-      const courseDocuments = await GetCourseMaterials(courseId);
+      const courseDocuments = await GetCourseMaterials(courseId)
       console.log(courseDocuments)
-      setDocuments(courseDocuments.data);
+      setDocuments(courseDocuments.data)
     } catch (error) {
-      console.error('Error fetching documents:', error);
+      console.error("Error fetching documents:", error)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchDocuments();
-  }, [courseId]);
+    fetchDocuments()
+  }, [courseId])
 
   const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+    setIsDarkMode(!isDarkMode)
+  }
 
   if (!course) {
-    return <p>Course not found.</p>;
+    return <p>Course not found.</p>
   }
 
   const toggleSection = (section) => {
-    setOpenSection(openSection === section ? null : section);
-    setOpenSubSection(null);
-  };
+    setOpenSection(openSection === section ? null : section)
+    setOpenSubSection(null)
+  }
 
   const toggleSubSection = (subSection) => {
-    setOpenSubSection(openSubSection === subSection ? null : subSection);
-  };
+    setOpenSubSection(openSubSection === subSection ? null : subSection)
+  }
 
   const handleCreateSection = (e) => {
-    e.preventDefault();
-    const sectionName = e.target.sectionName.value;
-    const requirements = e.target.requirements.value;
-    const subsection = e.target.subsection.value;
-    const material = e.target.material.files[0];
+    e.preventDefault()
+    const sectionName = e.target.sectionName.value
+    const requirements = e.target.requirements.value
+    const subsection = e.target.subsection.value
+    const material = e.target.material.files[0]
 
     const newSection = {
       id: customSections.length + 1,
@@ -66,48 +66,52 @@ const DetailedCourseView = () => {
       requirements,
       subsection,
       material,
-    };
+    }
 
-    setCustomSections([...customSections, newSection]);
-    setShowCreateSectionModal(false);
-  };
+    setCustomSections([...customSections, newSection])
+    setShowCreateSectionModal(false)
+  }
 
   const handleEditSection = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const updatedSection = {
       ...sectionToEdit,
       name: e.target.sectionName.value,
       requirements: e.target.requirements.value,
       subsection: e.target.subsection.value,
       material: e.target.material.files[0] || sectionToEdit.material,
-    };
+    }
 
     const updatedSections = customSections.map((section) =>
-      section.id === sectionToEdit.id ? updatedSection : section
-    );
+      section.id === sectionToEdit.id ? updatedSection : section,
+    )
 
-    setCustomSections(updatedSections);
-    setShowEditSectionModal(false);
-    setSectionToEdit(null);
-  };
+    setCustomSections(updatedSections)
+    setShowEditSectionModal(false)
+    setSectionToEdit(null)
+  }
 
   const handleDeleteSection = (sectionId) => {
     const filteredSections = customSections.filter(
-      (section) => section.id !== sectionId
-    );
-    setCustomSections(filteredSections);
-  };
+      (section) => section.id !== sectionId,
+    )
+    setCustomSections(filteredSections)
+  }
 
   const openEditModal = (section) => {
-    setSectionToEdit(section);
-    setShowEditSectionModal(true);
-  };
+    setSectionToEdit(section)
+    setShowEditSectionModal(true)
+  }
 
   return (
     <div
       className={`min-h-screen ${isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}
     >
-      <Navbar2 userName="Bao Long" isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      <Navbar2
+        userName="Bao Long"
+        isDarkMode={isDarkMode}
+        toggleTheme={toggleTheme}
+      />
 
       <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md w-full h-full">
         <div className="p-4 border-b">
@@ -136,10 +140,11 @@ const DetailedCourseView = () => {
           {["course", "participants", "forum", "materials"].map((tab) => (
             <button
               key={tab}
-              className={`py-2 px-4 font-semibold border-b-2 ${activeTab === tab
-                ? "border-blue-600 text-blue-600"
-                : "border-transparent text-gray-500"
-                } hover:text-blue-600`}
+              className={`py-2 px-4 font-semibold border-b-2 ${
+                activeTab === tab
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-500"
+              } hover:text-blue-600`}
               onClick={() => setActiveTab(tab)}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -240,7 +245,6 @@ const DetailedCourseView = () => {
               )}
             </div>
 
-
             {/* Custom Sections */}
             {customSections.map((section, index) => (
               <div key={index} className="relative">
@@ -254,9 +258,15 @@ const DetailedCourseView = () => {
                 {openSection === section.name && (
                   <div className="space-y-4 p-4 bg-gray-50 rounded-lg">
                     <div>
-                      <p><strong>Requirements:</strong> {section.requirements}</p>
-                      <p><strong>Subsection:</strong> {section.subsection}</p>
-                      <p><strong>Material:</strong> {section.material.name}</p>
+                      <p>
+                        <strong>Requirements:</strong> {section.requirements}
+                      </p>
+                      <p>
+                        <strong>Subsection:</strong> {section.subsection}
+                      </p>
+                      <p>
+                        <strong>Material:</strong> {section.material.name}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -317,19 +327,35 @@ const DetailedCourseView = () => {
               <form onSubmit={handleCreateSection}>
                 <div className="mb-4">
                   <label className="block text-gray-700">Section Name:</label>
-                  <input type="text" name="sectionName" className="w-full p-2 border border-gray-300 rounded-md" />
+                  <input
+                    type="text"
+                    name="sectionName"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
                 </div>
                 <div className="mb-4">
                   <label className="block text-gray-700">Requirements:</label>
-                  <input type="text" name="requirements" className="w-full p-2 border border-gray-300 rounded-md" />
+                  <input
+                    type="text"
+                    name="requirements"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
                 </div>
                 <div className="mb-4">
                   <label className="block text-gray-700">Subsection:</label>
-                  <input type="text" name="subsection" className="w-full p-2 border border-gray-300 rounded-md" />
+                  <input
+                    type="text"
+                    name="subsection"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
                 </div>
                 <div className="mb-4">
                   <label className="block text-gray-700">Upload Material:</label>
-                  <input type="file" name="material" className="w-full p-2 border border-gray-300 rounded-md" />
+                  <input
+                    type="file"
+                    name="material"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
                 </div>
                 <div className="flex justify-end">
                   <button
@@ -386,7 +412,11 @@ const DetailedCourseView = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block text-gray-700">Upload Material:</label>
-                  <input type="file" name="material" className="w-full p-2 border border-gray-300 rounded-md" />
+                  <input
+                    type="file"
+                    name="material"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
                 </div>
                 <div className="flex justify-end">
                   <button
@@ -409,7 +439,7 @@ const DetailedCourseView = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default DetailedCourseView;
+export default DetailedCourseView

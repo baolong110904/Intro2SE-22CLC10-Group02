@@ -1,27 +1,27 @@
 [
-    {
-        "courseName": "Engrisk with Long",
-        "author": "Teacher Peo Long",
-        "announcement": "Dear students, we are going to have a an online meeting at 6pm on 30/08/2024. Noted that lesson 4 is not finished yet, please prepare your homework and classwork materials for a smooth online learning"
-    },
-    {
-        "courseName": "Spanish for Beginners",
-        "author": "Prof. Maria Gonzalez",
-        "announcement": "Reminder: Our next class will focus on basic vocabulary and phrases. Please review the vocabulary list provided in the last session and complete the practice exercises before 02/09/2024."
-    },
-    {
-        "courseName": "French Conversation Skills",
-        "author": "Mme. Claire Dubois",
-        "announcement": "Don't forget our role-playing activity scheduled for 03/09/2024. Prepare your dialogues and practice pronunciation. The session will be held at 4pm in Room 205."
-    },
-    {
-        "courseName": "Advanced German Grammar",
-        "author": "Herr Johann Schmidt",
-        "announcement": "We will have a quiz on complex sentence structures in the next class on 04/09/2024. Please review the grammar rules discussed and complete the exercises from the textbook."
-    },
-    {
-        "courseName": "Chinese Language and Culture",
-        "author": "Dr. Li Wei",
-        "announcement": "Our next lecture on 05/09/2024 will cover Chinese idioms and their cultural significance. Make sure to read the assigned chapters and come prepared with any questions."
-    }
+  {
+    "courseName": "Engrisk with Long",
+    "author": "Teacher Peo Long",
+    "announcement": "Dear students, we are going to have a an online meeting at 6pm on 30/08/2024. Noted that lesson 4 is not finished yet, please prepare your homework and classwork materials for a smooth online learning"
+  },
+  {
+    "courseName": "Spanish for Beginners",
+    "author": "Prof. Maria Gonzalez",
+    "announcement": "Reminder: Our next class will focus on basic vocabulary and phrases. Please review the vocabulary list provided in the last session and complete the practice exercises before 02/09/2024."
+  },
+  {
+    "courseName": "French Conversation Skills",
+    "author": "Mme. Claire Dubois",
+    "announcement": "Don't forget our role-playing activity scheduled for 03/09/2024. Prepare your dialogues and practice pronunciation. The session will be held at 4pm in Room 205."
+  },
+  {
+    "courseName": "Advanced German Grammar",
+    "author": "Herr Johann Schmidt",
+    "announcement": "We will have a quiz on complex sentence structures in the next class on 04/09/2024. Please review the grammar rules discussed and complete the exercises from the textbook."
+  },
+  {
+    "courseName": "Chinese Language and Culture",
+    "author": "Dr. Li Wei",
+    "announcement": "Our next lecture on 05/09/2024 will cover Chinese idioms and their cultural significance. Make sure to read the assigned chapters and come prepared with any questions."
+  }
 ]

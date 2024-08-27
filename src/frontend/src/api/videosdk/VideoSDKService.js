@@ -23,7 +23,7 @@ export const getToken = async () => {
       .get(`${API_BASE_URL}/video-sdk/token`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       .catch((err) => {
