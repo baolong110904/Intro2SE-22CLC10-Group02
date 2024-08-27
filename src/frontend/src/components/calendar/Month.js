@@ -8,7 +8,7 @@ export default function Month({ month = [] }) {
   }
   console.log(month)
   return (
-    <div className="flex-1 grid grid-cols-7 grid-rows-5">
+    <div className="flex-1 grid grid-cols-7 grid-rows-5 z-10">
       {month.map((row, i) => (
         <React.Fragment key={i}>
           {row.map((day, idx) => (
