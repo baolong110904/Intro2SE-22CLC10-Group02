@@ -1,17 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import participantsData from "../data/participantsData.json";
+import GetParticipants from "../api/courses/GetParticipants";
 
-const Participants = () => {
+const Participants = ({ courseId }) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [participants, setParticipants] = useState(participantsData);
+  const [participants, setParticipants] = useState([]);
   const [newParticipant, setNewParticipant] = useState({
     id: "",
     name: "",
+    avatar: "",
     role: "Student",
     group: "No groups",
     lastAccess: "Just now",
   });
 
+  useEffect(() => {
+    fetchParticipants();
+  }, [courseId]); // Khi courseId thay đổi, fetch lại participants
+
+  const fetchParticipants = async () => {
+    try {
+      console.log(courseId);
+      const response = await GetParticipants(courseId);
+      const users = response.data.data;
+      setParticipants(users.map(user => ({
+        id: user.id || "",
+        name: `${user.last_name} ${user.first_name}` || "",
+        avatar: user.avatar || "",
+        role: user.role.map((role) => role.name).join(", ") || "STUDENT",
+        group: "No groups",
+        lastAccess: "Just now",
+      })));
+      console.log(response);
+    } catch (error) {
+      console.error("Error fetching participants:", error);
+    }
+  };
+
+  // Các hàm xử lý tìm kiếm, thêm và xoá participant
   // Handle search input
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -30,7 +56,8 @@ const Participants = () => {
       setNewParticipant({
         id: "",
         name: "",
-        role: "Student",
+        avatar: "",
+        role: "STUDENT",
         group: "No groups",
         lastAccess: "Just now",
       });
@@ -108,7 +135,14 @@ const Participants = () => {
             <tbody>
               {filteredParticipants.map((participant) => (
                 <tr key={participant.id}>
-                  <td className="py-2 px-4">{participant.name}</td>
+                  <td className="py-2 px-4 flex items-center"> {/* Sử dụng flex để canh avatar với tên */}
+                    <img
+                      src={participant.avatar || "default-avatar-url.jpg"}  // Thay thế bằng URL ảnh mặc định nếu cần
+                      alt={`${participant.name}'s avatar`}
+                      className="w-10 h-10 rounded-full mr-4"  // Avatar hình tròn và margin-right để tạo khoảng cách với tên
+                    />
+                    <span>{participant.name}</span>
+                  </td>
                   <td className="py-2 px-4">{participant.role}</td>
                   <td className="py-2 px-4">{participant.group}</td>
                   <td className="py-2 px-4">{participant.lastAccess}</td>
@@ -124,10 +158,7 @@ const Participants = () => {
               ))}
               {filteredParticipants.length === 0 && (
                 <tr>
-                  <td
-                    colSpan="5"
-                    className="py-2 px-4 text-center text-gray-500"
-                  >
+                  <td colSpan="5" className="py-2 px-4 text-center text-gray-500">
                     No users found.
                   </td>
                 </tr>

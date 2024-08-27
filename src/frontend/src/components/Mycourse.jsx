@@ -8,7 +8,7 @@ const Mycourse = ({ initialCourses, handleFilterChange, showMore, handleShowMore
   const [filters, setFilters] = useState({
     rating: null,
     topic: "all",
-    subcategory: "all",
+    subCategory: "all",
     language: "all"
   });
 
@@ -20,6 +20,7 @@ const Mycourse = ({ initialCourses, handleFilterChange, showMore, handleShowMore
     if (!initialCourses) return;
 
     let result = initialCourses;
+    console.log(result)
 
     if (filters.rating) {
       result = result.filter(course => course.rating >= filters.rating);
@@ -29,8 +30,8 @@ const Mycourse = ({ initialCourses, handleFilterChange, showMore, handleShowMore
       result = result.filter(course => course.category === filters.topic);
     }
 
-    if (filters.subcategory !== "all") {
-      result = result.filter(course => course.subcategory === filters.subcategory);
+    if (filters.subCategory !== "all") {
+      result = result.filter(course => course.subCategory === filters.subCategory);
     }
 
     if (filters.language !== "all") {
@@ -51,7 +52,7 @@ const Mycourse = ({ initialCourses, handleFilterChange, showMore, handleShowMore
     setFilters({
       rating: null,
       topic: "all",
-      subcategory: "all",
+      subCategory: "all",
       language: "all"
     });
     setCourses(initialCourses);
@@ -96,7 +97,7 @@ const Mycourse = ({ initialCourses, handleFilterChange, showMore, handleShowMore
           </div>
 
           <div className="border border-gray-300 rounded-lg p-4 shadow-sm space-y-4">
-            {['topic', 'subcategory', 'language'].map(filterType => (
+            {['topic', 'subCategory', 'language'].map(filterType => (
               <div key={filterType}>
                 <h3 className="text-lg font-semibold text-gray-800">{filterType.charAt(0).toUpperCase() + filterType.slice(1)}</h3>
                 <select
@@ -105,10 +106,10 @@ const Mycourse = ({ initialCourses, handleFilterChange, showMore, handleShowMore
                 >
                   <option value="all">All {filterType}s</option>
                   {filterType === 'topic' && <option value="Language">Language</option>}
-                  {filterType === 'subcategory' && ['Pronunciation', 'Words', 'Composition'].map(sub => (
+                  {filterType === 'subCategory' && ['Pronunciation', 'Words', 'Composition'].map(sub => (
                     <option key={sub} value={sub}>{sub}</option>
                   ))}
-                  {filterType === 'language' && ['english', 'spanish'].map(lang => (
+                  {filterType === 'language' && ['English', 'Japanese'].map(lang => (
                     <option key={lang} value={lang}>{lang.charAt(0).toUpperCase() + lang.slice(1)}</option>
                   ))}
                 </select>
@@ -138,11 +139,9 @@ const Mycourse = ({ initialCourses, handleFilterChange, showMore, handleShowMore
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">
                     {course.title}
                   </h3>
-                  {course.teachers.map((teacher, index) => (
-                    <p key={index} className="text-gray-600 mb-4">
-                      Teacher: {teacher}
+                    <p className="text-gray-600 mb-4">
+                      Teacher: {course.teacher}
                     </p>
-                  ))}
                   <Link to={`/course/${course.id}`}>
                     <button className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-2 rounded-lg text-xs font-medium">
                       Go to course

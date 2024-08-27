@@ -135,7 +135,7 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<CourseResponse>>> getUserCourses(
+    public ResponseEntity<ApiResponse<List<MyCourseResponse>>> getUserCourses(
             @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
             @RequestParam String role
     ) throws Exception {

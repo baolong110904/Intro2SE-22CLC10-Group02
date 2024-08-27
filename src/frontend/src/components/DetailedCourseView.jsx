@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import CourseData from "../data/courseData.json";
 import Participants from "../components/Participants";
 import Navbar2 from "../components/Navbar2.jsx";
+import { Box, Typography } from '@mui/material';
+import CourseMaterials from '../components/CourseMaterials';
+import GetCourseMaterials from '../api/courses/GetCourseMaterials';
 
 const DetailedCourseView = () => {
   const { courseId } = useParams();
@@ -15,6 +18,22 @@ const DetailedCourseView = () => {
   const [showCreateSectionModal, setShowCreateSectionModal] = useState(false);
   const [showEditSectionModal, setShowEditSectionModal] = useState(false);
   const [sectionToEdit, setSectionToEdit] = useState(null);
+  const [documents, setDocuments] = useState([])
+  const role = localStorage.getItem("role")
+
+  const fetchDocuments = async () => {
+    try {
+      const courseDocuments = await GetCourseMaterials(courseId);
+      console.log(courseDocuments)
+      setDocuments(courseDocuments.data);
+    } catch (error) {
+      console.error('Error fetching documents:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDocuments();
+  }, [courseId]);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -116,11 +135,10 @@ const DetailedCourseView = () => {
           {["course", "participants", "grades", "materials"].map((tab) => (
             <button
               key={tab}
-              className={`py-2 px-4 font-semibold border-b-2 ${
-                activeTab === tab
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500"
-              } hover:text-blue-600`}
+              className={`py-2 px-4 font-semibold border-b-2 ${activeTab === tab
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-gray-500"
+                } hover:text-blue-600`}
               onClick={() => setActiveTab(tab)}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -264,7 +282,21 @@ const DetailedCourseView = () => {
         {/* Render Participants Component if "participants" tab is active */}
         {activeTab === "participants" && (
           <div className="p-4 md:p-6 lg:p-8">
-            <Participants />
+            <Participants courseId={courseId} />
+          </div>
+        )}
+
+        {activeTab === "materials" && (
+          <div className="p-4 md:p-6 lg:p-8">
+            <Box>
+              <Typography variant="h4">Course Materials</Typography>
+              <CourseMaterials
+                documents={documents}
+                courseId={courseId}
+                role={role}
+                onDocumentsChange={fetchDocuments}
+              />
+            </Box>
           </div>
         )}
 

@@ -25,6 +25,18 @@ public class Course {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String name;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String language;
+
+    @Column
+    private Long rating;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String title;
+
+    @Column(name = "sub_category", nullable = false, columnDefinition = "TEXT")
+    private String subCategory;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 

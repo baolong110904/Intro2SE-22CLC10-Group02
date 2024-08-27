@@ -6,10 +6,7 @@ import com.g2.lls.domains.Role;
 import com.g2.lls.domains.User;
 import com.g2.lls.dtos.CourseDTO;
 import com.g2.lls.dtos.CourseFilterDTO;
-import com.g2.lls.dtos.response.CourseResponse;
-import com.g2.lls.dtos.response.MaterialResponse;
-import com.g2.lls.dtos.response.ThumbnailResponse;
-import com.g2.lls.dtos.response.UserResponse;
+import com.g2.lls.dtos.response.*;
 import com.g2.lls.enums.RoleType;
 import com.g2.lls.repositories.CourseRepository;
 import com.g2.lls.repositories.UserRepository;
@@ -222,15 +219,20 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseResponse> getUserCourses(String email, String role) throws Exception {
-        List<CourseResponse> courseResponses = new ArrayList<>();
+    public List<MyCourseResponse> getUserCourses(String email, String role) throws Exception {
+        List<MyCourseResponse> courseResponses = new ArrayList<>();
         User user = userServiceImpl.fetchUserByEmail(email);
 
         if (RoleType.STUDENT.toString().equals(role)) {
             List<Course> courses = courseRepository.findAll();
             for (Course course : courses) {
                 if(course.getUsers().contains(user)) {
-                    courseResponses.add(convertToCourseResponse(course));
+                    User teacher = userServiceImpl.fetchUserById(course.getTeacherId());
+                    MyCourseResponse myCourseResponse = modelMapper.map(course, MyCourseResponse.class);
+                    myCourseResponse.setImage(course.getThumbnail().toString());
+                    myCourseResponse.setRating(course.getRating());
+                    myCourseResponse.setTeacher(teacher.getFirstName() + " " + teacher.getLastName());
+                    courseResponses.add(myCourseResponse);
                 }
             }
             return courseResponses;
@@ -239,7 +241,11 @@ public class CourseServiceImpl implements CourseService {
             List<Course> courses = courseRepository.findAll();
             for (Course course : courses) {
                 if(course.getTeacherId().equals(user.getId())) {
-                    courseResponses.add(convertToCourseResponse(course));
+                    MyCourseResponse myCourseResponse = modelMapper.map(course, MyCourseResponse.class);
+                    myCourseResponse.setImage(course.getThumbnail().toString());
+                    myCourseResponse.setRating(course.getRating());
+                    myCourseResponse.setTeacher(user.getFirstName() + " " + user.getLastName());
+                    courseResponses.add(myCourseResponse);
                 }
             }
             return courseResponses;

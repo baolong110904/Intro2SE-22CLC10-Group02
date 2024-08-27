@@ -37,7 +37,7 @@ public class CourseRepositoryCustomImpl implements CourseRepositoryCustom {
         if (!Objects.equals(course.getCourseName(), "") && course.getCourseName() != null)
             sql.append(" AND C.name" + " LIKE '%").append(course.getCourseName()).append("%' ");
         if (!Objects.equals(course.getLanguage(), "") && course.getLanguage() != null)
-            sql.append(" AND C.description" + " LIKE '%").append(course.getLanguage()).append("%' ");
+            sql.append(" AND C.language" + " LIKE '%").append(course.getLanguage()).append("%' ");
         if (!Objects.equals(course.getFirstName(), "") && course.getFirstName() != null)
             sql.append(" AND U.first_name" + " LIKE '%").append(course.getFirstName()).append("%' ");
     }
