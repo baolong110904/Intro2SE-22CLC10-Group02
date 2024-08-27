@@ -55,15 +55,15 @@ const Dashboard = () => {
         );
       case "lessonSupport":
         return <div>My Lesson Support sessions</div>;
-      case "forum":
-        return (
-          <div className="course-section p-8 bg-gray-50">
-            <div>
-              <React.StrictMode>
-                <Forum/>
-              </React.StrictMode>
-            </div>
-          </div >)
+      // case "forum":
+      //   return (
+      //     <div className="course-section p-8 bg-gray-50">
+      //       <div>
+      //         <React.StrictMode>
+      //           <Forum/>
+      //         </React.StrictMode>
+      //       </div>
+      //     </div >)
       case "ea":
         return <div>EA</div>;
       default:
@@ -110,7 +110,7 @@ const Dashboard = () => {
         >
           My Lesson Support sessions
         </button>
-        <button
+        {/* <button
           className={`px-4 py-2 ${activeSection === "forum"
             ? "bg-blue-500 text-white"
             : "bg-gray-200 dark:bg-gray-700 dark:text-white"
@@ -118,7 +118,7 @@ const Dashboard = () => {
           onClick={() => setActiveSection("forum")}
         >
           Forum
-        </button>
+        </button> */}
         <button
           className={`px-4 py-2 ${activeSection === "ea"
             ? "bg-blue-500 text-white"

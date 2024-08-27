@@ -12,14 +12,17 @@ import lombok.NoArgsConstructor;
 @Builder
 public class PostDTO {
     @NotBlank
-    String title;
+    private Long courseId;
 
     @NotBlank
-    String slug;
+    private String title;
 
     @NotBlank
-    String content;
+    private String slug;
 
     @NotBlank
-    String description;
+    private String content;
+
+    @NotBlank
+    private String description;
 }

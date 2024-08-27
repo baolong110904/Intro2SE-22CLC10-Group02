@@ -16,6 +16,7 @@ import Forum from "./Forum.jsx";
 import { Link } from 'react-router-dom';
 import Mycourse from "../components/Mycourse.jsx";
 import OnlineMeetingHome from "./OnlineMeetingHome.jsx"; // Import the OnlineMeetingHome component
+import GetUserCourses from "../api/courses/GetUserCourse.js";
 
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("timetable");
@@ -41,8 +42,23 @@ const Dashboard = () => {
     applyFilters();
   }, [filters]);
 
+  const fetchData = async () => {
+    const email = localStorage.getItem("email")
+    const role = localStorage.getItem("role")
+
+    try {
+      const result = await GetUserCourses(email, role);
+      setCourses(result.data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
+
+
   const applyFilters = () => {
-    let result = courseData;
+    fetchData();
+    console.log(courses)
+    const result = courses.data
 
     if (filters.rating) {
       result = result.filter(course => course.rating >= filters.rating);
@@ -112,12 +128,16 @@ const Dashboard = () => {
         return (
           <div className="p-8 bg-gray-50">
             <React.StrictMode>
-              <Mycourse 
-                initialCourses={courseData} 
-                handleFilterChange={handleFilterChange}
-                showMore={showMore}
-                handleShowMoreClick={handleShowMoreClick}
-              />
+              {courses && courses.data.length > 0 ? (
+                <Mycourse
+                  initialCourses={courses.data}
+                  handleFilterChange={handleFilterChange}
+                  showMore={showMore}
+                  handleShowMoreClick={handleShowMoreClick}
+                />
+              ) : (
+                <p className="text-gray-600">No courses available at the moment.</p>
+              )}
             </React.StrictMode>
           </div>
         );
@@ -175,22 +195,10 @@ const Dashboard = () => {
           My Teaching Sessions
         </button>
         <button
-          className={`px-4 py-2 ${activeSection === "materials" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
-          onClick={() => setActiveSection("materials")}
-        >
-          Materials
-        </button>
-        <button
           className={`px-4 py-2 ${activeSection === "onlineMeeting" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
           onClick={() => setActiveSection("onlineMeeting")}
         >
           Online Meeting
-        </button>
-        <button
-          className={`px-4 py-2 ${activeSection === "forum" ? "bg-blue-500 text-white" : "bg-gray-200 dark:bg-gray-700 dark:text-white"} rounded-md`}
-          onClick={() => setActiveSection("forum")}
-        >
-          Forum
         </button>
       </div>
       <div className="relative bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
@@ -200,4 +208,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard
+export default Dashboard;

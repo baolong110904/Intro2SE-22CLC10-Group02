@@ -145,10 +145,11 @@ public class CourseController {
 
     @PutMapping("/{courseId}/{studentId}")
     public ResponseEntity<ApiResponse<CourseResponse>> removeStudentToCourse(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
             @PathVariable Long courseId, @PathVariable Long studentId
     ) throws Exception {
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
-                courseService.removeStudent(courseId, studentId), TimeUtil.getTime()));
+                courseService.removeStudent(courseId, studentId, email), TimeUtil.getTime()));
     }
 
     @PostMapping(value = "/uploads/materials", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

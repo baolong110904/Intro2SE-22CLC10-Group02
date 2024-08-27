@@ -6,6 +6,7 @@ import Navbar2 from "../components/Navbar2.jsx";
 import { Box, Typography } from '@mui/material';
 import CourseMaterials from '../components/CourseMaterials';
 import GetCourseMaterials from '../api/courses/GetCourseMaterials';
+import Forum from "./Forum.jsx";
 
 const DetailedCourseView = () => {
   const { courseId } = useParams();
@@ -132,7 +133,7 @@ const DetailedCourseView = () => {
         </div>
 
         <div className="flex mt-4 space-x-4 border-b">
-          {["course", "participants", "grades", "materials"].map((tab) => (
+          {["course", "participants", "forum", "materials"].map((tab) => (
             <button
               key={tab}
               className={`py-2 px-4 font-semibold border-b-2 ${activeTab === tab
@@ -260,20 +261,22 @@ const DetailedCourseView = () => {
                   </div>
                 )}
                 {/* Edit and Delete Buttons */}
-                <div className="absolute top-0 right-0 flex space-x-2">
-                  <button
-                    className="bg-yellow-400 text-white py-1 px-2 rounded-md hover:bg-yellow-500"
-                    onClick={() => openEditModal(section)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="bg-red-600 text-white py-1 px-2 rounded-md hover:bg-red-700"
-                    onClick={() => handleDeleteSection(section.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
+                {role === "TEACHER" && (
+                  <div className="absolute top-0 right-0 flex space-x-2">
+                    <button
+                      className="bg-yellow-400 text-white py-1 px-2 rounded-md hover:bg-yellow-500"
+                      onClick={() => openEditModal(section)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="bg-red-600 text-white py-1 px-2 rounded-md hover:bg-red-700"
+                      onClick={() => handleDeleteSection(section.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -283,6 +286,12 @@ const DetailedCourseView = () => {
         {activeTab === "participants" && (
           <div className="p-4 md:p-6 lg:p-8">
             <Participants courseId={courseId} />
+          </div>
+        )}
+
+        {activeTab === "forum" && (
+          <div className="p-4 md:p-6 lg:p-8">
+            <Forum courseId={courseId} />
           </div>
         )}
 

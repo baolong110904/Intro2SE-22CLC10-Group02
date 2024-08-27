@@ -179,7 +179,7 @@ public class DatabaseInitializer implements CommandLineRunner {
 
             //Post permissions
             permissions.put("Post", new HashMap<>(Map.of(
-                    "Get All Posts", new Permission("Get All Posts", String.format("/%s/posts", apiPrefix),
+                    "Get All Posts", new Permission("Get All Posts", String.format("/%s/posts/{courseId}", apiPrefix),
                             "GET", "Post"),
                     "Get All Comments", new Permission("Get All Comments", String.format("/%s/posts/{postId}/comments", apiPrefix),
                             "GET", "Post"),

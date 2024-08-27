@@ -24,6 +24,9 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column (name = "course_id")
+    private Long courseId;
+
 //    @Column(name = "author_id")
 //    private Long authorId;
 

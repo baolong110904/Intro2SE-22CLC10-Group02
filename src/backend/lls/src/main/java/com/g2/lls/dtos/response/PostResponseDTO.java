@@ -13,7 +13,7 @@ import java.time.Instant;
 @Builder
 
 public class PostResponseDTO {
-    Long id;
+    private Long id;
     private String title;
     private String content;
     private String slug;

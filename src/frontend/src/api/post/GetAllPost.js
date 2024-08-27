@@ -1,11 +1,11 @@
 import axiosInstance from "../axios/customAxios"
 
-const GetAllPosts = async () => {
+const GetAllPosts = async (courseId) => {
   const email = localStorage.getItem("email")
   const token = localStorage.getItem("token")
   console.log(token)
   try {
-    const res = await axiosInstance.get("/posts", {
+    const res = await axiosInstance.get(`/posts/${courseId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "X-Auth-User-Email": email,

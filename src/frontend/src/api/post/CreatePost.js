@@ -1,14 +1,15 @@
 import { TitlePortal } from "react-admin"
 import axiosInstance from "../axios/customAxios"
 
-const CreatePost = async (title, slug, content, description) => {
+const CreatePost = async (title, slug, content, description, courseId) => {
   const email = localStorage.getItem("email")
   const token = localStorage.getItem("token")
   console.log(token)
   let data = {title: title,
     slug: slug,
     content: content,
-    description: description
+    description: description,
+    courseId: courseId
   }
 
   try {

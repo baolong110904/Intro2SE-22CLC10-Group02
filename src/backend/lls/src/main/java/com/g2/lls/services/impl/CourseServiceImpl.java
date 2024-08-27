@@ -177,11 +177,15 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseResponse removeStudent(Long id, Long studentId) throws Exception {
+    public CourseResponse removeStudent(Long id, Long studentId, String email) throws Exception {
         Optional<Course> course = courseRepository.findById(id);
         Optional<User> user = userRepository.findById(studentId);
+        User teacher = userServiceImpl.fetchUserByEmail(email);
         if (course.isPresent() && user.isPresent()) {
             Course currentCourse = course.get();
+            if(!currentCourse.getTeacherId().equals(teacher.getId())) {
+                throw new Exception("You don't have permission to access this course");
+            }
             List<User> currentUsers = currentCourse.getUsers();
 
             if(currentUsers.contains(user.get())) {

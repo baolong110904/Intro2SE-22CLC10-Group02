@@ -32,15 +32,16 @@ public class PostController {
         ));
     }
 
-    @GetMapping
+    @GetMapping("/{courseId}")
     public ResponseEntity<?> getAllPosts(
-            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @PathVariable Long courseId
     ) throws Exception {
 
         return ResponseEntity.ok(new ApiResponse<>(
                 HttpStatus.OK.value(),
                 true,
-                postService.getAllPosts(email),
+                postService.getAllPosts(email, courseId),
                 TimeUtil.getTime()
         ));
     }

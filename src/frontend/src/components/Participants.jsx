@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import participantsData from "../data/participantsData.json";
 import GetParticipants from "../api/courses/GetParticipants";
+import removeStudent from "../api/courses/RemoveStudent";
 
 const Participants = ({ courseId }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,6 +14,7 @@ const Participants = ({ courseId }) => {
     group: "No groups",
     lastAccess: "Just now",
   });
+  const role = localStorage.getItem("role")
 
   useEffect(() => {
     fetchParticipants();
@@ -67,12 +69,24 @@ const Participants = ({ courseId }) => {
   };
 
   // Delete a participant
-  const handleDeleteParticipant = (id) => {
-    const updatedParticipants = participants.filter(
-      (participant) => participant.id !== id
-    );
-    setParticipants(updatedParticipants);
+  const handleDeleteParticipant = async (id) => {
+    try {
+      const res = await removeStudent(courseId, id);
+      console.log(res)
+      if (res.status !== 200) {
+        throw new Error('Failed to delete participant.');
+      }
+  
+      const updatedParticipants = participants.filter(
+        (participant) => participant.id !== id
+      );
+      setParticipants(updatedParticipants);
+  
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
 
   // Filter participants based on the search term
   const filteredParticipants = participants.filter((participant) =>
@@ -96,7 +110,7 @@ const Participants = ({ courseId }) => {
             />
           </div>
           <div className="mb-4">
-            <h2 className="text-xl font-semibold mb-2">Add New User</h2>
+            {/* <h2 className="text-xl font-semibold mb-2">Add New User</h2>
             <div className="flex space-x-4">
               <input
                 type="text"
@@ -120,7 +134,7 @@ const Participants = ({ courseId }) => {
               >
                 Add User
               </button>
-            </div>
+            </div> */}
           </div>
           <table className="min-w-full bg-white">
             <thead>
@@ -129,7 +143,7 @@ const Participants = ({ courseId }) => {
                 <th className="py-2">Roles</th>
                 <th className="py-2">Groups</th>
                 <th className="py-2">Last access to course</th>
-                <th className="py-2">Actions</th>
+                {(role === "TEACHER") && <th className="py-2">Actions</th>}
               </tr>
             </thead>
             <tbody>
@@ -147,12 +161,14 @@ const Participants = ({ courseId }) => {
                   <td className="py-2 px-4">{participant.group}</td>
                   <td className="py-2 px-4">{participant.lastAccess}</td>
                   <td className="py-2 px-4">
-                    <button
-                      onClick={() => handleDeleteParticipant(participant.id)}
-                      className="p-2 bg-red-500 text-white rounded-lg"
-                    >
-                      Delete
-                    </button>
+                    {role === 'TEACHER' && (
+                      <button
+                        onClick={() => handleDeleteParticipant(participant.id)}
+                        className="p-2 bg-red-500 text-white rounded-lg"
+                      >
+                        Delete
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

@@ -49,11 +49,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostResponseDTO> getAllPosts(String email) throws Exception {
+    public List<PostResponseDTO> getAllPosts(String email, Long courseId) throws Exception {
         List<Post> posts = postRepository.findAll();
         List<PostResponseDTO> postResponseDTOS = new ArrayList<>();
         for (Post post : posts) {
-            postResponseDTOS.add(convertToPostResponseDTO(post, post.getAuthor()));
+            if(post.getCourseId() == courseId)
+                postResponseDTOS.add(convertToPostResponseDTO(post, post.getAuthor()));
         }
 
         return postResponseDTOS;

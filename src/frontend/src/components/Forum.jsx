@@ -4,7 +4,7 @@ import GetAllPosts from '../api/post/GetAllPost';
 import GetAllComments from '../api/post/GetAllComment';
 import CreateComment from '../api/post/CreateComment';
 
-const Forum = () => {
+const Forum = ({ courseId }) => {
     const [selectedPost, setSelectedPost] = useState(null);
     const [showCreatePost, setShowCreatePost] = useState(false);
     const [newPost, setNewPost] = useState({ title: '', slug: '', description: '', content: '' });
@@ -12,7 +12,7 @@ const Forum = () => {
 
     const handleCreatePost = async () => {
         if (newPost.title.trim() && newPost.content.trim()) {
-            const res = await CreatePost(newPost.title, newPost.slug, newPost.content, newPost.description);
+            const res = await CreatePost(newPost.title, newPost.slug, newPost.content, newPost.description, courseId);
             const newPostWithId = { ...newPost, id: res.id, comments: [] }; // Add comments field
             setPosts([...posts, newPostWithId]);
             setNewPost({ title: '', slug: '', description: '', content: '' });
@@ -25,7 +25,7 @@ const Forum = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await GetAllPosts();
+                const response = await GetAllPosts(courseId);
                 setPosts(response.data);  // Update state with posts data
             } catch (error) {
                 console.error("Error fetching posts:", error);
@@ -142,8 +142,8 @@ const Forum = () => {
                 <div>
                     {posts.filter(post => post.id === selectedPost).map(post => (
                         <div key={post.id} className="post-detail">
-                            <h3>{post.title}</h3>
-                            <p>{post.content}</p>
+                            <h3><strong>Title:</strong> {post.title}</h3>
+                            <p><strong>Content:</strong> {post.content}</p>
                             <p><strong>Author:</strong> {post.user.first_name} {post.user.last_name}</p>
 
                             <div className="comment-section">
