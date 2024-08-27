@@ -6,6 +6,7 @@ import { IoMdSearch } from "react-icons/io"
 import logo from ".//G2Learning.svg" // Adjust path if necessary
 import ThemeToggle from "../components/ThemeToggle"
 import { useNavigate } from "react-router-dom"
+import VerifyRoleService from "../api/auth/VerifyRoleService"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -46,12 +47,43 @@ const Navbar = () => {
     }
   }
 
+  const email = localStorage.getItem("email")
+  const token = localStorage.getItem("token")
+  const handleDashboardButton = async (e) => {
+    e.preventDefault();  
+    try {
+      if (!email || !token) {
+        navigate("/login");
+        return;
+      }
+      
+      const roleRes = await VerifyRoleService(email, token);
+      const { success, status, data } = roleRes;
+      if (success) {
+        console.log("Role:", success, status, data);
+        localStorage.setItem("role", data);
+        if (data === "STUDENT") {
+          navigate("/student");
+        } else if (data === "TEACHER") {
+          navigate("/teacher");
+        } else if (data === "ADMIN") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      navigate("/");
+      console.error("Login error:", error);
+    }
+  };
+
   const navItems = [
     { path: "/", link: "Home" },
-    { path: "/services", link: "Services" },
+    { path: "/dashboard", link: "Dashboard" },
+    { path: "/courses", link: "Courses" },
     { path: "/about", link: "About" },
-    { path: "/recruitment", link: "Blogs" },
-    { path: "/pricing", link: "Pricing" },
+    { path: "/blogs", link: "Blogs" },
   ]
 
   useEffect(() => {
@@ -96,7 +128,7 @@ const Navbar = () => {
         </div>
 
         <ul className="hidden lg:flex gap-6 xl:gap-12 text-lg">
-          {navItems.map(({ link, path }) => (
+          {/* {navItems.map(({ link, path }) => (
             <li key={link}>
               <NavLink
                 to={path}
@@ -106,7 +138,57 @@ const Navbar = () => {
                 {link}
               </NavLink>
             </li>
-          ))}
+          ))} */}
+          <li>
+            <NavLink
+              onClick={toggleMenu}
+              to="/"
+              className="nav-link cursor-pointer text-black dark:text-white"
+              activeClassName="active"
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              onClick={handleDashboardButton}
+              to="/dashboard"
+              className="nav-link cursor-pointer text-black dark:text-white"
+              activeClassName="active"
+            >
+              Dashboard
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              onClick={toggleMenu}
+              to="/courses"
+              className="nav-link cursor-pointer text-black dark:text-white"
+              activeClassName="active"
+            >
+              Courses
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              onClick={toggleMenu}
+              to="/about"
+              className="nav-link cursor-pointer text-black dark:text-white"
+              activeClassName="active"
+            >
+              About
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              onClick={toggleMenu}
+              to={"/blogs"}
+              className="block text-black hover:text-blue-600"
+              activeClassName="active"
+            >
+              Blogs
+            </NavLink>
+          </li>
         </ul>
 
         <div className="hidden lg:flex gap-4 items-center">
@@ -159,7 +241,7 @@ const Navbar = () => {
       {/* Mobile menu */}
       <div className={`lg:hidden ${isMenuOpen ? "block" : "hidden"}`}>
         <ul className="px-4 py-6 bg-white space-y-4">
-          {navItems.map(({ path, link }) => (
+          {/* {navItems.map(({ path, link }) => (
             <li key={path}>
               <NavLink
                 onClick={toggleMenu}
@@ -170,7 +252,56 @@ const Navbar = () => {
                 {link}
               </NavLink>
             </li>
-          ))}
+          ))} */}
+          <li>
+            <NavLink
+              onClick={toggleMenu}
+              to="/"
+              className="block text-black hover:text-blue-600"
+              activeClassName="text-blue-600"
+            >
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              onClick={handleDashboardButton}
+              className="block text-black hover:text-blue-600"
+              activeClassName="text-blue-600"
+            >
+              Dashboard
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              onClick={toggleMenu}
+              to="/courses"
+              className="block text-black hover:text-blue-600"
+              activeClassName="text-blue-600"
+            >
+              Courses
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              onClick={toggleMenu}
+              to="/about"
+              className="block text-black hover:text-blue-600"
+              activeClassName="text-blue-600"
+            >
+              About
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              onClick={toggleMenu}
+              to="/blogs"
+              className="block text-black hover:text-blue-600"
+              activeClassName="text-blue-600"
+            >
+              Blogs
+            </NavLink>
+          </li>
           <li className="flex gap-2">
             <NavLink to="/search" className="text-blue-950">
               <IoMdSearch />

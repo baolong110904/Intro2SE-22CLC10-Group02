@@ -6,10 +6,51 @@ import Analytics from "../components/Analytics.jsx"
 import Message from "../components/Message.jsx"
 import Tools from "../components/Tool.jsx"
 import Setting from "../components/Setting.jsx"
+import { useNavigate } from "react-router-dom"
+import VerifyRoleService from "../api/auth/VerifyRoleService"
 
 const TeacherHomePage = () => {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [activePage, setActivePage] = useState("dashboard")
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      const email = localStorage.getItem("email");
+      const token = localStorage.getItem("token");
+
+      if (!email || !token) {
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const roleRes = await VerifyRoleService(email, token);
+        const { success, data } = roleRes;
+        
+        if (success) {
+          localStorage.setItem("role", data);
+
+          if (data === "STUDENT") {
+            navigate("/student");
+          } else if (data === "TEACHER") {
+            navigate("/teacher");
+          } else if (data === "ADMIN") {
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
+        } else {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Authentication error:", error);
+        navigate("/login");
+      }
+    };
+
+    checkAuthentication();
+  }, [navigate]);
 
   useEffect(() => {
     const body = document.body
@@ -46,7 +87,6 @@ const TeacherHomePage = () => {
       className={`min-h-screen ${isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}
     >
       <Navbar2
-        userName="Bao Long"
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
       />

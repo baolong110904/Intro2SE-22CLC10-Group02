@@ -31,7 +31,7 @@ export default {
             darkCard: "#1e293b", // Card background color for dark mode
             darkText: "#E4E4E7", // Text color for dark mode
 						gray: {
-							50: "#555555",
+							// 50: "#555555",
 							100: "#FFFFFF",
 							150: "#3f4046",
 							200: "#EFEFEF",
@@ -48,7 +48,6 @@ export default {
 							800: "#050A0E",
 							850: "#26282C",
 							900: "#95959E",
-		
 						},
 						orange: {
 							250: "#FF5810",

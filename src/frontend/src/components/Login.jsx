@@ -40,15 +40,16 @@ const Login = () => {
         if (success) {
           console.log("Role:", success, status, data)
           localStorage.setItem("role", data)
-          if (data === "STUDENT") {
-            navigate("/student")
-          } else if (data === "TEACHER") {
-            navigate("/teacher")
-          } else if (data === "ADMIN") {
-            navigate("/admin")
-          } else {
-            setErrorMessage("Invalid role!")
-          }
+          // if (data === "STUDENT") {
+          //   navigate("/student")
+          // } else if (data === "TEACHER") {
+          //   navigate("/teacher")
+          // } else if (data === "ADMIN") {
+          //   navigate("/admin")
+          // } else {
+          //   setErrorMessage("Invalid role!")
+          // }
+          navigate("/")
         }
       } else {
         setErrorMessage("Wrong email or password!")

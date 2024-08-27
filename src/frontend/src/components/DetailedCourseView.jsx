@@ -108,7 +108,6 @@ const DetailedCourseView = () => {
       className={`min-h-screen ${isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}
     >
       <Navbar2
-        userName="Bao Long"
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
       />

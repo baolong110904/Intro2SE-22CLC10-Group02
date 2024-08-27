@@ -179,11 +179,10 @@ const Courses = () => {
       className={`min-h-screen ${isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}
     >
       <Navbar2
-        userName="Bao Long"
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
       />
-      <div className="fixed top-20 right-10">
+      <div className="fixed top-20 right-10 mt-3">
         <button
           onClick={toggleCartVisibility}
           className="hover:bg-gray-100 rounded-full"
