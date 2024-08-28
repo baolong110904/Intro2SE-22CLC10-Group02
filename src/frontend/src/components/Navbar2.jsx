@@ -12,6 +12,11 @@ const Navbar = ({ userName, isDarkMode, toggleTheme }) => {
   const userEmail = localStorage.getItem("email");
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  }
+
   useEffect(() => {
     const fetchProfile = async () => {
       const result = await GetProfile(userEmail);
@@ -93,6 +98,7 @@ const Navbar = ({ userName, isDarkMode, toggleTheme }) => {
             <Menu.Item>
               {({ active }) => (
                 <Link
+                  onClick={handleLogout}
                   to="/"
                   className={`${
                     active ? "bg-gray-100 dark:bg-gray-700" : ""

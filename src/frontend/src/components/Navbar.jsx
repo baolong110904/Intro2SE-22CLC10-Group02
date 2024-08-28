@@ -7,12 +7,15 @@ import logo from ".//G2Learning.svg" // Adjust path if necessary
 import ThemeToggle from "../components/ThemeToggle"
 import { useNavigate } from "react-router-dom"
 import VerifyRoleService from "../api/auth/VerifyRoleService"
+import SchoolIcon from '@mui/icons-material/School';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isLogin, setIsLogin] = useState(false)
   const navigate = useNavigate()
+  const [isHoveredMyLearning, setIsHoveredMyLearning] = useState(false)
+  const [isHoveredProfile, setIsHoveredProfile] = useState(false)
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -38,8 +41,7 @@ const Navbar = () => {
 
   const handleLoginLogoutButton = () => {
     if (isLogin) {
-      localStorage.removeItem("email")
-      localStorage.removeItem("token")
+      localStorage.clear()
       setIsLogin(false)
       navigate("/")
     } else {
@@ -112,7 +114,7 @@ const Navbar = () => {
     <header
       className={`fixed top-0 left-0 right-0 transition-all duration-300 z-50 bg-white dark:bg-gray-800 shadow-lg ${isScrolled ? "shadow-md" : ""}`}
     >
-      <nav className="px-4 py-4 max-w-7xl mx-auto flex justify-between items-center">
+      <nav className="px-1 py-4 max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <img
             src={logo}
@@ -182,8 +184,8 @@ const Navbar = () => {
           <li>
             <NavLink
               onClick={toggleMenu}
-              to={"/blogs"}
-              className="block text-black hover:text-blue-600"
+              to="/blogs"
+              className="nav-link cursor-pointer text-black dark:text-white"
               activeClassName="active"
             >
               Blogs
@@ -192,24 +194,38 @@ const Navbar = () => {
         </ul>
 
         <div className="hidden lg:flex gap-4 items-center">
-          <NavLink
-            to="/search"
-            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+        <NavLink
+            to="/my-courses/learning"
+            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 relative"
+            onMouseEnter={() => setIsHoveredMyLearning(true)}
+            onMouseLeave={() => setIsHoveredMyLearning(false)}
           >
-            <IoMdSearch className="w-5 h-5" />
+            <SchoolIcon className="w-5 h-5" />
+            {isHoveredMyLearning && (
+              <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
+                My Learning
+              </span>
+            )}
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/profile"
-            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+            className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 relative"
+            onMouseEnter={() => setIsHoveredProfile(true)}
+            onMouseLeave={() => setIsHoveredProfile(false)}
           >
             <CgProfile className="w-5 h-5" />
-          </NavLink>
-          <NavLink
+            {isHoveredProfile && (
+              <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap z-10">
+                My Profile
+              </span>
+            )}
+          </NavLink> */}
+          {/* <NavLink
             to="/cart"
             className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
           >
             <FaShoppingCart className="w-5 h-5" />
-          </NavLink>
+          </NavLink> */}
           <button
             onClick={handleLoginLogoutButton}
             className="bg-blue-600 text-white px-4 py-2 text-sm font-medium rounded hover:bg-blue-700 transition-all duration-200 ease-in"
@@ -303,15 +319,35 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="flex gap-2">
-            <NavLink to="/search" className="text-blue-950">
-              <IoMdSearch />
+            <NavLink 
+              to="/my-courses/learning" 
+              className="text-blue-950 relative"
+              onMouseEnter={() => setIsHoveredMyLearning(true)}
+              onMouseLeave={() => setIsHoveredMyLearning(false)}
+            >
+              <SchoolIcon className="w-5 h-5" />
+              {isHoveredMyLearning && (
+                <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-blue-950 text-white text-xs rounded whitespace-nowrap z-10">
+                  My Learning
+                </span>
+              )}
             </NavLink>
-            <NavLink to="/profile" className="text-blue-950">
-              <CgProfile />
-            </NavLink>
-            <NavLink to="/cart" className="text-blue-950">
+            {/* <NavLink 
+              to="/profile" 
+              className="text-blue-950 relative"
+              onMouseEnter={() => setIsHoveredProfile(true)}
+              onMouseLeave={() => setIsHoveredProfile(false)}
+            >
+              <CgProfile className="w-5 h-5" />
+              {isHoveredProfile && (
+                <span className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 bg-blue-950 text-white text-xs rounded whitespace-nowrap z-10">
+                  My Profile
+                </span>
+              )}
+            </NavLink> */}
+            {/* <NavLink to="/cart" className="text-blue-950">
               <FaShoppingCart />
-            </NavLink>
+            </NavLink> */}
           </li>
           <li>
             <button

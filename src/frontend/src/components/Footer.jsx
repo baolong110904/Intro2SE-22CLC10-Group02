@@ -3,8 +3,42 @@ import logo from ".//G2Learning.svg"
 import fbImg from "../assets/facebook.svg"
 import ghImg from "../assets/github.svg"
 import emImg from "../assets/email.svg"
+import { useNavigate } from "react-router-dom"
+import VerifyRoleService from "../api/auth/VerifyRoleService"
 
 const Footer = () => {
+  const navigate = useNavigate()
+  const email = localStorage.getItem("email")
+  const token = localStorage.getItem("token")
+  const handleDashboardButton = async (e) => {
+    e.preventDefault();  
+    try {
+      if (!email || !token) {
+        navigate("/login");
+        return;
+      }
+      
+      const roleRes = await VerifyRoleService(email, token);
+      const { success, status, data } = roleRes;
+      if (success) {
+        console.log("Role:", success, status, data);
+        localStorage.setItem("role", data);
+        if (data === "STUDENT") {
+          navigate("/student");
+        } else if (data === "TEACHER") {
+          navigate("/teacher");
+        } else if (data === "ADMIN") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      navigate("/");
+      console.error("Login error:", error);
+    }
+  };
+
   return (
     <div className="bg-[#010851] md:px-18 p-4 mx-auto text-white">
       <div className="my-12 flex flex-col md:flex-row gap-10">
@@ -40,17 +74,17 @@ const Footer = () => {
           <div className="space-y-4 mt-5">
             <h4 className="text-xl">Platform</h4>
             <ul className="space-y-3">
-              <a href="/" className="block hover:text-gray-300">
-                Overview
+              <a href="/dashboard" className="block hover:text-gray-300" onClick={handleDashboardButton}>
+                Dashboard 
               </a>
-              <a href="/" className="block hover:text-gray-300">
-                Features
+              <a href="/courses" className="block hover:text-gray-300">
+                Courses
               </a>
-              <a href="/" className="block hover:text-gray-300">
+              <a href="/about" className="block hover:text-gray-300">
                 About
               </a>
-              <a href="/" className="block hover:text-gray-300">
-                Pricing
+              <a href="/blogs" className="block hover:text-gray-300">
+                Blogs
               </a>
             </ul>
           </div>
