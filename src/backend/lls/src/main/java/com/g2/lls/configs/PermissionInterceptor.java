@@ -57,7 +57,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
                         permissions.addAll(item.getPermissions());
                     });
 
-                    log.info("Permissions: " + permissions);
+                    // log.info("Permissions: " + permissions);
 
                     boolean isAllow = permissions.stream().anyMatch(item -> item.getApiPath().equals(path)
                             && item.getMethod().equals(httpMethod));

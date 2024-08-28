@@ -221,7 +221,7 @@ const Courses = () => {
                       <div className="cart-item-info">
                         <span className="course-name">{item.course_name}</span>
                         <span className="course-price">
-                          ${item.price.toFixed(2)}
+                          {item.price.toFixed(2)} VND
                         </span>
                       </div>
                       <button
