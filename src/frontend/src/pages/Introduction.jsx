@@ -7,7 +7,7 @@ const Introduction = () => {
   return (
     <div className="relative w-full h-screen" id="introduction">
         <Navbar/>
-        <div className="mt-16"> {/* Adjust margin to match the height of the Navbar */}
+        <div className="mt-16">
             <VideoBanner />
         </div>
     </div>
