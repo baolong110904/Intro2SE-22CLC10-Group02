@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar.jsx"
 import Analytics from "../components/Analytics.jsx"
 import Message from "../components/Message.jsx"
 import Tools from "../components/Tool.jsx"
-import Setting from "../components/Setting.jsx"
+import DictionarySearch from "../components/Dictionary.jsx"
 import DashboardStudent from "../components/StudentDashboard.jsx"
 import CourseGrid from "../components/CourseBox.jsx"
 import { useNavigate } from "react-router-dom"
@@ -16,41 +16,41 @@ const StudentHomePage = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // const checkAuthentication = async () => {
-    //   const email = localStorage.getItem("email");
-    //   const token = localStorage.getItem("token");
+    const checkAuthentication = async () => {
+      const email = localStorage.getItem("email");
+      const token = localStorage.getItem("token");
 
-    //   if (!email || !token) {
-    //     navigate("/login");
-    //     return;
-    //   }
+      if (!email || !token) {
+        navigate("/login");
+        return;
+      }
 
-    //   try {
-    //     const roleRes = await VerifyRoleService(email, token);
-    //     const { success, data } = roleRes;
+      try {
+        const roleRes = await VerifyRoleService(email, token);
+        const { success, data } = roleRes;
         
-    //     if (success) {
-    //       localStorage.setItem("role", data);
+        if (success) {
+          localStorage.setItem("role", data);
 
-    //       if (data === "STUDENT") {
-    //         navigate("/student");
-    //       } else if (data === "TEACHER") {
-    //         navigate("/teacher");
-    //       } else if (data === "ADMIN") {
-    //         navigate("/admin");
-    //       } else {
-    //         navigate("/");
-    //       }
-    //     } else {
-    //       navigate("/login");
-    //     }
-    //   } catch (error) {
-    //     console.error("Authentication error:", error);
-    //     navigate("/login");
-    //   }
-    // };
+          if (data === "STUDENT") {
+            navigate("/student");
+          } else if (data === "TEACHER") {
+            navigate("/teacher");
+          } else if (data === "ADMIN") {
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
+        } else {
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Authentication error:", error);
+        navigate("/login");
+      }
+    };
 
-    // checkAuthentication();
+    checkAuthentication();
   }, [navigate]);
 
   useEffect(() => {
@@ -79,7 +79,7 @@ const StudentHomePage = () => {
       case "tools":
         return <Tools />
       case "setting":
-        return <Setting />
+        return <DictionarySearch />
       default:
         return <DashboardStudent />
     }

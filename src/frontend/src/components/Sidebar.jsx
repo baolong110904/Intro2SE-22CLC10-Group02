@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { MdDashboard, MdOutlineMessage } from "react-icons/md"
 import { SiSimpleanalytics } from "react-icons/si"
-import { LiaToolsSolid } from "react-icons/lia"
-import { IoSettingsSharp } from "react-icons/io5"
+import { TbTextGrammar } from "react-icons/tb";
+import { IoBookSharp } from "react-icons/io5";
 import { motion } from "framer-motion"
 import { FaArrowRight } from "react-icons/fa"
 
@@ -15,8 +15,8 @@ const navItems = [
   { name: "Dashboard", icon: MdDashboard, path: "dashboard" },
   { name: "Analytics", icon: SiSimpleanalytics, path: "analytics" },
   { name: "Message", icon: MdOutlineMessage, path: "message" },
-  { name: "Grammar Checking", icon: LiaToolsSolid, path: "tools" },
-  { name: "Setting", icon: IoSettingsSharp, path: "setting" },
+  { name: "Grammar Checking", icon: TbTextGrammar, path: "tools" },
+  { name: "English Dictionary", icon: IoBookSharp, path: "setting" },
 ]
 
 const Sidebar = ({ isDarkMode, onNavItemClicked }) => {

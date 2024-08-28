@@ -27,10 +27,16 @@ const Tools = () => {
 
       // Generate corrected text based on suggestions
       let corrected = text;
+      let offsetOffset = 0; // Adjust for replacements affecting subsequent text
+
       data.matches.forEach((match) => {
-        // Apply the first suggestion for simplicity
-        const replacement = match.replacements[0]?.value || '';
-        corrected = corrected.slice(0, match.offset) + replacement + corrected.slice(match.offset + match.length);
+        // Apply all suggestions for accuracy
+        match.replacements.forEach((replacement) => {
+          const start = match.offset + offsetOffset;
+          const end = start + match.length;
+          corrected = corrected.slice(0, start) + replacement.value + corrected.slice(end);
+          offsetOffset += replacement.value.length - match.length; // Adjust offset for replacements
+        });
       });
 
       setCorrectedText(corrected);

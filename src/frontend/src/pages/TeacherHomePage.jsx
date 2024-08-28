@@ -5,7 +5,7 @@ import Dashboard from "../components/Dashboard.jsx"
 import Analytics from "../components/Analytics.jsx"
 import Message from "../components/Message.jsx"
 import Tools from "../components/Tool.jsx"
-import Setting from "../components/Setting.jsx"
+import DictionarySearch from "../components/Dictionary.jsx"
 import { useNavigate } from "react-router-dom"
 import VerifyRoleService from "../api/auth/VerifyRoleService"
 
@@ -76,7 +76,7 @@ const TeacherHomePage = () => {
       case "tools":
         return <Tools />
       case "setting":
-        return <Setting />
+        return <DictionarySearch />
       default:
         return <Dashboard />
     }
