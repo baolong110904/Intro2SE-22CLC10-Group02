@@ -72,4 +72,22 @@ public class PostController {
                 TimeUtil.getTime()
         ));
     }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<?> deletePost(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @PathVariable Long postId
+    ) throws Exception {
+        postService.deletePost(postId, email);
+        return ResponseEntity.ok(new ApiResponse<>());
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<?> deleteComment(
+            @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
+            @PathVariable Long commentId
+    ) throws Exception {
+        postService.deleteComment(commentId, email);
+        return ResponseEntity.ok(new ApiResponse<>());
+    }
 }

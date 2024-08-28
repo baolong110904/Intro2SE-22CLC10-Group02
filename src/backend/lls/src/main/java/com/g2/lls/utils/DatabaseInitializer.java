@@ -186,7 +186,12 @@ public class DatabaseInitializer implements CommandLineRunner {
                     "Create Post", new Permission("Create Post", String.format("/%s/posts", apiPrefix),
                             "POST", "Post"),
                     "Create Comment", new Permission("Create Comment", String.format("/%s/posts/{postId}/comments", apiPrefix),
-                            "POST", "Post")
+                            "POST", "Post"),
+                    "Delete Post", new Permission("Delete Post", String.format("/%s/posts/{postId}", apiPrefix),
+                            "DELETE", "Post"),
+                    "Delete Comment", new Permission("Delete Comment", String.format("/%s/posts/comments/{commentId}", apiPrefix),
+                            "DELETE", "Post")
+
             )));
 
             permissions.values().forEach(permissionMap -> permissionRepository.saveAllAndFlush(permissionMap.values()));

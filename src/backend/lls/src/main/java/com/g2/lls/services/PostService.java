@@ -12,4 +12,6 @@ public interface PostService {
     List<PostResponseDTO> getAllPosts(String email, Long courseId) throws Exception;
     CommentResponseDTO createComment (Long postId, String comment, String email) throws Exception;
     List<CommentResponseDTO> getAllComments(Long postId, String email) throws Exception;
+    void deletePost(Long postId, String email) throws Exception;
+    void deleteComment(Long commentId, String email) throws Exception;
 }

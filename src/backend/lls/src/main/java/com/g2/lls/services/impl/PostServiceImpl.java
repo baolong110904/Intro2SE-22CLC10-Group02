@@ -7,24 +7,29 @@ import com.g2.lls.dtos.PostDTO;
 import com.g2.lls.dtos.response.CommentResponseDTO;
 import com.g2.lls.dtos.response.PostResponseDTO;
 import com.g2.lls.dtos.response.UserResponse;
+import com.g2.lls.repositories.CommentRepository;
 import com.g2.lls.repositories.PostRepository;
 import com.g2.lls.repositories.UserRepository;
 import com.g2.lls.services.PostService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PostServiceImpl implements PostService {
 
     private final UserServiceImpl userServiceImpl;
     private final ModelMapper modelMapper;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     public PostResponseDTO convertToPostResponseDTO(Post post, User user) {
         PostResponseDTO postResponseDTO = modelMapper.map(post, PostResponseDTO.class);
@@ -39,13 +44,15 @@ public class PostServiceImpl implements PostService {
     public PostResponseDTO createPost(PostDTO postDTO, String email) throws Exception {
         User user = userServiceImpl.fetchUserByEmail(email);
         Post post = modelMapper.map(postDTO, Post.class);
+        post.setId(null);
         post.setAuthor(user);
-        List<Post> posts = user.getPosts();
-        posts.add(post);
-        user.setPosts(posts);
+
+        user.getPosts().add(post);
+
         userRepository.save(user);
-        post = user.getPosts().getLast();
-        return convertToPostResponseDTO(post, user);
+
+        Post savedPost = user.getPosts().get(user.getPosts().size() - 1);  // Lấy post vừa được thêm vào
+        return convertToPostResponseDTO(savedPost, user);
     }
 
     @Override
@@ -53,7 +60,7 @@ public class PostServiceImpl implements PostService {
         List<Post> posts = postRepository.findAll();
         List<PostResponseDTO> postResponseDTOS = new ArrayList<>();
         for (Post post : posts) {
-            if(post.getCourseId() == courseId)
+            if(Objects.equals(post.getCourseId(), courseId))
                 postResponseDTOS.add(convertToPostResponseDTO(post, post.getAuthor()));
         }
 
@@ -106,5 +113,25 @@ public class PostServiceImpl implements PostService {
             commentResponseDTOS.add(commentResponseDTO);
         }
         return commentResponseDTOS;
+    }
+
+    @Override
+    public void deletePost(Long postId, String email) throws Exception {
+        User user = userServiceImpl.fetchUserByEmail(email);
+        Post post = postRepository.getOne(postId);
+        if(!post.getAuthor().equals(user)) {
+            throw new Exception("You do not have permission to delete this post");
+        }
+        postRepository.delete(post);
+    }
+
+    @Override
+    public void deleteComment(Long commentId, String email) throws Exception {
+        User user = userServiceImpl.fetchUserByEmail(email);
+        Comment comment = commentRepository.getById(commentId);
+        if(!comment.getUserId().equals(user.getId())) {
+            throw new Exception("You do not have permission to delete this comment");
+        }
+        commentRepository.delete(comment);
     }
 }
