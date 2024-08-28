@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 const Tools = () => {
   const [text, setText] = useState('');
   const [errors, setErrors] = useState([]);
-  
+  const [correctedText, setCorrectedText] = useState('');
+
   const handleChange = (e) => {
     setText(e.target.value);
   };
@@ -23,6 +24,16 @@ const Tools = () => {
 
       const data = await response.json();
       setErrors(data.matches);
+
+      // Generate corrected text based on suggestions
+      let corrected = text;
+      data.matches.forEach((match) => {
+        // Apply the first suggestion for simplicity
+        const replacement = match.replacements[0]?.value || '';
+        corrected = corrected.slice(0, match.offset) + replacement + corrected.slice(match.offset + match.length);
+      });
+
+      setCorrectedText(corrected);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -52,6 +63,12 @@ const Tools = () => {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+      {correctedText && (
+        <div className="mt-4">
+          <h3 className="text-xl font-bold">Corrected Sentence:</h3>
+          <p className="p-4 border border-gray-300 rounded">{correctedText}</p>
         </div>
       )}
     </div>
