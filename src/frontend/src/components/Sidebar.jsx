@@ -15,7 +15,7 @@ const navItems = [
   { name: "Dashboard", icon: MdDashboard, path: "dashboard" },
   { name: "Analytics", icon: SiSimpleanalytics, path: "analytics" },
   { name: "Message", icon: MdOutlineMessage, path: "message" },
-  { name: "Tools", icon: LiaToolsSolid, path: "tools" },
+  { name: "Grammar Checking", icon: LiaToolsSolid, path: "tools" },
   { name: "Setting", icon: IoSettingsSharp, path: "setting" },
 ]
 

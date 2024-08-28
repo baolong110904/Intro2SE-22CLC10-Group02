@@ -20,7 +20,7 @@ import Meeting from "./pages/Meeting.jsx"
 import MyLearning from "./pages/MyLearning.jsx"
 import Blogs from "./pages/Blogs.jsx"
 import Introduction from "./pages/Introduction.jsx"
-import CourseOffer from "./pages/CourseOffer.jsx"
+
 function App() {
   // State to manage whether to show Login or Signup page
   const location = useLocation()
@@ -51,7 +51,6 @@ function App() {
         <Route path="/my-courses/learning" element={<MyLearning />} />
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/about" element={<Introduction />} />
-        <Route path="/services" element={<CourseOffer />} />
       </Routes>
     </>
   )

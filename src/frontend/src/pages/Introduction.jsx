@@ -12,7 +12,7 @@ const Introduction = () => {
   const handleSignup = () => {
     navigate("/signup");
   };
-
+  
   return (
     <div className="relative w-full h-screen" id="introduction">
       <Navbar />
