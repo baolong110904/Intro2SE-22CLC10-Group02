@@ -526,8 +526,6 @@ input[type="password"]::-ms-clear {
 .create-post-form button:last-of-type:hover {
   background-color: #d32f2f;
 }
-<<<<<<< Updated upstream
-=======
 
 .error-notification {
   color: red; /* White text */
@@ -537,4 +535,3 @@ input[type="password"]::-ms-clear {
   font-weight: bold; /* Bold text */
   text-align: center; /* Center text */
 }
->>>>>>> Stashed changes
