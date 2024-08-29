@@ -28,13 +28,13 @@ public class Course {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String language;
 
-    @Column
+    @Column(name = "rating")
     private Long rating;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String title;
 
-    @Column(name = "sub_category", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "sub_category", columnDefinition = "TEXT")
     private String subCategory;
 
     @Column(columnDefinition = "TEXT")

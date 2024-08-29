@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class MyCourseResponse {
+    private String meetingRoomId;
     private Long id;
     private String title;
     private String subCategory;

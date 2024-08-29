@@ -6,6 +6,7 @@ import com.g2.lls.domains.Role;
 import com.g2.lls.domains.User;
 import com.g2.lls.dtos.CourseDTO;
 import com.g2.lls.dtos.CourseFilterDTO;
+import com.g2.lls.dtos.UpdateCourseDTO;
 import com.g2.lls.dtos.response.*;
 import com.g2.lls.enums.RoleType;
 import com.g2.lls.repositories.CourseRepository;
@@ -39,11 +40,19 @@ public class CourseServiceImpl implements CourseService {
     private ModelMapper modelMapper;
 
     @Override
-    public CourseResponse createCourse(CourseDTO courseDTO) throws Exception {
+    public CourseResponse createCourse(CourseDTO courseDTO, String email) throws Exception {
 
-        Course course = modelMapper.map(courseDTO, Course.class);
-        course.setIsEnabled(true);
-        User currentUser = userService.fetchUserByEmail(SecurityUtil.getCurrentUserLogin().get());
+        Course course = Course.builder()
+                .price(courseDTO.getPrice())
+                .description(courseDTO.getDescription())
+                .language(courseDTO.getLanguage())
+                .startDate(courseDTO.getStartDate())
+                .title(courseDTO.getTitle())
+                .name(courseDTO.getName())
+                .meetingRoomId(courseDTO.getMeetingRoomId())
+                .isEnabled(true)
+                .build();
+        User currentUser = userService.fetchUserByEmail(email);
         course.setTeacherId(currentUser.getId());
         courseRepository.save(course);
         CourseResponse courseResponse = modelMapper.map(course, CourseResponse.class);
@@ -64,11 +73,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseResponse> getAllCourses(CourseFilterDTO courseFilterDTO) throws Exception {
+    public List<CourseResponse> getAllCourses(CourseFilterDTO courseFilterDTO, String email) throws Exception {
         List<Course> courses = courseRepository.findAll(courseFilterDTO);
         List<CourseResponse> courseResponses = new ArrayList<>();
+        User user = userServiceImpl.fetchUserByEmail(email);
         for(Course course : courses) {
-            courseResponses.add(convertToCourseResponse(course));
+            if(!course.getUsers().contains(user) && course.getIsEnabled())
+                courseResponses.add(convertToCourseResponse(course));
         }
 
         return  courseResponses;
@@ -94,7 +105,7 @@ public class CourseServiceImpl implements CourseService {
         if(course.isPresent()) {
             Set<Role> roles = userServiceImpl.fetchUserByEmail(email).getRoles();
             List<String> roleTypes = roles.stream().map(role -> role.getName().toString()).toList();
-            if (course.get().getTeacherId().equals(user.getId()) || !roleTypes.contains(RoleType.ADMIN.toString())) {
+            if (!course.get().getTeacherId().equals(user.getId()) && !roleTypes.contains(RoleType.ADMIN.toString())) {
                 throw new Exception("You don't have permission to delete this course");
             }
         }
@@ -110,19 +121,19 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseResponse updateCourse(Long id, CourseDTO courseDTO, String email) throws Exception {
+    public CourseResponse updateCourse(Long id, UpdateCourseDTO courseDTO, String email) throws Exception {
         Optional<Course> course = courseRepository.findById(id);
         User user = userService.fetchUserByEmail(email);
         if(course.isPresent()) {
             Set<Role> roles = userServiceImpl.fetchUserByEmail(email).getRoles();
             List<String> roleTypes = roles.stream().map(role -> role.getName().toString()).toList();
-            if (course.get().getTeacherId().equals(user.getId()) || !roleTypes.contains(RoleType.ADMIN.toString())) {
-                throw new Exception("You don't have permission to delete this course");
+            if (!course.get().getTeacherId().equals(user.getId()) && !roleTypes.contains(RoleType.ADMIN.toString())) {
+                throw new Exception("You don't have permission to update this course");
             }
         }
 
         if (course.isPresent()) {
-             Course currenCourse = course.get();
+            Course currenCourse = course.get();
 
             Field[] courseDTOFields = courseDTO.getClass().getDeclaredFields();
             Field[] currenCourseFields = currenCourse.getClass().getDeclaredFields();
@@ -230,13 +241,9 @@ public class CourseServiceImpl implements CourseService {
         if (RoleType.STUDENT.toString().equals(role)) {
             List<Course> courses = courseRepository.findAll();
             for (Course course : courses) {
-                if(course.getUsers().contains(user)) {
+                if(course.getUsers().contains(user) && course.getIsEnabled()) {
                     User teacher = userServiceImpl.fetchUserById(course.getTeacherId());
-                    MyCourseResponse myCourseResponse = modelMapper.map(course, MyCourseResponse.class);
-                    myCourseResponse.setImage(course.getThumbnail().toString());
-                    myCourseResponse.setRating(course.getRating());
-                    myCourseResponse.setTeacher(teacher.getFirstName() + " " + teacher.getLastName());
-                    courseResponses.add(myCourseResponse);
+                    convertToMyCourseResponse(courseResponses, course, teacher);
                 }
             }
             return courseResponses;
@@ -244,18 +251,22 @@ public class CourseServiceImpl implements CourseService {
         else if (RoleType.TEACHER.toString().equals(role)) {
             List<Course> courses = courseRepository.findAll();
             for (Course course : courses) {
-                if(course.getTeacherId().equals(user.getId())) {
-                    MyCourseResponse myCourseResponse = modelMapper.map(course, MyCourseResponse.class);
-                    myCourseResponse.setImage(course.getThumbnail().toString());
-                    myCourseResponse.setRating(course.getRating());
-                    myCourseResponse.setTeacher(user.getFirstName() + " " + user.getLastName());
-                    courseResponses.add(myCourseResponse);
+                if(course.getTeacherId().equals(user.getId()) && course.getIsEnabled()) {
+                    convertToMyCourseResponse(courseResponses, course, user);
                 }
             }
             return courseResponses;
         }
 
         return null;
+    }
+
+    private void convertToMyCourseResponse(List<MyCourseResponse> courseResponses, Course course, User teacher) {
+        MyCourseResponse myCourseResponse = modelMapper.map(course, MyCourseResponse.class);
+        myCourseResponse.setImage(course.getThumbnail() == null ? null : course.getThumbnail().toString());
+        myCourseResponse.setRating(course.getRating());
+        myCourseResponse.setTeacher(teacher.getFirstName() + " " + teacher.getLastName());
+        courseResponses.add(myCourseResponse);
     }
 
     @Override

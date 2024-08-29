@@ -1,6 +1,6 @@
 import axiosInstance from "../axios/customAxios"
 
-const UploadMaterials = async (file, courseId, title) => {
+const UploadThumbnail = async (file, courseId) => {
   const email = localStorage.getItem("email")
   const token = localStorage.getItem("token")
   const formData = new FormData()
@@ -11,22 +11,9 @@ const UploadMaterials = async (file, courseId, title) => {
   formData.forEach((value, key) => {
     console.log(key, value)
   })
-  console.log(courseId)
-  console.log(title)
-
-  const metadata = {
-    title: title,
-    courseId: courseId,
-  }
-  formData.append(
-    "metadata",
-    new Blob([JSON.stringify(metadata)], {
-      type: "application/json",
-    }),
-  )
 
   try {
-    const res = await axiosInstance.post(`/courses/uploads/materials`, formData, {
+    const res = await axiosInstance.post(`/courses/${courseId}/uploads/thumbnail`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "X-Auth-User-Email": email,
@@ -51,4 +38,4 @@ const UploadMaterials = async (file, courseId, title) => {
   }
 }
 
-export default UploadMaterials
+export default UploadThumbnail

@@ -3,10 +3,15 @@ import { useParams } from "react-router-dom"
 import CourseData from "../data/courseData.json"
 import Participants from "../components/Participants"
 import Navbar2 from "../components/Navbar2.jsx"
-import { Box, Typography } from "@mui/material"
+import { Box, Typography, Button } from "@mui/material"
 import CourseMaterials from "../components/CourseMaterials"
 import GetCourseMaterials from "../api/courses/GetCourseMaterials"
 import Forum from "./Forum.jsx"
+import UpdateCourseModal from "./UpdateCourseModal.jsx"
+import UploadThumbnail from "../api/courses/UploadThumbnail.js"
+import UpdateCourse from "../api/courses/UpdateCourse.js"
+import OnlineMeetingHome from "./OnlineMeetingHome.jsx"
+import GetCourseById from "../api/courses/GetCourseById.js"
 
 const DetailedCourseView = () => {
   const { courseId } = useParams()
@@ -20,7 +25,10 @@ const DetailedCourseView = () => {
   const [showEditSectionModal, setShowEditSectionModal] = useState(false)
   const [sectionToEdit, setSectionToEdit] = useState(null)
   const [documents, setDocuments] = useState([])
+  const [showUpdateCourseModal, setShowUpdateCourseModal] = useState(false);
+  const [meetingId, setMeetingId] = useState("")
   const role = localStorage.getItem("role")
+
 
   const fetchDocuments = async () => {
     try {
@@ -35,6 +43,31 @@ const DetailedCourseView = () => {
   useEffect(() => {
     fetchDocuments()
   }, [courseId])
+
+  const handleGetCourseById = async () => {
+    const res = await GetCourseById(courseId)
+    console.log(res)
+    setMeetingId(res.data.data.meetingRoomId) 
+  }
+
+  useEffect(() => {
+    if (meetingId === "")
+      handleGetCourseById()
+  }, [])
+
+
+  const handleUpdateCourse = async (updatedData) => {
+    if (updatedData.thumbnail) {
+      const resThumbnail = await UploadThumbnail(updatedData.thumbnail, courseId)
+      console.log(resThumbnail)
+    }
+
+    delete updatedData.thumbnail;
+    const resUpdateCourse = await UpdateCourse(courseId, updatedData)
+    console.log(resUpdateCourse)
+
+    console.log('Updated course data:', updatedData);
+  };
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode)
@@ -136,14 +169,13 @@ const DetailedCourseView = () => {
         </div>
 
         <div className="flex mt-4 space-x-4 border-b">
-          {["course", "participants", "forum", "materials"].map((tab) => (
+          {["course", "participants", "forum", "materials", "meeting"].map((tab) => (
             <button
               key={tab}
-              className={`py-2 px-4 font-semibold border-b-2 ${
-                activeTab === tab
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500"
-              } hover:text-blue-600`}
+              className={`py-2 px-4 font-semibold border-b-2 ${activeTab === tab
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-gray-500"
+                } hover:text-blue-600`}
               onClick={() => setActiveTab(tab)}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -317,6 +349,33 @@ const DetailedCourseView = () => {
             </Box>
           </div>
         )}
+
+        {activeTab === "meeting" && (
+          <div className="p-4 md:p-6 lg:p-8">
+            <React.StrictMode>
+              <OnlineMeetingHome meetingId={meetingId}/>
+            </React.StrictMode>
+          </div>
+        )}
+
+        {role === "TEACHER" && activeTab === "course" && (
+          <Box sx={{ p: { xs: 2, md: 3, lg: 4 } }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setShowUpdateCourseModal(true)}
+              sx={{ mt: 2 }}
+            >
+              Update Course
+            </Button>
+          </Box>
+        )}
+        <UpdateCourseModal
+          isOpen={showUpdateCourseModal}
+          onClose={() => setShowUpdateCourseModal(false)}
+          onUpdate={handleUpdateCourse}
+          courseId={courseId}
+        />
 
         {/* Create Section Modal */}
         {showCreateSectionModal && (

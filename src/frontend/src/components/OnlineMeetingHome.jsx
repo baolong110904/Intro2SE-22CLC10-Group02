@@ -6,9 +6,18 @@ import virtualbg from "../assets/virtualbg.png"
 import shareexperience from "../assets/shareexperience.png"
 import ava1 from "../assets/ava1.png"
 import ava2 from "../assets/ava2.png"
+import { Divider, IconButton, Tooltip } from "@mui/material"
+import ContentCopyIcon from "@mui/icons-material/ContentCopy"
+import PeopleIcon from "@mui/icons-material/People"
 
-const OnlineMeetingHome = () => {
+const OnlineMeetingHome = ({ meetingId }) => {
   const navigate = useNavigate()
+
+  const copyMeetingId = () => {
+    navigator.clipboard.writeText(meetingId)
+      .then(() => alert("Meeting ID copied to clipboard!"))
+      .catch(err => console.error('Failed to copy: ', err))
+  }
 
   return (
     <div className="p-8 bg-white rounded-lg shadow-lg">
@@ -18,9 +27,28 @@ const OnlineMeetingHome = () => {
         <p className="text-gray-600 mb-4">
           Join the meeting to collaborate with others
         </p>
+        {/* Meeting ID Display */}
+        <div className="flex items-center space-x-4 mb-6">
+          <div className="bg-blue-100 py-3 px-6 rounded-lg shadow-sm border border-blue-200 flex items-center">
+            <PeopleIcon className="text-blue-500 mr-2" />
+            <span className="font-semibold text-blue-700 mr-2">Meeting ID:</span>
+            <span className="font-mono text-blue-800">{meetingId}</span>
+          </div>
+          <Tooltip title="Copy Meeting ID">
+            <IconButton
+              onClick={copyMeetingId}
+              className="bg-blue-500 hover:bg-blue-600 text-white transition duration-300"
+              size="large"
+            >
+              <ContentCopyIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+
+        {/* Join Now button */}
         <button
-          className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
-          onClick={() => navigate("/onlineMeeting")} // Navigate to /onlineMeeting
+          className="bg-blue-600 text-white py-3 px-8 rounded-lg hover:bg-blue-700 transition duration-300 text-lg font-semibold shadow-md"
+          onClick={() => navigate("/meeting")}
         >
           Join Now
         </button>

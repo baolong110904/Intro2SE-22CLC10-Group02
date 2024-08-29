@@ -15,6 +15,8 @@ public class CourseResponse {
 
     private Long id;
 
+    private String meetingRoomId;
+
     @JsonProperty("course_name")
     private String name;
 

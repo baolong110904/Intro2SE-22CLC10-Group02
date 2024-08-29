@@ -13,6 +13,7 @@ const CourseGrid = () => {
     const fetchCourses = async () => {
       try {
         let currentCourses = await GetUserCourses(email, role)
+        console.log(currentCourses)
         setLanguageCourses(currentCourses.data.data)
       } catch (error) {
         console.error("Error fetching courses:", error)
@@ -91,6 +92,21 @@ const CourseGrid = () => {
                     }}
                   >
                     {course.language}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      mb: 2,
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: "vertical",
+                      color: (theme) =>
+                        theme.palette.mode === "dark" ? "#cbd5e0" : "#4a5568",
+                    }}
+                  >
+                    Meeting Id: {course.meetingRoomId}
                   </Typography>
                   <Link to={`/course/${course.id}`}>
                     <Button

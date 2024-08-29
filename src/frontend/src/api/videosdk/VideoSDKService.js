@@ -8,17 +8,23 @@ const VIDEO_SDK_TOKEN = process.env.REACT_APP_VIDEO_SDK_TOKEN
 
 export const getToken = async () => {
   if (VIDEO_SDK_TOKEN && API_BASE_URL) {
+    console.log("API_BASE_URL", API_BASE_URL)
+    console.log("VIDEO_SDK_URL", VIDEO_SDK_TOKEN)
+    console.log("VIDEO_SDK_TOKEN", VIDEO_SDK_TOKEN)
     console.error("Error: Provide only ONE PARAMETER - either Token or Auth API")
   } else if (VIDEO_SDK_TOKEN) {
     return VIDEO_SDK_TOKEN
   } else if (API_BASE_URL) {
     console.log("API_BASE_URL", API_BASE_URL)
+    console.log("VIDEO_SDK_URL", VIDEO_SDK_TOKEN)
+    console.log("VIDEO_SDK_TOKEN", VIDEO_SDK_TOKEN)
     // const res = await fetch(`${API_AUTH_URL}/hello-world`, {
     //   method: "GET",
     // });
     // console.log("res", res);
     // const { token } = await res.json();
     // return token;
+    console.log(localStorage.getItem("token"))
     const response = await axiosInstance
       .get(`${API_BASE_URL}/video-sdk/token`, {
         headers: {
@@ -51,7 +57,7 @@ export const createMeeting = async ({ token }) => {
 
   const response = await fetch(url, options)
   const data = await response.json()
-
+  console.log(data)
   if (data.roomId) {
     return { meetingId: data.roomId, err: null }
   } else {

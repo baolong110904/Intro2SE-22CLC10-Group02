@@ -2,10 +2,7 @@ package com.g2.lls.controllers;
 
 import com.g2.lls.domains.Material;
 import com.g2.lls.domains.Role;
-import com.g2.lls.dtos.CourseDTO;
-import com.g2.lls.dtos.CourseFilterDTO;
-import com.g2.lls.dtos.CourseStudentRequestDTO;
-import com.g2.lls.dtos.MaterialRequestDTO;
+import com.g2.lls.dtos.*;
 import com.g2.lls.dtos.response.*;
 import com.g2.lls.enums.RoleType;
 import com.g2.lls.services.RedisService;
@@ -45,7 +42,7 @@ public class CourseController {
         }
 
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.CREATED.value(), true,
-                courseService.createCourse(courseDTO), TimeUtil.getTime()));
+                courseService.createCourse(courseDTO, email), TimeUtil.getTime()));
     }
 
     @PostMapping(value = "{id}/uploads/thumbnail", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -76,7 +73,7 @@ public class CourseController {
 
             List<CourseResponse> coursesResponses = courseRedisService.getAllCourses(courseFilterDTO);
             if (coursesResponses == null || coursesResponses.isEmpty()) {
-                coursesResponses = courseService.getAllCourses(courseFilterDTO);
+                coursesResponses = courseService.getAllCourses(courseFilterDTO, email);
                 courseRedisService.saveAllCourses(coursesResponses, courseFilterDTO);
             }
 
@@ -112,7 +109,7 @@ public class CourseController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCourse(
             @RequestHeader(CustomHeaders.X_AUTH_USER_EMAIL) String email,
-            @PathVariable Long id, @RequestBody CourseDTO courseDTO) throws Exception {
+            @PathVariable Long id, @RequestBody UpdateCourseDTO courseDTO) throws Exception {
         return ResponseEntity.ok(new ApiResponse<>(HttpStatus.OK.value(), true,
                 courseService.updateCourse(id, courseDTO, email), TimeUtil.getTime()));
     }

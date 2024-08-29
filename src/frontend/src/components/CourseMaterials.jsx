@@ -7,7 +7,7 @@ const CourseMaterials = ({ documents, courseId, role, onDocumentsChange }) => {
   const [documentTitle, setDocumentTitle] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const fileInputRef = useRef(null)
-
+  console.log(courseId)
   const handleButtonClick = () => {
     fileInputRef.current.click()
   }
