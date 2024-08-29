@@ -58,6 +58,16 @@ const CourseProgress = () => {
       ],
       completed: false
     },
+    {
+      weekNumber: 3,
+      title: "Phonetics: How to pronounce it correctly",
+      tasks: [
+        { type: "Videos", time: "57 min left", status: "Not Started", grade: "-", dueDate: "Aug 28" },
+        { type: "Quiz", time: "20 min", status: "Not Started", grade: "-", dueDate: "Aug 28" },
+        { type: "Quiz", time: "45 min", status: "Not Started", grade: "-", dueDate: "Aug 28" }
+      ],
+      completed: false
+    },
     // Add more weeks as needed
   ];
 
@@ -83,12 +93,6 @@ const CourseProgress = () => {
       {weeks.map((week) => (
         <Week key={week.weekNumber} {...week} />
       ))}
-
-      <div className="bg-blue-100 p-4 rounded-lg shadow mt-4">
-        <h2 className="text-lg font-semibold">Need more time?</h2>
-        <p>You can enroll in the next session. Your progress will be saved and you can pick up right where you left off.</p>
-        <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg">Switch Sessions</button>
-      </div>
     </div>
   );
 };
