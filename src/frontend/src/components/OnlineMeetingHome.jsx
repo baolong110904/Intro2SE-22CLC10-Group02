@@ -47,12 +47,14 @@ const OnlineMeetingHome = ({ meetingId }) => {
         </div>
 
         {/* Join Now button */}
-        <button
-          className="bg-blue-600 text-white py-3 px-8 rounded-lg hover:bg-blue-700 transition duration-300 text-lg font-semibold shadow-md"
-          onClick={() => navigate("/meeting")}
+
+        <a href="/meeting"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block bg-blue-600 text-white py-3 px-8 rounded-lg hover:bg-blue-700 transition duration-300 text-lg font-semibold shadow-md"
         >
           Join Now
-        </button>
+        </a>
       </div>
 
       {/* Decorative Divider */}
