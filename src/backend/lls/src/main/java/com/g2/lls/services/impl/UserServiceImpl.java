@@ -112,7 +112,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse getUserById(Long id) throws Exception {
         User user = fetchUserById(id);
-        return modelMapper.map(user, UserResponse.class);
+        UserResponse userResponse = modelMapper.map(user, UserResponse.class);
+        userResponse.setRole(user.getRoles());
+        userResponse.setAddress(modelMapper.map(user.getAddress(), AddressDTO.class));
+        return userResponse;
     }
 
     @Override

@@ -11,6 +11,7 @@ import {
   radiantDarkTheme,
   houseLightTheme,
   houseDarkTheme,
+  Create,
 } from "react-admin"
 import dataProvider from "./dataProvider"
 import authProvider from "./authProvider"
@@ -19,7 +20,7 @@ import { UserList } from "./user/UserList"
 import jsonServerProvider from "ra-data-json-server"
 import { Layout } from "./Layout"
 import { UserEdit } from "./user/UserEdit"
-import { UserShow } from "./user/UserShow"
+import UserShow from "./user/UserShow"
 import PeopleIcon from "@mui/icons-material/People"
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser"
 import SecurityIcon from "@mui/icons-material/Security"
@@ -37,27 +38,29 @@ export const AdminPage = () => (
     loginPage={Login}
     theme={radiantLightTheme}
     darkTheme={radiantDarkTheme}
+    defaultTheme="light"
   >
     <Resource
       name="users"
       list={UserList}
       show={UserShow}
       edit={UserEdit}
-      create={EditGuesser}
       icon={PeopleIcon}
     />
 
     <Resource
       name="roles"
       list={ListGuesser}
-      edit={EditGuesser}
+      // show={ShowGuesser}
+      // edit={EditGuesser}
       icon={VerifiedUserIcon}
     />
 
     <Resource
       name="permissions"
       list={ListGuesser}
-      edit={EditGuesser}
+      // edit={EditGuesser}
+      // show={ShowGuesser}
       icon={SecurityIcon}
     />
   </Admin>

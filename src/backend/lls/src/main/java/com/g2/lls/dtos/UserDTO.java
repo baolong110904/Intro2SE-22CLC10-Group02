@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class UserDTO {
     private Long id;
 
-    @NotBlank(message = "Email is required")
+//    @NotBlank(message = "Email is required")
     // @Email(message = "Email is not valid")
     private String email;
 

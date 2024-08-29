@@ -13,13 +13,17 @@ const UploadThumbnail = async (file, courseId) => {
   })
 
   try {
-    const res = await axiosInstance.post(`/courses/${courseId}/uploads/thumbnail`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "X-Auth-User-Email": email,
-        "Content-Type": "multipart/form-data",
+    const res = await axiosInstance.post(
+      `/courses/${courseId}/uploads/thumbnail`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "X-Auth-User-Email": email,
+          "Content-Type": "multipart/form-data",
+        },
       },
-    })
+    )
     console.log(formData.get("file"))
     return res.data
   } catch (err) {

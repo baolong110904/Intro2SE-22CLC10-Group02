@@ -37,13 +37,16 @@ public class User {
 
     @Column(name = "first_name")
     @Nationalized
+    @JsonProperty("first_name")
     private String firstName;
 
     @Column(name = "last_name")
     @Nationalized
+    @JsonProperty("last_name")
     private String lastName;
 
     @Column(name = "date_of_birth")
+    @JsonProperty("date_of_birth")
     private LocalDate dateOfBirth;
 
     @Enumerated(EnumType.STRING)

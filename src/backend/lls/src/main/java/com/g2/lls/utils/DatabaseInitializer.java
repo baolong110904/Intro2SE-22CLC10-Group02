@@ -4,10 +4,12 @@ import com.g2.lls.domains.*;
 import com.g2.lls.enums.GenderType;
 import com.g2.lls.enums.RoleType;
 import com.g2.lls.repositories.*;
+import com.github.javafaker.Faker;
 import com.google.common.collect.Maps;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +25,9 @@ import java.util.*;
 public class DatabaseInitializer implements CommandLineRunner {
     @Value("${api.v1}")
     private String apiPrefix;
+
+    @Qualifier("fakerVN")
+    private final Faker faker;
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
@@ -268,14 +273,14 @@ public class DatabaseInitializer implements CommandLineRunner {
             Set<Role> roles = new HashSet<>(Set.of(role));
 
             Address address1 = Address.builder()
-                    .phoneNumber("")
-                    .country("")
-                    .city("")
+                    .phoneNumber("0923820719")
+                    .country("Vietnam")
+                    .city("Hồ Chí Minh")
                     .province("")
-                    .district("")
-                    .ward("")
-                    .address("")
-                    .addressType("")
+                    .district("Quận 10")
+                    .ward("Phường 7")
+                    .address("497 Hòa Hảo")
+                    .addressType("Home")
                     .isDefault(false)
                     .createdAt(Instant.now())
                     .updatedAt(Instant.now())
@@ -298,7 +303,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .isMfaEnabled(false)
                     .dateOfBirth(LocalDate.parse("2004-05-16"))
                     .firstName("Nam")
-                    .lastName("Nguyen")
+                    .lastName("Nguyễn")
                     .description("Admin Account")
                     .avatar(avatarAdmin1)
                     .address(address1)
@@ -308,14 +313,14 @@ public class DatabaseInitializer implements CommandLineRunner {
             addressRepository.saveAndFlush(address1);
 
             Address address2 = Address.builder()
-                    .phoneNumber("")
-                    .country("")
-                    .city("")
-                    .province("")
+                    .phoneNumber("0123456789")
+                    .country("Vietnam")
+                    .city("Vũng Tàu")
+                    .province("Bà Rịa - Vũng Tàu")
                     .district("")
-                    .ward("")
-                    .address("")
-                    .addressType("")
+                    .ward("Phường 10")
+                    .address("30 Quang Dũng")
+                    .addressType("Home")
                     .isDefault(false)
                     .createdAt(Instant.now())
                     .updatedAt(Instant.now())
@@ -337,8 +342,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .isEnabled(true)
                     .isMfaEnabled(false)
                     .dateOfBirth(LocalDate.parse("2004-05-16"))
-                    .firstName("Nam")
-                    .lastName("Nguyen")
+                    .firstName("Huy")
+                    .lastName("Đỗ")
                     .description("Admin Account")
                     .avatar(avatarAdmin2)
                     .address(address2)
@@ -348,14 +353,14 @@ public class DatabaseInitializer implements CommandLineRunner {
             addressRepository.saveAndFlush(address2);
 
             Address address3 = Address.builder()
-                    .phoneNumber("")
-                    .country("")
-                    .city("")
-                    .province("")
-                    .district("")
-                    .ward("")
-                    .address("")
-                    .addressType("")
+                    .phoneNumber(faker.phoneNumber().phoneNumber())
+                    .country(faker.country().name())
+                    .city(faker.address().city())
+                    .province(faker.address().state())
+                    .district(faker.address().cityName())
+                    .ward(faker.address().streetName())
+                    .address(faker.address().fullAddress())
+                    .addressType("Work")
                     .isDefault(false)
                     .createdAt(Instant.now())
                     .updatedAt(Instant.now())
@@ -377,8 +382,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .isEnabled(true)
                     .isMfaEnabled(false)
                     .dateOfBirth(LocalDate.parse("2004-05-16"))
-                    .firstName("Nam")
-                    .lastName("Nguyen")
+                    .firstName("Long")
+                    .lastName("Nguyễn")
                     .description("Teacher Account")
                     .avatar(avatarTeacher1)
                     .address(address3)
@@ -395,14 +400,14 @@ public class DatabaseInitializer implements CommandLineRunner {
             avatarRepository.saveAndFlush(avatarTeacher2);
 
             Address address4 = Address.builder()
-                    .phoneNumber("")
-                    .country("")
-                    .city("")
-                    .province("")
-                    .district("")
-                    .ward("")
-                    .address("")
-                    .addressType("")
+                    .phoneNumber(faker.phoneNumber().phoneNumber())
+                    .country(faker.country().name())
+                    .city(faker.address().city())
+                    .province(faker.address().state())
+                    .district(faker.address().cityName())
+                    .ward(faker.address().streetName())
+                    .address(faker.address().fullAddress())
+                    .addressType("Work")
                     .isDefault(false)
                     .createdAt(Instant.now())
                     .updatedAt(Instant.now())
@@ -417,8 +422,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .isEnabled(true)
                     .isMfaEnabled(false)
                     .dateOfBirth(LocalDate.parse("2004-05-16"))
-                    .firstName("Nam")
-                    .lastName("Nguyen")
+                    .firstName("Quân")
+                    .lastName("Bùi")
                     .description("Teacher Account")
                     .avatar(avatarTeacher2)
                     .address(address4)
@@ -428,14 +433,14 @@ public class DatabaseInitializer implements CommandLineRunner {
             addressRepository.saveAndFlush(address4);
 
             Address address5 = Address.builder()
-                    .phoneNumber("")
-                    .country("")
-                    .city("")
-                    .province("")
-                    .district("")
-                    .ward("")
-                    .address("")
-                    .addressType("")
+                    .phoneNumber(faker.phoneNumber().phoneNumber())
+                    .country(faker.country().name())
+                    .city(faker.address().city())
+                    .province(faker.address().state())
+                    .district(faker.address().cityName())
+                    .ward(faker.address().streetName())
+                    .address(faker.address().fullAddress())
+                    .addressType("Home")
                     .isDefault(false)
                     .createdAt(Instant.now())
                     .updatedAt(Instant.now())
@@ -457,8 +462,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .isEnabled(true)
                     .isMfaEnabled(false)
                     .dateOfBirth(LocalDate.parse("2004-05-16"))
-                    .firstName("Nam")
-                    .lastName("Nguyen")
+                    .firstName("Triết")
+                    .lastName("Đinh")
                     .description("Student Account")
                     .avatar(avatarStudent1)
                     .address(address5)
@@ -468,14 +473,14 @@ public class DatabaseInitializer implements CommandLineRunner {
             addressRepository.saveAndFlush(address5);
 
             Address address6 = Address.builder()
-                    .phoneNumber("")
-                    .country("")
-                    .city("")
-                    .province("")
-                    .district("")
-                    .ward("")
-                    .address("")
-                    .addressType("")
+                    .phoneNumber(faker.phoneNumber().phoneNumber())
+                    .country(faker.country().name())
+                    .city(faker.address().city())
+                    .province(faker.address().state())
+                    .district(faker.address().cityName())
+                    .ward(faker.address().streetName())
+                    .address(faker.address().fullAddress())
+                    .addressType("Home")
                     .isDefault(false)
                     .createdAt(Instant.now())
                     .updatedAt(Instant.now())
@@ -497,8 +502,8 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .isEnabled(true)
                     .isMfaEnabled(false)
                     .dateOfBirth(LocalDate.parse("2004-05-16"))
-                    .firstName("Nam")
-                    .lastName("Nguyen")
+                    .firstName("Shiba")
+                    .lastName("Inu")
                     .description("Student Account")
                     .avatar(avatarStudent2)
                     .address(address6)
@@ -518,7 +523,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .rating(0L)
                     .description("English class for beginner")
                     .isEnabled(true)
-                    .price(200000l)
+                    .price(200000L)
                     .users(List.of(student1))
                     .build();
 
@@ -568,7 +573,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .teacherId(4L)
                     .description("Japanese class for beginner")
                     .isEnabled(true)
-                    .price(100000l)
+                    .price(100000L)
                     .users(List.of(student1, student2))
                     .build();
 

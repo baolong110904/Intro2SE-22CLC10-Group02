@@ -25,10 +25,9 @@ const DetailedCourseView = () => {
   const [showEditSectionModal, setShowEditSectionModal] = useState(false)
   const [sectionToEdit, setSectionToEdit] = useState(null)
   const [documents, setDocuments] = useState([])
-  const [showUpdateCourseModal, setShowUpdateCourseModal] = useState(false);
+  const [showUpdateCourseModal, setShowUpdateCourseModal] = useState(false)
   const [meetingId, setMeetingId] = useState("")
   const role = localStorage.getItem("role")
-
 
   const fetchDocuments = async () => {
     try {
@@ -47,14 +46,12 @@ const DetailedCourseView = () => {
   const handleGetCourseById = async () => {
     const res = await GetCourseById(courseId)
     console.log(res)
-    setMeetingId(res.data.data.meetingRoomId) 
+    setMeetingId(res.data.data.meetingRoomId)
   }
 
   useEffect(() => {
-    if (meetingId === "")
-      handleGetCourseById()
+    if (meetingId === "") handleGetCourseById()
   }, [])
-
 
   const handleUpdateCourse = async (updatedData) => {
     if (updatedData.thumbnail) {
@@ -62,12 +59,12 @@ const DetailedCourseView = () => {
       console.log(resThumbnail)
     }
 
-    delete updatedData.thumbnail;
+    delete updatedData.thumbnail
     const resUpdateCourse = await UpdateCourse(courseId, updatedData)
     console.log(resUpdateCourse)
 
-    console.log('Updated course data:', updatedData);
-  };
+    console.log("Updated course data:", updatedData)
+  }
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode)
@@ -140,10 +137,7 @@ const DetailedCourseView = () => {
     <div
       className={`min-h-screen ${isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}
     >
-      <Navbar2
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-      />
+      <Navbar2 isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
 
       <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md w-full h-full">
         <div className="p-4 border-b">
@@ -172,10 +166,11 @@ const DetailedCourseView = () => {
           {["course", "participants", "forum", "materials", "meeting"].map((tab) => (
             <button
               key={tab}
-              className={`py-2 px-4 font-semibold border-b-2 ${activeTab === tab
-                ? "border-blue-600 text-blue-600"
-                : "border-transparent text-gray-500"
-                } hover:text-blue-600`}
+              className={`py-2 px-4 font-semibold border-b-2 ${
+                activeTab === tab
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-500"
+              } hover:text-blue-600`}
               onClick={() => setActiveTab(tab)}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -353,7 +348,7 @@ const DetailedCourseView = () => {
         {activeTab === "meeting" && (
           <div className="p-4 md:p-6 lg:p-8">
             <React.StrictMode>
-              <OnlineMeetingHome meetingId={meetingId}/>
+              <OnlineMeetingHome meetingId={meetingId} />
             </React.StrictMode>
           </div>
         )}

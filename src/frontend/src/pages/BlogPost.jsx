@@ -33,12 +33,13 @@ The best way to retain and understand new information is by applying it in real-
 Reflecting on what you have learned helps to solidify knowledge. This could be done through journaling, discussing what you’ve learned with others, or teaching the concept to someone else.`,
       category: "English",
       imageUrl: "https://i.imgur.com/ZMTvAI3.jpeg",
-      authorBio: "Benjamin Riley is an experienced educator and lifelong learner, passionate about educational strategies that empower learners to achieve their full potential.",
+      authorBio:
+        "Benjamin Riley is an experienced educator and lifelong learner, passionate about educational strategies that empower learners to achieve their full potential.",
       datePublished: "August 29, 2024",
       relatedPosts: [
         { id: 2, title: "Understanding Bloom's Taxonomy", url: "/blog/2" },
-        { id: 3, title: "How to Encourage Student Motivation", url: "/blog/3" }
-      ]
+        { id: 3, title: "How to Encourage Student Motivation", url: "/blog/3" },
+      ],
     }
     setPost(dummyPost)
   }, [id])
@@ -52,9 +53,15 @@ Reflecting on what you have learned helps to solidify knowledge. This could be d
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-8">
         <article className="bg-white dark:bg-neutral-800 rounded-lg shadow-xl p-6">
-          <img src={post.imageUrl} alt={post.title} className="w-full h-64 object-cover rounded-lg mb-6" />
+          <img
+            src={post.imageUrl}
+            alt={post.title}
+            className="w-full h-64 object-cover rounded-lg mb-6"
+          />
           <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">By {post.author} | {post.datePublished}</p>
+          <p className="text-gray-600 dark:text-gray-400 mb-4">
+            By {post.author} | {post.datePublished}
+          </p>
           <div className="prose dark:prose-invert max-w-none mb-6">
             <p>{post.content}</p>
           </div>
@@ -69,7 +76,12 @@ Reflecting on what you have learned helps to solidify knowledge. This could be d
             <ul className="list-disc pl-5">
               {post.relatedPosts.map((relatedPost) => (
                 <li key={relatedPost.id}>
-                  <a href={relatedPost.url} className="text-blue-500 hover:underline">{relatedPost.title}</a>
+                  <a
+                    href={relatedPost.url}
+                    className="text-blue-500 hover:underline"
+                  >
+                    {relatedPost.title}
+                  </a>
                 </li>
               ))}
             </ul>
@@ -77,10 +89,11 @@ Reflecting on what you have learned helps to solidify knowledge. This could be d
 
           <section className="mb-6">
             <h2 className="text-xl font-bold mb-4">Leave a Comment</h2>
-            <textarea 
-              className="w-full p-2 border rounded-lg" 
-              rows="4" 
-              placeholder="Write your comment here..."></textarea>
+            <textarea
+              className="w-full p-2 border rounded-lg"
+              rows="4"
+              placeholder="Write your comment here..."
+            ></textarea>
             <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
               Submit
             </button>
@@ -89,9 +102,15 @@ Reflecting on what you have learned helps to solidify knowledge. This could be d
           <section>
             <h2 className="text-xl font-bold mb-4">Tags</h2>
             <div className="flex space-x-2">
-              <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">Learning</span>
-              <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">Education</span>
-              <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">Self-Development</span>
+              <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">
+                Learning
+              </span>
+              <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">
+                Education
+              </span>
+              <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">
+                Self-Development
+              </span>
             </div>
           </section>
         </article>

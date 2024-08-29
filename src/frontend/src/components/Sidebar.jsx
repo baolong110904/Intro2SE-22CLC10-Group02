@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
 import { MdDashboard, MdOutlineMessage } from "react-icons/md"
 import { SiSimpleanalytics } from "react-icons/si"
-import { TbTextGrammar } from "react-icons/tb";
-import { IoBookSharp } from "react-icons/io5";
+import { TbTextGrammar } from "react-icons/tb"
+import { IoBookSharp } from "react-icons/io5"
 import { motion } from "framer-motion"
 import { FaArrowRight } from "react-icons/fa"
 

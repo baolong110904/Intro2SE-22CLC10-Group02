@@ -6,7 +6,6 @@ import { getMonth } from "./calendar/util.js"
 import CourseGrid from "./CourseBox.jsx"
 import Forum from "./Forum.jsx"
 
-
 const Dashboard = () => {
   const [activeSection, setActiveSection] = useState("timetable")
   const [currenMonth, setCurrentMonth] = useState(getMonth())

@@ -21,7 +21,7 @@ const UserLinkField = ({ size = "25" }) => {
       <Box ml={2}>
         <Typography variant="body2">
           <Link to={`/admin/users/${record.id}`}>
-            {record.firstName} {record.lastName}
+            {record.first_name} {record.last_name}
           </Link>
         </Typography>
       </Box>

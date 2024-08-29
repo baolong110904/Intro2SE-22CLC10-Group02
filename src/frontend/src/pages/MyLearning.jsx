@@ -1,79 +1,92 @@
-import React, { useState, useEffect } from "react";
-import { Box, Grid, Button, Typography, Container, Select, MenuItem, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@mui/material";
-import SchoolIcon from "@mui/icons-material/School";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import SortIcon from "@mui/icons-material/Sort";
-import GetUserCourses from "../api/courses/GetUserCourse";
-import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react"
+import {
+  Box,
+  Grid,
+  Button,
+  Typography,
+  Container,
+  Select,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+} from "@mui/material"
+import SchoolIcon from "@mui/icons-material/School"
+import FilterListIcon from "@mui/icons-material/FilterList"
+import SortIcon from "@mui/icons-material/Sort"
+import GetUserCourses from "../api/courses/GetUserCourse"
+import { Link } from "react-router-dom"
+import Navbar from "../components/Navbar"
+import Footer from "../components/Footer"
+import { useNavigate } from "react-router-dom"
 
 const MyLearning = () => {
-  const [languageCourses, setLanguageCourses] = useState([]);
-  const [filteredCourses, setFilteredCourses] = useState([]);
-  const email = localStorage.getItem("email");
-  const role = localStorage.getItem("role");
-  const token = localStorage.getItem("token");
-  const navigate = useNavigate();
+  const [languageCourses, setLanguageCourses] = useState([])
+  const [filteredCourses, setFilteredCourses] = useState([])
+  const email = localStorage.getItem("email")
+  const role = localStorage.getItem("role")
+  const token = localStorage.getItem("token")
+  const navigate = useNavigate()
   const [filters, setFilters] = useState({
     rating: null,
     topic: "all",
     subCategory: "all",
     language: "all",
-  });
+  })
 
   // check if the user is logged in
   if (!email && !token) {
-    localStorage.clear();
-    navigate("/login");
+    localStorage.clear()
+    navigate("/login")
   }
 
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        let currentCourses = await GetUserCourses(email, role);
-        setLanguageCourses(currentCourses.data.data);
-        setFilteredCourses(currentCourses.data.data);
+        let currentCourses = await GetUserCourses(email, role)
+        setLanguageCourses(currentCourses.data.data)
+        setFilteredCourses(currentCourses.data.data)
       } catch (error) {
-        console.error("Error fetching courses:", error);
+        console.error("Error fetching courses:", error)
       }
-    };
-    fetchCourses();
-  }, [email, role]);
+    }
+    fetchCourses()
+  }, [email, role])
 
   useEffect(() => {
-    applyFilters();
-  }, [filters, languageCourses]);
+    applyFilters()
+  }, [filters, languageCourses])
 
   const applyFilters = () => {
-    let result = languageCourses;
+    let result = languageCourses
 
     if (filters.rating) {
-      result = result.filter((course) => course.rating >= filters.rating);
+      result = result.filter((course) => course.rating >= filters.rating)
     }
 
     if (filters.topic !== "all") {
-      result = result.filter((course) => course.category === filters.topic);
+      result = result.filter((course) => course.category === filters.topic)
     }
 
     if (filters.subCategory !== "all") {
-      result = result.filter((course) => course.subCategory === filters.subCategory);
+      result = result.filter((course) => course.subCategory === filters.subCategory)
     }
 
     if (filters.language !== "all") {
-      result = result.filter((course) => course.language === filters.language);
+      result = result.filter((course) => course.language === filters.language)
     }
 
-    setFilteredCourses(result);
-  };
+    setFilteredCourses(result)
+  }
 
   const handleFilterChange = (filterType, value) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [filterType]: value,
-    }));
-  };
+    }))
+  }
 
   const resetFilters = () => {
     setFilters({
@@ -81,8 +94,8 @@ const MyLearning = () => {
       topic: "all",
       subCategory: "all",
       language: "all",
-    });
-  };
+    })
+  }
 
   return (
     <div>
@@ -94,23 +107,46 @@ const MyLearning = () => {
         </Typography>
         <Grid container spacing={5}>
           <Grid item xs={12} md={3}>
-            <Box sx={{ border: 1, borderColor: 'grey.300', borderRadius: 2, p: 2, mb: 2 }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box
+              sx={{
+                border: 1,
+                borderColor: "grey.300",
+                borderRadius: 2,
+                p: 2,
+                mb: 2,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mb: 2,
+                }}
+              >
+                <Typography
+                  variant="subtitle1"
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
                   <FilterListIcon sx={{ mr: 1 }} /> Filter
                 </Typography>
-                <Typography variant="subtitle1" sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
                   <SortIcon sx={{ mr: 1 }} /> Sort by
                 </Typography>
               </Box>
-              
+
               <FormControl component="fieldset">
                 <FormLabel component="legend">Ratings</FormLabel>
                 <RadioGroup
                   aria-label="rating"
                   name="rating"
                   value={filters.rating}
-                  onChange={(e) => handleFilterChange("rating", parseFloat(e.target.value))}
+                  onChange={(e) =>
+                    handleFilterChange("rating", parseFloat(e.target.value))
+                  }
                 >
                   {[4.0, 3.0, 2.0, 1.0].map((rating) => (
                     <FormControlLabel
@@ -124,10 +160,12 @@ const MyLearning = () => {
               </FormControl>
             </Box>
 
-            <Box sx={{ border: 1, borderColor: 'grey.300', borderRadius: 2, p: 2 }}>
+            <Box sx={{ border: 1, borderColor: "grey.300", borderRadius: 2, p: 2 }}>
               {["topic", "subCategory", "language"].map((filterType) => (
                 <FormControl fullWidth key={filterType} sx={{ mb: 2 }}>
-                  <FormLabel>{filterType.charAt(0).toUpperCase() + filterType.slice(1)}</FormLabel>
+                  <FormLabel>
+                    {filterType.charAt(0).toUpperCase() + filterType.slice(1)}
+                  </FormLabel>
                   <Select
                     value={filters[filterType]}
                     onChange={(e) => handleFilterChange(filterType, e.target.value)}
@@ -138,11 +176,15 @@ const MyLearning = () => {
                     )}
                     {filterType === "subCategory" &&
                       ["Pronunciation", "Words", "Composition"].map((sub) => (
-                        <MenuItem key={sub} value={sub}>{sub}</MenuItem>
+                        <MenuItem key={sub} value={sub}>
+                          {sub}
+                        </MenuItem>
                       ))}
                     {filterType === "language" &&
                       ["English", "Japanese"].map((lang) => (
-                        <MenuItem key={lang} value={lang}>{lang}</MenuItem>
+                        <MenuItem key={lang} value={lang}>
+                          {lang}
+                        </MenuItem>
                       ))}
                   </Select>
                 </FormControl>
@@ -229,18 +271,25 @@ const MyLearning = () => {
                         >
                           {course.language}
                         </Typography>
-                        <Link to={`/course/${course.id}`} style={{ textDecoration: 'none' }}>
+                        <Link
+                          to={`/course/${course.id}`}
+                          style={{ textDecoration: "none" }}
+                        >
                           <Button
                             variant="contained"
                             fullWidth
                             startIcon={<SchoolIcon />}
                             sx={{
                               backgroundColor: (theme) =>
-                                theme.palette.mode === "dark" ? "#3182ce" : "#4299e1",
+                                theme.palette.mode === "dark"
+                                  ? "#3182ce"
+                                  : "#4299e1",
                               color: "#ffffff",
                               "&:hover": {
                                 backgroundColor: (theme) =>
-                                  theme.palette.mode === "dark" ? "#2c5282" : "#3182ce",
+                                  theme.palette.mode === "dark"
+                                    ? "#2c5282"
+                                    : "#3182ce",
                               },
                             }}
                           >
@@ -264,7 +313,7 @@ const MyLearning = () => {
       </Container>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default MyLearning;
+export default MyLearning

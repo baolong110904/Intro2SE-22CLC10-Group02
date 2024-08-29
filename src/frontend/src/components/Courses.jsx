@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import Footer from "./Footer"
 import Navbar2 from "./Navbar2"
+import Navbar from "./Navbar"
 import GetAllCoursesService from "../api/courses/GetAllCoursesService"
 import {
   Box,
@@ -178,10 +179,8 @@ const Courses = () => {
     <div
       className={`min-h-screen ${isDarkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-black"}`}
     >
-      <Navbar2
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-      />
+      {/* <Navbar2 isDarkMode={isDarkMode} toggleTheme={toggleTheme} /> */}
+      <Navbar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       <div className="fixed top-20 right-10 mt-3">
         <button
           onClick={toggleCartVisibility}

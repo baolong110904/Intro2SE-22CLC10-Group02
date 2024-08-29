@@ -1,45 +1,47 @@
-import React, { useState } from 'react';
-import { FaFileAudio } from "react-icons/fa6";
-import axios from 'axios';
+import React, { useState } from "react"
+import { FaFileAudio } from "react-icons/fa6"
+import axios from "axios"
 
 const DictionarySearch = () => {
-  const [word, setWord] = useState('');
-  const [results, setResults] = useState(null);
-  const [error, setError] = useState('');
-  const [audioError, setAudioError] = useState('');
+  const [word, setWord] = useState("")
+  const [results, setResults] = useState(null)
+  const [error, setError] = useState("")
+  const [audioError, setAudioError] = useState("")
 
   const handleChange = (e) => {
-    setWord(e.target.value);
-  };
+    setWord(e.target.value)
+  }
 
   const handleSearch = async () => {
-    if (word.trim() === '') {
-      setError('Please enter a word.');
-      return;
+    if (word.trim() === "") {
+      setError("Please enter a word.")
+      return
     }
 
     try {
-      const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-      setResults(response.data[0]);
-      setError('');
-      setAudioError('');
+      const response = await axios.get(
+        `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`,
+      )
+      setResults(response.data[0])
+      setError("")
+      setAudioError("")
     } catch (error) {
-      setResults(null);
-      setError('Word not found or an error occurred.');
+      setResults(null)
+      setError("Word not found or an error occurred.")
     }
-  };
+  }
 
   const handlePlayAudio = (audioUrl) => {
-    const audio = new Audio(audioUrl);
+    const audio = new Audio(audioUrl)
 
     audio.onerror = () => {
-      setAudioError('Unable to play audio. Please try again later.');
-    };
+      setAudioError("Unable to play audio. Please try again later.")
+    }
 
     audio.play().catch(() => {
-      setAudioError('An error occurred while trying to play the audio.');
-    });
-  };
+      setAudioError("An error occurred while trying to play the audio.")
+    })
+  }
 
   return (
     <div className="max-w-[800px] mx-auto p-8 bg-white shadow-lg rounded-lg border border-gray-200">
@@ -69,27 +71,40 @@ const DictionarySearch = () => {
                 onClick={() => handlePlayAudio(results.phonetics[0].audio)}
                 className="ml-4 bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-200"
               >
-                <FaFileAudio/>
+                <FaFileAudio />
               </button>
             )}
           </h3>
           {results.phonetic && (
-            <p className="mb-2"><strong className="text-gray-800">Phonetic:</strong> {results.phonetic}</p>
+            <p className="mb-2">
+              <strong className="text-gray-800">Phonetic:</strong> {results.phonetic}
+            </p>
           )}
           {results.origin && (
-            <p className="mb-4"><strong className="text-gray-800">Origin:</strong> {results.origin}</p>
+            <p className="mb-4">
+              <strong className="text-gray-800">Origin:</strong> {results.origin}
+            </p>
           )}
           <div>
             {results.meanings.map((meaning, index) => (
               <div key={index} className="mb-6">
-                <hr className="my-6 border-t-2 border-gray-300" style={{ width: '80%' }} />
-                <h4 className="text-lg font-semibold text-red-500">{meaning.partOfSpeech}</h4>
+                <hr
+                  className="my-6 border-t-2 border-gray-300"
+                  style={{ width: "80%" }}
+                />
+                <h4 className="text-lg font-semibold text-red-500">
+                  {meaning.partOfSpeech}
+                </h4>
                 <ul className="list-disc ml-6 mt-2">
                   {meaning.definitions.map((def, idx) => (
                     <li key={idx} className="mb-2">
-                      <p className="text-gray-700"><strong>Definition:</strong> {def.definition}</p>
+                      <p className="text-gray-700">
+                        <strong>Definition:</strong> {def.definition}
+                      </p>
                       {def.example && (
-                        <p className="text-green-500"><strong>Example:</strong> {def.example}</p>
+                        <p className="text-green-500">
+                          <strong>Example:</strong> {def.example}
+                        </p>
                       )}
                     </li>
                   ))}
@@ -112,7 +127,7 @@ const DictionarySearch = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default DictionarySearch;
+export default DictionarySearch

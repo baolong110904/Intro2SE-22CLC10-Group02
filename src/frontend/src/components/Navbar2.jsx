@@ -8,27 +8,27 @@ import GetProfile from "../api/auth/GetProfile"
 import { useNavigate } from "react-router-dom"
 
 const Navbar = ({ userName, isDarkMode, toggleTheme }) => {
-  const [profileData, setProfileData] = useState(null);
-  const userEmail = localStorage.getItem("email");
-  const navigate = useNavigate();
+  const [profileData, setProfileData] = useState(null)
+  const userEmail = localStorage.getItem("email")
+  const navigate = useNavigate()
 
   const handleLogout = () => {
-    localStorage.clear();
-    navigate("/");
+    localStorage.clear()
+    navigate("/")
   }
 
   useEffect(() => {
     const fetchProfile = async () => {
-      const result = await GetProfile(userEmail);
+      const result = await GetProfile(userEmail)
       if (result.success) {
-        setProfileData(result.data);
+        setProfileData(result.data)
       } else {
-        console.error("Failed to fetch profile data:", result.message);
+        console.error("Failed to fetch profile data:", result.message)
       }
-    };
+    }
 
-    fetchProfile();
-  }, [userEmail]);
+    fetchProfile()
+  }, [userEmail])
 
   return (
     <header
@@ -37,7 +37,12 @@ const Navbar = ({ userName, isDarkMode, toggleTheme }) => {
       }`}
     >
       <div className="flex items-center">
-        <img src={logo} alt="Logo" className="w-8 h-8 sm:w-12 sm:h-12 mr-2 transition-transform duration-300 ease-in-out hover:scale-110 active:scale-95 cursor-pointer" onClick={() => navigate("/")} />  
+        <img
+          src={logo}
+          alt="Logo"
+          className="w-8 h-8 sm:w-12 sm:h-12 mr-2 transition-transform duration-300 ease-in-out hover:scale-110 active:scale-95 cursor-pointer"
+          onClick={() => navigate("/")}
+        />
         <h1 className="text-xl cursor-pointer">G2 Learning Language</h1>
         <Link to="/" className="ml-4">
           <MdHome size={24} />
@@ -56,10 +61,10 @@ const Navbar = ({ userName, isDarkMode, toggleTheme }) => {
         <span className="mr-4">TEACHER</span> */}
         {profileData && (
           <>
-            <span className="mr-4">{profileData.address.address || "No Address"}</span>
             <span className="mr-4">
-              {profileData.role[0]?.name || "No Role"}
+              {profileData.address.address || "No Address"}
             </span>
+            <span className="mr-4">{profileData.role[0]?.name || "No Role"}</span>
           </>
         )}
         <Menu as="div" className="relative">

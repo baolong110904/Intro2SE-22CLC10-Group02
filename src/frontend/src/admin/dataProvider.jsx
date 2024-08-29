@@ -143,7 +143,13 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
       case UPDATE:
         url = `${apiUrl}/${resource}/${params.id}`
         options.method = "PUT"
-        options.body = JSON.stringify(params.data)
+
+        const { address, role, ...dataWithoutAddressAndRole } = params.data
+
+        dataWithoutAddressAndRole.role = null
+
+        options.body = JSON.stringify(dataWithoutAddressAndRole)
+
         console.log("URL:", url)
         console.log("Options:", options)
         console.log("Payload:", params.data)

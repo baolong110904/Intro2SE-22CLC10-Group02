@@ -7,7 +7,7 @@ import logo from ".//G2Learning.svg" // Adjust path if necessary
 import ThemeToggle from "../components/ThemeToggle"
 import { useNavigate } from "react-router-dom"
 import VerifyRoleService from "../api/auth/VerifyRoleService"
-import SchoolIcon from '@mui/icons-material/School';
+import SchoolIcon from "@mui/icons-material/School"
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -52,33 +52,33 @@ const Navbar = () => {
   const email = localStorage.getItem("email")
   const token = localStorage.getItem("token")
   const handleDashboardButton = async (e) => {
-    e.preventDefault();  
+    e.preventDefault()
     try {
       if (!email || !token) {
-        navigate("/login");
-        return;
+        navigate("/login")
+        return
       }
-      
-      const roleRes = await VerifyRoleService(email, token);
-      const { success, status, data } = roleRes;
+
+      const roleRes = await VerifyRoleService(email, token)
+      const { success, status, data } = roleRes
       if (success) {
-        console.log("Role:", success, status, data);
-        localStorage.setItem("role", data);
+        console.log("Role:", success, status, data)
+        localStorage.setItem("role", data)
         if (data === "STUDENT") {
-          navigate("/student");
+          navigate("/student")
         } else if (data === "TEACHER") {
-          navigate("/teacher");
+          navigate("/teacher")
         } else if (data === "ADMIN") {
-          navigate("/admin");
+          navigate("/admin")
         } else {
-          navigate("/");
+          navigate("/")
         }
       }
     } catch (error) {
-      navigate("/");
-      console.error("Login error:", error);
+      navigate("/")
+      console.error("Login error:", error)
     }
-  };
+  }
 
   const navItems = [
     { path: "/", link: "Home" },
@@ -194,7 +194,7 @@ const Navbar = () => {
         </ul>
 
         <div className="hidden lg:flex gap-4 items-center">
-        <NavLink
+          <NavLink
             to="/my-courses/learning"
             className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 relative"
             onMouseEnter={() => setIsHoveredMyLearning(true)}
@@ -319,8 +319,8 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="flex gap-2">
-            <NavLink 
-              to="/my-courses/learning" 
+            <NavLink
+              to="/my-courses/learning"
               className="text-blue-950 relative"
               onMouseEnter={() => setIsHoveredMyLearning(true)}
               onMouseLeave={() => setIsHoveredMyLearning(false)}

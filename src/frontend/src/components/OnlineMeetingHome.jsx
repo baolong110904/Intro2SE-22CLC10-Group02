@@ -14,9 +14,10 @@ const OnlineMeetingHome = ({ meetingId }) => {
   const navigate = useNavigate()
 
   const copyMeetingId = () => {
-    navigator.clipboard.writeText(meetingId)
+    navigator.clipboard
+      .writeText(meetingId)
       .then(() => alert("Meeting ID copied to clipboard!"))
-      .catch(err => console.error('Failed to copy: ', err))
+      .catch((err) => console.error("Failed to copy: ", err))
   }
 
   return (

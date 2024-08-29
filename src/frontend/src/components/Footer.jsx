@@ -11,33 +11,33 @@ const Footer = () => {
   const email = localStorage.getItem("email")
   const token = localStorage.getItem("token")
   const handleDashboardButton = async (e) => {
-    e.preventDefault();  
+    e.preventDefault()
     try {
       if (!email || !token) {
-        navigate("/login");
-        return;
+        navigate("/login")
+        return
       }
-      
-      const roleRes = await VerifyRoleService(email, token);
-      const { success, status, data } = roleRes;
+
+      const roleRes = await VerifyRoleService(email, token)
+      const { success, status, data } = roleRes
       if (success) {
-        console.log("Role:", success, status, data);
-        localStorage.setItem("role", data);
+        console.log("Role:", success, status, data)
+        localStorage.setItem("role", data)
         if (data === "STUDENT") {
-          navigate("/student");
+          navigate("/student")
         } else if (data === "TEACHER") {
-          navigate("/teacher");
+          navigate("/teacher")
         } else if (data === "ADMIN") {
-          navigate("/admin");
+          navigate("/admin")
         } else {
-          navigate("/");
+          navigate("/")
         }
       }
     } catch (error) {
-      navigate("/");
-      console.error("Login error:", error);
+      navigate("/")
+      console.error("Login error:", error)
     }
-  };
+  }
 
   return (
     <div className="bg-[#010851] md:px-18 p-4 mx-auto text-white">
@@ -74,8 +74,12 @@ const Footer = () => {
           <div className="space-y-4 mt-5">
             <h4 className="text-xl">Platform</h4>
             <ul className="space-y-3">
-              <a href="/dashboard" className="block hover:text-gray-300" onClick={handleDashboardButton}>
-                Dashboard 
+              <a
+                href="/dashboard"
+                className="block hover:text-gray-300"
+                onClick={handleDashboardButton}
+              >
+                Dashboard
               </a>
               <a href="/courses" className="block hover:text-gray-300">
                 Courses

@@ -23,29 +23,29 @@ const Dashboard = () => {
   const [courses, setCourses] = useState([])
 
   const fetchData = async () => {
-    const email = localStorage.getItem("email");
-    const role = localStorage.getItem("role");
+    const email = localStorage.getItem("email")
+    const role = localStorage.getItem("role")
 
     try {
-      const result = await GetUserCourses(email, role);
+      const result = await GetUserCourses(email, role)
       console.log(result)
-      setCourses(result.data);
+      setCourses(result.data)
     } catch (error) {
-      console.error("Error fetching courses:", error);
+      console.error("Error fetching courses:", error)
     }
-  };
+  }
 
   useEffect(() => {
     fetchData()
   }, [])
 
   const handleCourseDeleted = async () => {
-    await fetchData(); // Refresh the course list
-  };
+    await fetchData() // Refresh the course list
+  }
 
   const handleCourseAdded = async () => {
-    await fetchData(); // Refresh the course list
-  };
+    await fetchData() // Refresh the course list
+  }
 
   const renderActiveSection = () => {
     switch (activeSection) {
@@ -72,7 +72,7 @@ const Dashboard = () => {
               )}
             </React.StrictMode>
           </div>
-        );
+        )
       case "materials":
         return (
           <div className="course-section p-8 bg-gray-50">

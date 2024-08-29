@@ -5,10 +5,10 @@ const createCourse = async (data) => {
     const email = localStorage.getItem("email")
     const token = localStorage.getItem("token")
     const res = await axiosInstance.post("/courses", data, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            "X-Auth-User-Email": email,
-          },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-Auth-User-Email": email,
+      },
     })
     console.log(res)
     return res

@@ -1,40 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState } from "react"
 
 const Tools = () => {
-  const [text, setText] = useState('');
-  const [errors, setErrors] = useState([]);
-  const [language, setLanguage] = useState('en-US'); // default is English
-  const [isChecked, setIsChecked] = useState(false);
+  const [text, setText] = useState("")
+  const [errors, setErrors] = useState([])
+  const [language, setLanguage] = useState("en-US") // default is English
+  const [isChecked, setIsChecked] = useState(false)
 
   const handleChange = (e) => {
-    setText(e.target.value);
-    setIsChecked(false); // Reset checked state on text change
-  };
+    setText(e.target.value)
+    setIsChecked(false) // Reset checked state on text change
+  }
 
   const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-  };
+    setLanguage(e.target.value)
+  }
 
   const checkGrammar = async () => {
     try {
-      const response = await fetch('https://api.languagetool.org/v2/check', {
-        method: 'POST',
+      const response = await fetch("https://api.languagetool.org/v2/check", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
           text: text,
           language: language,
         }),
-      });
+      })
 
-      const data = await response.json();
-      setErrors(data.matches);
-      setIsChecked(true); // Set checked state after checking grammar
+      const data = await response.json()
+      setErrors(data.matches)
+      setIsChecked(true) // Set checked state after checking grammar
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error)
     }
-  };
+  }
 
   return (
     <div className="p-8 bg-white shadow-md rounded-lg">
@@ -65,7 +65,12 @@ const Tools = () => {
           <ul>
             {errors.map((error, index) => (
               <li key={index} className="mt-2">
-                <strong>{error.message}</strong> (Context: {error.context.text.slice(error.context.offset, error.context.offset + error.context.length)})
+                <strong>{error.message}</strong> (Context:{" "}
+                {error.context.text.slice(
+                  error.context.offset,
+                  error.context.offset + error.context.length,
+                )}
+                )
               </li>
             ))}
           </ul>
@@ -77,7 +82,7 @@ const Tools = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Tools;
+export default Tools

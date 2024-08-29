@@ -7,13 +7,9 @@ import CourseRegistrationForm from "./CourseRegistrationForm"
 import GetUserCourses from "../api/courses/GetUserCourse"
 import DeleteCourse from "../api/courses/DeleteCourse"
 
-const Mycourse = ({
-  initialCourses,
-  onCourseAdded,
-  onCourseDeleted,
-}) => {
+const Mycourse = ({ initialCourses, onCourseAdded, onCourseDeleted }) => {
   const [courses, setCourses] = useState(initialCourses)
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false)
   const [filters, setFilters] = useState({
     rating: null,
     topic: "all",
@@ -22,21 +18,23 @@ const Mycourse = ({
   })
 
   const toggleModal = () => {
-    setShowModal(!showModal);
-  };
+    setShowModal(!showModal)
+  }
 
   const handleDeleteCourse = async (courseId) => {
     try {
       const res = await DeleteCourse(courseId)
       console.log(res)
       if (res.status === 200) {
-        setCourses((prevCourses) => prevCourses.filter(course => course.id !== courseId));
+        setCourses((prevCourses) =>
+          prevCourses.filter((course) => course.id !== courseId),
+        )
         onCourseDeleted()
       }
     } catch (error) {
-      console.error("Error deleting course:", error);
+      console.error("Error deleting course:", error)
     }
-  };
+  }
 
   console.log(courses)
 
@@ -48,12 +46,12 @@ const Mycourse = ({
 
   const handleCourseAdded = async (newCourse) => {
     // Close the modal
-    setShowModal(false);
+    setShowModal(false)
     // Call the callback function to update courses in the parent component
     if (onCourseAdded) {
-      await onCourseAdded();
+      await onCourseAdded()
     }
-  };
+  }
 
   const applyFilters = () => {
     if (!initialCourses) return
@@ -212,24 +210,29 @@ const Mycourse = ({
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute bottom-2 right-2 bg-white bg-opacity-80 rounded-full p-2">
-                        <span className="text-gray-700 text-sm">{course.category}</span>
+                        <span className="text-gray-700 text-sm">
+                          {course.category}
+                        </span>
                       </div>
                     </div>
                     <div className="p-4 flex flex-col flex-grow">
                       <h3 className="text-lg font-semibold text-gray-800 mb-2">
                         {course.title}
                       </h3>
-                      <p className="text-gray-600 mb-4 flex-grow">Teacher: {course.teacher}</p>
+                      <p className="text-gray-600 mb-4 flex-grow">
+                        Teacher: {course.teacher}
+                      </p>
                       <Link to={`/course/${course.id}`} className="mt-auto">
                         <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium transition duration-300">
                           Go to course
                         </button>
                       </Link>
-                      <button className="mt-2 w-full bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded-lg text-sm font-medium transition duration-300"
-                              onClick={() => handleDeleteCourse(course.id)}
+                      <button
+                        className="mt-2 w-full bg-red-400 hover:bg-red-500 text-white py-2 px-4 rounded-lg text-sm font-medium transition duration-300"
+                        onClick={() => handleDeleteCourse(course.id)}
                       >
-                          Delete
-                        </button>
+                        Delete
+                      </button>
                     </div>
                   </div>
                 </div>

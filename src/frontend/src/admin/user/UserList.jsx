@@ -23,12 +23,13 @@ import { useMediaQuery, Theme } from "@mui/material"
 import { Typography, Box, Button } from "@mui/material"
 import UserLinkField from "./UserLinkField"
 import { UserFilterSidebar } from "./UserFilterSidebar"
+import HowToRegIcon from "@mui/icons-material/HowToReg"
 
 const ListActions = () => (
   <TopToolbar>
     <SelectColumnsButton />
     {/* <FilterButton /> */}
-    <CreateButton />
+    {/* <CreateButton /> */}
     <ExportButton />
   </TopToolbar>
 )
@@ -74,7 +75,7 @@ export const UserList = () => {
           <UserLinkField label="Name" />
           <EmailField source="email" />
           <TextField source="username" />
-          <DateField source="dateOfBirth" />
+          <DateField source="date_of_birth" />
           <TextField source="gender" />
           <BooleanField source="isEnabled" label="Enabled" />
           <DateField source="createdAt" />
