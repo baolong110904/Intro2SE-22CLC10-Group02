@@ -53,6 +53,7 @@
     "react-admin": "^5.1.1",
     "react-big-calendar": "^1.13.2",
     "react-bootstrap": "^2.10.4",
+    "react-countup": "^6.5.3",
     "react-datepicker": "^7.3.0",
     "react-dom": "^18.0.0",
     "react-final-form": "^6.5.9",

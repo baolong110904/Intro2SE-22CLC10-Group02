@@ -22,7 +22,7 @@ const DictionarySearch = () => {
       const response = await axios.get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
       setResults(response.data[0]);
       setError('');
-      setAudioError(''); // Reset audio error when a new search is made
+      setAudioError('');
     } catch (error) {
       setResults(null);
       setError('Word not found or an error occurred.');
@@ -50,7 +50,7 @@ const DictionarySearch = () => {
           value={word}
           onChange={handleChange}
           placeholder="Enter a word..."
-          className="p-3 border border-gray-300 rounded-lg shadow-sm w-full mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+          className="p-3 border border-gray-300 rounded-lg shadow-md w-full mr-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
         />
         <button
           onClick={handleSearch}
@@ -61,7 +61,7 @@ const DictionarySearch = () => {
       </div>
 
       {results && (
-        <div className="mt-6 p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-sm">
+        <div className="mt-6 p-4 bg-gray-50 border border-gray-300 rounded-lg shadow-md">
           <h3 className="text-2xl font-semibold text-gray-700 mb-2 flex items-center">
             Word: {results.word}
             {results.phonetics[0]?.audio && (

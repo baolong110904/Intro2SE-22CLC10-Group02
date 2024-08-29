@@ -23,7 +23,7 @@ const BannerVideo = () => {
   
           {/* Overlay Content */}
           <div className="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-50 text-white text-center p-4">
-            <h1 className="text-5xl font-bold mb-2">Welcome to G2 Learning</h1>
+            <h1 className="text-5xl font-bold mb-2">About us</h1>
             <br/>
             <p className="text-lg font-bold leading-relaxed">
                 We are dedicated to providing the best service possible.
@@ -35,14 +35,12 @@ const BannerVideo = () => {
             <p>
                 <button 
                 onClick={handleSignup}
-                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold text-lg mt-16 hover:bg-blue-700 transition-colors duration-300">
+                className="border border-white text-white px-6 py-3 rounded font-semibold text-lg mt-16 bg-transparent hover:bg-blue-100 hover:text-blue-700 transition-colors duration-300">
                     JOIN NOW
                 </button>
             </p>
           </div>
-      
         </div>
-        
         {/* Additional Content Below (Optional) */}
         <div className="p-8">
           {/* You can add more content here if needed */}
