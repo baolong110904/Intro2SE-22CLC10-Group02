@@ -18,8 +18,13 @@ import Forum from "./components/Forum.jsx"
 import DetailedCourseView from "./components/DetailedCourseView.jsx"
 import Meeting from "./pages/Meeting.jsx"
 import MyLearning from "./pages/MyLearning.jsx"
+
 import Blogs from "./pages/Blogs.jsx"
+import BlogPost from "./pages/BlogPost.jsx"
+
+import Analytics from "./components/Analytics.jsx"
 import Introduction from "./pages/Introduction.jsx"
+import CourseOffer from "./pages/CourseOffer.jsx"
 
 function App() {
   // State to manage whether to show Login or Signup page
@@ -49,8 +54,13 @@ function App() {
         <Route path="/course/:courseId" element={<DetailedCourseView />} />
         <Route path="/meeting" element={<Meeting />} />
         <Route path="/my-courses/learning" element={<MyLearning />} />
+
         <Route path="/blogs" element={<Blogs />} />
+        <Route path="/blog/:id" element={<BlogPost />} />
+
+        <Route path="/analytics" element={<Analytics />} />
         <Route path="/about" element={<Introduction />} />
+        <Route path="/services" element={<CourseOffer />} />
       </Routes>
     </>
   )
