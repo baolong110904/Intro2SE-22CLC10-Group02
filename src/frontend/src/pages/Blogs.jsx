@@ -66,13 +66,13 @@ const Blogs = () => {
   ]
 
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-neutral-900">
+    <div className="flex flex-col min-h-screen light:bg-white dark:bg-neutral-900 transition-colors duration-300">
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-8 mt-16">
-        <h1 className="text-4xl font-extrabold mb-2 text-blue-900 dark:text-blue-300 tracking-tight font-poppins">
+        <h1 className="text-4xl font-extrabold mb-2 light:text-blue-900 dark:text-blue-300 tracking-tight font-poppins transition-colors duration-300">
           Blog Articles
         </h1>
-        <p className="mb-4 text-gray-600 dark:text-gray-400">
+        <p className="mb-4 light:text-gray-600 dark:text-gray-400 transition-colors duration-300">
           Where we discuss about various learning topics!
         </p>
 
@@ -80,16 +80,16 @@ const Blogs = () => {
           <div className="relative w-full md:w-1/2 mb-4 md:mb-0">
             <input
               type="text"
-              className="w-full rounded border border-gray-300 bg-transparent pl-10 px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
+              className="w-full rounded border light:border-gray-300 dark:border-neutral-600 light:bg-white dark:bg-neutral-800 pl-10 px-3 py-2 leading-[1.6] outline-none transition-all duration-300 ease-linear light:text-black dark:text-white"
               placeholder="Search in blogs..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 light:text-gray-400 dark:text-gray-500 transition-colors duration-300" />
           </div>
 
           <select
-            className="w-full md:w-40 rounded border border-gray-300 bg-transparent px-3 py-2 leading-[1.6] outline-none transition-all duration-200 ease-linear text-black dark:text-white dark:border-neutral-600 dark:bg-neutral-800"
+            className="w-full md:w-40 rounded border light:border-gray-300 dark:border-neutral-600 light:bg-white dark:bg-neutral-800 px-3 py-2 leading-[1.6] outline-none transition-all duration-300 ease-linear light:text-black dark:text-white"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
           >
@@ -103,22 +103,22 @@ const Blogs = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {blogPosts.map((post) => (
             <Link to={`/blog/${post.id}`} key={post.id} className="no-underline">
-              <div className="bg-gray-100 dark:bg-neutral-700 rounded-lg p-4 transition-all duration-300 hover:shadow-lg hover:scale-105">
+              <div className="light:bg-gray-100 dark:bg-neutral-800 rounded-lg p-4 transition-all duration-300 hover:shadow-lg hover:scale-105">
                 <img
                   src={post.imageUrl}
                   alt={post.title}
                   className="w-full h-40 object-cover rounded-lg mb-4"
                 />
-                <span className="text-sm text-blue-600 dark:text-blue-400">
+                <span className="text-sm light:text-blue-600 dark:text-blue-400 transition-colors duration-300">
                   {post.category}
                 </span>
-                <h2 className="text-xl font-bold mb-2 text-gray-800 dark:text-gray-200">
+                <h2 className="text-xl font-bold mb-2 light:text-gray-800 dark:text-gray-200 transition-colors duration-300">
                   {post.title}
                 </h2>
-                <p className="text-sm mb-2 text-gray-600 dark:text-gray-400">
+                <p className="text-sm mb-2 light:text-gray-600 dark:text-gray-400 transition-colors duration-300">
                   {post.description}
                 </p>
-                <p className="text-sm text-gray-500 dark:text-gray-500">
+                <p className="text-sm light:text-gray-500 dark:text-gray-500 transition-colors duration-300">
                   By {post.author}
                 </p>
               </div>
