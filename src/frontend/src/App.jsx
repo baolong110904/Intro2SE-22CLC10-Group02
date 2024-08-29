@@ -24,7 +24,6 @@ import BlogPost from "./pages/BlogPost.jsx"
 
 import Analytics from "./components/Analytics.jsx"
 import Introduction from "./pages/Introduction.jsx"
-import CourseOffer from "./pages/CourseOffer.jsx"
 
 function App() {
   // State to manage whether to show Login or Signup page
@@ -60,7 +59,6 @@ function App() {
 
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/about" element={<Introduction />} />
-        <Route path="/services" element={<CourseOffer />} />
       </Routes>
     </>
   )

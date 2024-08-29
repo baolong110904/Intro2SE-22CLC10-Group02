@@ -3,10 +3,16 @@ import React, { useState } from 'react';
 const Tools = () => {
   const [text, setText] = useState('');
   const [errors, setErrors] = useState([]);
-  const [correctedText, setCorrectedText] = useState('');
+  const [language, setLanguage] = useState('en-US'); // default is English
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleChange = (e) => {
     setText(e.target.value);
+    setIsChecked(false); // Reset checked state on text change
+  };
+
+  const handleLanguageChange = (e) => {
+    setLanguage(e.target.value);
   };
 
   const checkGrammar = async () => {
@@ -18,63 +24,56 @@ const Tools = () => {
         },
         body: new URLSearchParams({
           text: text,
-          language: 'en-US',
+          language: language,
         }),
       });
 
       const data = await response.json();
       setErrors(data.matches);
-
-      // Generate corrected text based on suggestions
-      let corrected = text;
-      let offsetOffset = 0; // Adjust for replacements affecting subsequent text
-
-      data.matches.forEach((match) => {
-        // Apply all suggestions for accuracy
-        match.replacements.forEach((replacement) => {
-          const start = match.offset + offsetOffset;
-          const end = start + match.length;
-          corrected = corrected.slice(0, start) + replacement.value + corrected.slice(end);
-          offsetOffset += replacement.value.length - match.length; // Adjust offset for replacements
-        });
-      });
-
-      setCorrectedText(corrected);
+      setIsChecked(true); // Set checked state after checking grammar
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
   return (
-    <div className="p-8">
+    <div className="p-8 bg-white shadow-md rounded-lg">
+      <h1 className="text-2xl font-bold mb-6 text-gray-800">Grammar Checker</h1>
+      <select
+        value={language}
+        onChange={handleLanguageChange}
+        className="mb-4 p-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+      >
+        <option value="en-US">English</option>
+        <option value="ja">Japanese</option>
+      </select>
       <textarea
         value={text}
         onChange={handleChange}
         rows="6"
-        className="w-full p-2 border border-gray-300 rounded"
+        className="w-full p-3 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
       />
       <button
         onClick={checkGrammar}
-        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+        className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 transition duration-200"
       >
         Check Grammar
       </button>
-      {errors.length > 0 && (
-        <div className="mt-4">
+      {isChecked && errors.length > 0 && (
+        <div className="mt-6 p-4 bg-red-50 border border-red-300 text-red-700 rounded-lg shadow-sm">
           <h3 className="text-xl font-bold">Grammar Issues:</h3>
           <ul>
             {errors.map((error, index) => (
-              <li key={index} className="text-red-600">
-                {error.message} (Context: {error.context.text.slice(error.context.offset, error.context.offset + error.context.length)})
+              <li key={index} className="mt-2">
+                <strong>{error.message}</strong> (Context: {error.context.text.slice(error.context.offset, error.context.offset + error.context.length)})
               </li>
             ))}
           </ul>
         </div>
       )}
-      {correctedText && (
-        <div className="mt-4">
-          <h3 className="text-xl font-bold">Corrected Sentence:</h3>
-          <p className="p-4 border border-gray-300 rounded">{correctedText}</p>
+      {isChecked && errors.length === 0 && text && (
+        <div className="mt-6 p-4 bg-green-50 border border-green-300 text-green-700 rounded-lg shadow-sm">
+          No grammar issues found!
         </div>
       )}
     </div>
