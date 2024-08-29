@@ -45,34 +45,36 @@ Reflecting on what you have learned helps to solidify knowledge. This could be d
   }, [id])
 
   if (!post) {
-    return <div>Loading...</div>
+    return <div className="light:text-gray-800 dark:text-gray-200">Loading...</div>
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen light:bg-gray-100 dark:bg-neutral-900 transition-colors duration-300">
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-8">
-        <article className="bg-white dark:bg-neutral-800 rounded-lg shadow-xl p-6">
+        <article className="light:bg-white dark:bg-neutral-800 rounded-lg shadow-xl p-6 transition-colors duration-300">
           <img
             src={post.imageUrl}
             alt={post.title}
             className="w-full h-64 object-cover rounded-lg mb-6"
           />
-          <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <h1 className="text-3xl font-bold mb-4 light:text-gray-800 dark:text-gray-100">{post.title}</h1>
+          <p className="light:text-gray-600 dark:text-gray-400 mb-4 transition-colors duration-300">
             By {post.author} | {post.datePublished}
           </p>
-          <div className="prose dark:prose-invert max-w-none mb-6">
-            <p>{post.content}</p>
+          <div className="prose light:prose-gray dark:prose-invert max-w-none mb-6 transition-colors duration-300">
+            {post.content.split('\n\n').map((paragraph, index) => (
+              <p key={index} className="mb-4 light:text-gray-800 dark:text-gray-200">{paragraph}</p>
+            ))}
           </div>
 
           <section className="mb-6">
-            <h2 className="text-xl font-bold mb-2">About the Author</h2>
-            <p className="text-gray-600 dark:text-gray-400">{post.authorBio}</p>
+            <h2 className="text-xl font-bold mb-2 light:text-gray-800 dark:text-gray-100">About the Author</h2>
+            <p className="light:text-gray-600 dark:text-gray-400 transition-colors duration-300">{post.authorBio}</p>
           </section>
 
           <section className="mb-6">
-            <h2 className="text-xl font-bold mb-4">Related Posts</h2>
+            <h2 className="text-xl font-bold mb-4 light:text-gray-800 dark:text-gray-100">Related Posts</h2>
             <ul className="list-disc pl-5">
               {post.relatedPosts.map((relatedPost) => (
                 <li key={relatedPost.id}>
@@ -88,27 +90,27 @@ Reflecting on what you have learned helps to solidify knowledge. This could be d
           </section>
 
           <section className="mb-6">
-            <h2 className="text-xl font-bold mb-4">Leave a Comment</h2>
+            <h2 className="text-xl font-bold mb-4 light:text-gray-800 dark:text-gray-100">Leave a Comment</h2>
             <textarea
-              className="w-full p-2 border rounded-lg"
+              className="w-full p-2 border rounded-lg light:bg-white dark:bg-neutral-700 light:text-gray-800 dark:text-gray-200 transition-colors duration-300"
               rows="4"
               placeholder="Write your comment here..."
             ></textarea>
-            <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+            <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300">
               Submit
             </button>
           </section>
 
           <section>
-            <h2 className="text-xl font-bold mb-4">Tags</h2>
+            <h2 className="text-xl font-bold mb-4 light:text-gray-800 dark:text-gray-100">Tags</h2>
             <div className="flex space-x-2">
-              <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">
+              <span className="px-3 py-1 light:bg-gray-200 dark:bg-gray-700 rounded-full text-sm light:text-gray-800 dark:text-gray-200 transition-colors duration-300">
                 Learning
               </span>
-              <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">
+              <span className="px-3 py-1 light:bg-gray-200 dark:bg-gray-700 rounded-full text-sm light:text-gray-800 dark:text-gray-200 transition-colors duration-300">
                 Education
               </span>
-              <span className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full text-sm">
+              <span className="px-3 py-1 light:bg-gray-200 dark:bg-gray-700 rounded-full text-sm light:text-gray-800 dark:text-gray-200 transition-colors duration-300">
                 Self-Development
               </span>
             </div>
