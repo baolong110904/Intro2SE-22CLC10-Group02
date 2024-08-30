@@ -25,8 +25,8 @@ import PeopleIcon from "@mui/icons-material/People"
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser"
 import SecurityIcon from "@mui/icons-material/Security"
 
-const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:8080/api/v1"
+const API_BASE_URL = "http://20.243.0.237:8080/api/v1 "
+  // process.env.REACT_APP_API_BASE_URL || "http://localhost:8080/api/v1"
 
 export const AdminPage = () => (
   <Admin
